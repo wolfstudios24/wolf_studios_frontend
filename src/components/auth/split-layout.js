@@ -18,10 +18,9 @@ export function SplitLayout({ children }) {
       >
         <Stack spacing={4} sx={{ maxWidth: '700px' }}>
           <Stack spacing={1}>
-            <Typography variant="h4">Welcome to Devias Kit PRO</Typography>
+            <Typography variant="h4">Welcome to The Wolf Studios LA</Typography>
             <Typography color="text.secondary">
-              A professional template that comes with ready-to-use MUI components developed with one common goal in
-              mind, help you build faster & beautiful applications.
+              We provide custom solution to our customers. We run your social media so that you can focus on your core business
             </Typography>
           </Stack>
           <Stack

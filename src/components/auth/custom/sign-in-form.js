@@ -1,9 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import RouterLink from 'next/link';
-import { useRouter } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -17,42 +13,55 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
 import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
-import { Controller, useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
+import RouterLink from 'next/link';
+import { useRouter } from 'next/navigation';
+import * as React from 'react';
 
-import { paths } from '@/paths';
-import { authClient } from '@/lib/auth/custom/client';
-import { useUser } from '@/hooks/use-user';
 import { DynamicLogo } from '@/components/core/logo';
 import { toast } from '@/components/core/toaster';
+import { useUser } from '@/hooks/use-user';
+import { authClient } from '@/lib/auth/custom/client';
+import { paths } from '@/paths';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 
 const oAuthProviders = [
   { id: 'google', name: 'Google', logo: '/assets/logo-google.svg' },
-  { id: 'discord', name: 'Discord', logo: '/assets/logo-discord.svg' },
 ];
-
-const schema = zod.object({
-  email: zod.string().min(1, { message: 'Email is required' }).email(),
-  password: zod.string().min(1, { message: 'Password is required' }),
-});
-
 const defaultValues = { email: '', password: '' };
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
 
 export function SignInForm() {
   const router = useRouter();
-
   const { checkSession } = useUser();
-
   const [showPassword, setShowPassword] = React.useState();
-
   const [isPending, setIsPending] = React.useState(false);
 
+
   const {
-    control,
+    values,
+    errors,
+    handleChange,
     handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm({ defaultValues, resolver: zodResolver(schema) });
+    handleBlur,
+    setValues,
+    setFieldValue,
+    isValid,
+    resetForm,
+  } = useFormik({
+    initialValues: defaultValues,
+    validationSchema,
+    onSubmit: async (values) => {
+      const { error } = await authClient.signInWithPassword(values);
+      console.log(error, "error")
+    }
+  })
+
+  console.log(values, "values.....")
 
   const onAuth = React.useCallback(async (providerId) => {
     setIsPending(true);
@@ -64,33 +73,30 @@ export function SignInForm() {
       toast.error(error);
       return;
     }
-
     setIsPending(false);
-
-    // Redirect to OAuth provider
   }, []);
 
-  const onSubmit = React.useCallback(
-    async (values) => {
-      setIsPending(true);
+  // const onSubmit = React.useCallback(
+  //   async (values) => {
+  //     setIsPending(true);
 
-      const { error } = await authClient.signInWithPassword(values);
+  //     const { error } = await authClient.signInWithPassword(values);
 
-      if (error) {
-        setError('root', { type: 'server', message: error });
-        setIsPending(false);
-        return;
-      }
+  //     if (error) {
+  //       setError('root', { type: 'server', message: error });
+  //       setIsPending(false);
+  //       return;
+  //     }
 
-      // Refresh the auth state
-      await checkSession?.();
+  //     // Refresh the auth state
+  //     await checkSession?.();
 
-      // UserProvider, for this case, will not refresh the router
-      // After refresh, GuestGuard will handle the redirect
-      router.refresh();
-    },
-    [checkSession, router, setError]
-  );
+  //     // UserProvider, for this case, will not refresh the router
+  //     // After refresh, GuestGuard will handle the redirect
+  //     router.refresh();
+  //   },
+  //   [checkSession, router, setError]
+  // );
 
   return (
     <Stack spacing={4}>
@@ -118,7 +124,6 @@ export function SignInForm() {
               key={provider.id}
               onClick={() => {
                 onAuth(provider.id).catch(() => {
-                  // noop
                 });
               }}
               variant="outlined"
@@ -129,52 +134,47 @@ export function SignInForm() {
         </Stack>
         <Divider>or</Divider>
         <Stack spacing={2}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit}>
             <Stack spacing={2}>
-              <Controller
-                control={control}
-                name="email"
-                render={({ field }) => (
-                  <FormControl error={Boolean(errors.email)}>
-                    <InputLabel>Email address</InputLabel>
-                    <OutlinedInput {...field} type="email" />
-                    {errors.email ? <FormHelperText>{errors.email.message}</FormHelperText> : null}
-                  </FormControl>
-                )}
-              />
-              <Controller
-                control={control}
-                name="password"
-                render={({ field }) => (
-                  <FormControl error={Boolean(errors.password)}>
-                    <InputLabel>Password</InputLabel>
-                    <OutlinedInput
-                      {...field}
-                      endAdornment={
-                        showPassword ? (
-                          <EyeIcon
-                            cursor="pointer"
-                            fontSize="var(--icon-fontSize-md)"
-                            onClick={() => {
-                              setShowPassword(false);
-                            }}
-                          />
-                        ) : (
-                          <EyeSlashIcon
-                            cursor="pointer"
-                            fontSize="var(--icon-fontSize-md)"
-                            onClick={() => {
-                              setShowPassword(true);
-                            }}
-                          />
-                        )
-                      }
-                      type={showPassword ? 'text' : 'password'}
-                    />
-                    {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
-                  </FormControl>
-                )}
-              />
+              <FormControl error={Boolean(errors.email)}>
+                <InputLabel>Email address</InputLabel>
+                <OutlinedInput
+                  type="email"
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                />
+                {errors.email ? <FormHelperText>{errors.email.message}</FormHelperText> : null}
+              </FormControl>
+              <FormControl error={Boolean(errors.password)}>
+                <InputLabel>Password</InputLabel>
+                <OutlinedInput
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  endAdornment={
+                    showPassword ? (
+                      <EyeIcon
+                        cursor="pointer"
+                        fontSize="var(--icon-fontSize-md)"
+                        onClick={() => {
+                          setShowPassword(false);
+                        }}
+                      />
+                    ) : (
+                      <EyeSlashIcon
+                        cursor="pointer"
+                        fontSize="var(--icon-fontSize-md)"
+                        onClick={() => {
+                          setShowPassword(true);
+                        }}
+                      />
+                    )
+                  }
+                />
+                {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
+              </FormControl>
               {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
               <Button disabled={isPending} type="submit" variant="contained">
                 Sign in
