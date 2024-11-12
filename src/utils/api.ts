@@ -2,7 +2,7 @@ import axios from "axios";
 import { clearUserSessionFromLocalStore, getTokenFromCookies } from "./axios-api.helpers";
 
 
-export const apiBaseurl = process.env["NEXT_PUBLIC_BACKEND_API"] || "https://inventory.rockworth.net/api/v1"
+export const apiBaseurl = process.env["NEXT_PUBLIC_BACKEND_API"] || "https://wolf-studios-backend-theta.vercel.app/api/v1"
 
 export const api = axios.create({
   baseURL: `${apiBaseurl}`,
@@ -23,7 +23,7 @@ api.interceptors.request.use(config => {
 
 //################################ server_base_api ##########################################
 export const server_base_api = axios.create({
-  baseURL: process.env["NEXT_PUBLIC_BACKEND_API"] || "https://test-otaapi.hops7.com/api/v1",
+  baseURL: process.env["NEXT_PUBLIC_BACKEND_API"] || "https://wolf-studios-backend-theta.vercel.app/api/v1",
 });
 
 server_base_api.interceptors.request.use((config) => {

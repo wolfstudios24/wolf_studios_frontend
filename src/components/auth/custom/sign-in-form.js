@@ -24,6 +24,7 @@ import { authClient } from '@/lib/auth/custom/client';
 import { paths } from '@/paths';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useSignIn } from '@/lib/api/auth/authApi';
 
 
 const oAuthProviders = [
@@ -38,8 +39,11 @@ const validationSchema = Yup.object().shape({
 export function SignInForm() {
   const router = useRouter();
   const { checkSession } = useUser();
+  const { mutateAsync: signIn } = useSignIn();
+
   const [showPassword, setShowPassword] = React.useState();
   const [isPending, setIsPending] = React.useState(false);
+
 
 
   const {
@@ -56,7 +60,7 @@ export function SignInForm() {
     initialValues: defaultValues,
     validationSchema,
     onSubmit: async (values) => {
-      const { error } = await authClient.signInWithPassword(values);
+      const { error } = await signIn(values);
       console.log(error, "error")
     }
   })
@@ -76,27 +80,6 @@ export function SignInForm() {
     setIsPending(false);
   }, []);
 
-  // const onSubmit = React.useCallback(
-  //   async (values) => {
-  //     setIsPending(true);
-
-  //     const { error } = await authClient.signInWithPassword(values);
-
-  //     if (error) {
-  //       setError('root', { type: 'server', message: error });
-  //       setIsPending(false);
-  //       return;
-  //     }
-
-  //     // Refresh the auth state
-  //     await checkSession?.();
-
-  //     // UserProvider, for this case, will not refresh the router
-  //     // After refresh, GuestGuard will handle the redirect
-  //     router.refresh();
-  //   },
-  //   [checkSession, router, setError]
-  // );
 
   return (
     <Stack spacing={4}>
