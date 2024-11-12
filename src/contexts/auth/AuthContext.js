@@ -39,6 +39,7 @@ export const AuthProvider = (props) => {
 
     useEffect(() => {
         const auth = localStorage.getItem("auth");
+        console.log(auth, "auth....")
         if (auth) {
             const data = JSON.parse(auth);
             const date1 = new Date(data.date);
@@ -78,8 +79,8 @@ export const AuthProvider = (props) => {
             setUserInfo(userData);
 
             if (userData.role === "ADMIN") {
-                router.push("/dashboard/analytics");
-            } 
+                router.push("/dashboard");
+            }
         } catch (error) {
             console.error("Login error:", error);
             onError(error.response?.data?.message || "An error occurred");
