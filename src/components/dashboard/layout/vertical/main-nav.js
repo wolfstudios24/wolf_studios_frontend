@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
@@ -12,11 +11,13 @@ import { Bell as BellIcon } from '@phosphor-icons/react/dist/ssr/Bell';
 import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
 import { Users as UsersIcon } from '@phosphor-icons/react/dist/ssr/Users';
+import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useDialog } from '@/hooks/use-dialog';
 import { usePopover } from '@/hooks/use-popover';
 
+import useAuth from '@/hooks/useAuth';
 import { ContactsPopover } from '../contacts-popover';
 import { languageFlags, LanguagePopover } from '../language-popover';
 import { MobileNav } from '../mobile-nav';
@@ -176,6 +177,7 @@ const user = {
 
 function UserButton() {
   const popover = usePopover();
+  const { userInfo } = useAuth();
 
   return (
     <React.Fragment>
@@ -200,7 +202,7 @@ function UserButton() {
           }}
           variant="dot"
         >
-          <Avatar src={user.avatar} />
+          <Avatar src={userInfo.profile_pic} />
         </Badge>
       </Box>
       <UserPopover anchorEl={popover.anchorRef.current} onClose={popover.handleClose} open={popover.open} />

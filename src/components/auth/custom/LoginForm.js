@@ -33,7 +33,7 @@ export function LoginForm() {
   const { login } = useAuth()
 
   const [showPassword, setShowPassword] = React.useState();
-  const [isPending, setIsPending] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const {
     values,
@@ -49,11 +49,11 @@ export function LoginForm() {
     initialValues: defaultValues,
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values, "values....")
+      setLoading(true)
       await login(values.email, values.password, (error) => {
         setError(error)
       })
-
+      setLoading(false)
       closeDialog?.();
     }
   })
@@ -79,7 +79,7 @@ export function LoginForm() {
           {oAuthProviders.map((provider) => (
             <Button
               color="secondary"
-              disabled={isPending}
+              disabled={loading}
               endIcon={<Box alt="" component="img" height={24} src={provider.logo} width={24} />}
               key={provider.id}
               onClick={() => {
@@ -136,7 +136,7 @@ export function LoginForm() {
                 {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
               </FormControl>
               {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-              <Button disabled={isPending} type="submit" variant="contained">
+              <Button disabled={loading} type="submit" variant="contained">
                 Sign in
               </Button>
             </Stack>
@@ -148,16 +148,7 @@ export function LoginForm() {
           </div>
         </Stack>
       </Stack>
-      <Alert color="warning">
-        Use{' '}
-        <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-          sofia@devias.io
-        </Typography>{' '}
-        with password{' '}
-        <Typography component="span" sx={{ fontWeight: 700 }} variant="inherit">
-          Secret1
-        </Typography>
-      </Alert>
+      
     </Stack>
   );
 }
