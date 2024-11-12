@@ -1,5 +1,10 @@
 'use client';
 
+import { DynamicLogo } from '@/components/core/logo';
+import useAuth from '@/hooks/useAuth';
+import { paths } from '@/paths';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,22 +16,10 @@ import Link from '@mui/material/Link';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
-import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
-import RouterLink from 'next/link';
-import { useRouter } from 'next/navigation';
-import * as React from 'react';
-
-import { DynamicLogo } from '@/components/core/logo';
-import { toast } from '@/components/core/toaster';
-import { useUser } from '@/hooks/use-user';
-import { authClient } from '@/lib/auth/custom/client';
-import { paths } from '@/paths';
 import { useFormik } from 'formik';
+import RouterLink from 'next/link';
+import * as React from 'react';
 import * as Yup from 'yup';
-import { useSignIn } from '@/lib/api/auth/authApi';
-
-
 const oAuthProviders = [
   { id: 'google', name: 'Google', logo: '/assets/logo-google.svg' },
 ];
@@ -36,15 +29,11 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-export function SignInForm() {
-  const router = useRouter();
-  const { checkSession } = useUser();
-  const { mutateAsync: signIn } = useSignIn();
+export function LoginForm() {
+  const { login } = useAuth()
 
   const [showPassword, setShowPassword] = React.useState();
   const [isPending, setIsPending] = React.useState(false);
-
-
 
   const {
     values,
@@ -60,26 +49,14 @@ export function SignInForm() {
     initialValues: defaultValues,
     validationSchema,
     onSubmit: async (values) => {
-      const { error } = await signIn(values);
-      console.log(error, "error")
+      console.log(values, "values....")
+      await login(values.email, values.password, (error) => {
+        setError(error)
+      })
+
+      closeDialog?.();
     }
   })
-
-  console.log(values, "values.....")
-
-  const onAuth = React.useCallback(async (providerId) => {
-    setIsPending(true);
-
-    const { error } = await authClient.signInWithOAuth({ provider: providerId });
-
-    if (error) {
-      setIsPending(false);
-      toast.error(error);
-      return;
-    }
-    setIsPending(false);
-  }, []);
-
 
   return (
     <Stack spacing={4}>
@@ -138,7 +115,7 @@ export function SignInForm() {
                   onChange={handleChange}
                   endAdornment={
                     showPassword ? (
-                      <EyeIcon
+                      <VisibilityIcon
                         cursor="pointer"
                         fontSize="var(--icon-fontSize-md)"
                         onClick={() => {
@@ -146,7 +123,7 @@ export function SignInForm() {
                         }}
                       />
                     ) : (
-                      <EyeSlashIcon
+                      <VisibilityOffIcon
                         cursor="pointer"
                         fontSize="var(--icon-fontSize-md)"
                         onClick={() => {
