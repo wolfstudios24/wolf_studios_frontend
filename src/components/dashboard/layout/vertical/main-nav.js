@@ -205,7 +205,11 @@ function UserButton() {
           <Avatar src={userInfo.profile_pic} />
         </Badge>
       </Box>
-      <UserPopover anchorEl={popover.anchorRef.current} onClose={popover.handleClose} open={popover.open} />
+      <UserPopover
+        anchorEl={popover.anchorRef.current}
+        onClose={popover.handleClose}
+        open={popover.open}
+      />
     </React.Fragment>
   );
 }

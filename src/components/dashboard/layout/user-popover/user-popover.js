@@ -52,7 +52,7 @@ export function UserPopover({ anchorEl, onClose, open }) {
       <List sx={{ p: 1 }}>
         <MenuItem
           component={RouterLink}
-          href={paths.dashboard.settings.account}
+          href={paths.dashboard.profile}
           onClick={onClose}
         >
           <ListItemIcon>

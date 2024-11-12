@@ -10,7 +10,7 @@ export const api = axios.create({
 api.interceptors.request.use(config => {
   const token = getTokenFromCookies();
   if (token) {
-    config.headers["auth-Token"] = `${token}`;
+    config.headers["Authorization"] = `${token}`;
   }
   return config;
 },
@@ -29,7 +29,7 @@ export const server_base_api = axios.create({
 server_base_api.interceptors.request.use((config) => {
   const accessToken = getTokenFromCookies();
   if (accessToken && config.headers) {
-    config.headers["auth-Token"] = accessToken;
+    config.headers["Authorization"] = accessToken;
   }
   return config;
 });

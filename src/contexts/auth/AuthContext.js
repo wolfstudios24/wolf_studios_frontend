@@ -39,7 +39,6 @@ export const AuthProvider = (props) => {
 
     useEffect(() => {
         const auth = localStorage.getItem("auth");
-        console.log(auth, "auth....")
         if (auth) {
             const data = JSON.parse(auth);
             const date1 = new Date(data.date);
