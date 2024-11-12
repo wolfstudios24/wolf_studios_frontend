@@ -1,5 +1,6 @@
 "use client"
-import { Box, Button, FormControl, Grid, InputLabel, OutlinedInput } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, OutlinedInput } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import { useFormik } from "formik";
 import React from "react";
 import * as Yup from 'yup';
@@ -66,19 +67,18 @@ export default function Page() {
             >
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={3}>
-                            <FormControl error={Boolean(errors.email)}>
+                        <Grid size={4}>
+                            <FormControl fullWidth error={Boolean(errors.first_name)}>
                                 <InputLabel>First Name</InputLabel>
                                 <OutlinedInput
-                                    type="first_name"
                                     name="first_name"
                                     value={values.first_name}
                                     onChange={handleChange}
                                 />
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} md={3}>
-                            <FormControl error={Boolean(errors.email)}>
+                        <Grid size={4}>
+                            <FormControl fullWidth error={Boolean(errors.email)}>
                                 <InputLabel>Last Name</InputLabel>
                                 <OutlinedInput
                                     type="last_name"
@@ -88,8 +88,8 @@ export default function Page() {
                                 />
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} md={3}>
-                            <FormControl error={Boolean(errors.email)}>
+                        <Grid size={4}>
+                            <FormControl fullWidth error={Boolean(errors.email)}>
                                 <InputLabel>Email</InputLabel>
                                 <OutlinedInput
                                     type="email"
@@ -99,8 +99,8 @@ export default function Page() {
                                 />
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} md={3}>
-                            <FormControl error={Boolean(errors.email)}>
+                        <Grid size={4}>
+                            <FormControl fullWidth error={Boolean(errors.email)}>
                                 <InputLabel>Contact No.</InputLabel>
                                 <OutlinedInput
                                     type="contact_number"
@@ -110,8 +110,8 @@ export default function Page() {
                                 />
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} md={3}>
-                            <FormControl error={Boolean(errors.email)}>
+                        <Grid size={4}>
+                            <FormControl fullWidth error={Boolean(errors.email)}>
                                 <InputLabel>Role</InputLabel>
                                 <OutlinedInput
                                     type="role"
@@ -121,11 +121,11 @@ export default function Page() {
                                 />
                             </FormControl>
                         </Grid>
-                        <Box>
+                        <Grid size={12} >
                             <Button type="submit" variant="contained">
                                 Update
                             </Button>
-                        </Box>
+                        </Grid>
 
                     </Grid>
                 </form>
