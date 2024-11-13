@@ -7,7 +7,6 @@ export const getProfileData = async () => {
 
 
 export const updateProfileData = async (data) => {
-    console.log(data, "data.....")
     let formData = new FormData();
     formData.append("first_name", data.first_name);
     formData.append("last_name", data.last_name);

@@ -32,6 +32,7 @@ const validationSchema = Yup.object().shape({
 export function AccountDetails() {
 
   const [loading, setLoading] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(false);
 
 
   const {
@@ -48,9 +49,9 @@ export function AccountDetails() {
     initialValues: defaultProfile,
     validate: (values) => {
       const errors = {};
-     
+
       return errors;
-    }, 
+    },
     onSubmit: async (values) => {
       console.log(values, "values on submit.....")
       setLoading(true)
@@ -73,7 +74,6 @@ export function AccountDetails() {
   }, [])
 
 
-  console.log(values, "values....")
   return (
     <Card>
       <CardHeader
@@ -84,11 +84,11 @@ export function AccountDetails() {
         }
         title="My profile"
       />
-      <CardContent>
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+        <CardContent>
           <Stack spacing={3}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-              <ImageUploader value={values.avatar} onFileSelect={(file) => setFieldValue('profile_pic', file)} />
+              <ImageUploader value={values.profile_pic} onFileSelect={(file) => setFieldValue('profile_pic', file)} />
 
             </Stack>
             <Stack spacing={2}>
@@ -151,21 +151,16 @@ export function AccountDetails() {
                     />
                   </FormControl>
                 </Grid>
-                <Grid size={12} >
-                  <Button type="submit" variant="contained">
-                    Update
-                  </Button>
-                </Grid>
 
               </Grid>
             </Stack>
           </Stack>
-        </form>
-      </CardContent>
-      <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button color="secondary">Cancel</Button>
-        <Button variant="contained">Save changes</Button>
-      </CardActions>
+        </CardContent>
+        <CardActions >
+          <Button color="secondary">Cancel</Button>
+          <Button variant="contained">Update</Button>
+        </CardActions>
+      </form>
     </Card>
   );
 }

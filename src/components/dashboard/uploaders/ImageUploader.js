@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
-import { Avatar, Box, IconButton, Typography, Stack } from '@mui/material';
-import { Camera as CameraIcon, X as CrossIcon } from '@phosphor-icons/react';
+import { Box } from '@mui/material';
+import { Camera as CameraIcon } from '@phosphor-icons/react';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
 export default function ImageUploader({ value, onFileSelect, onDelete }) {
-    const [previewUrl, setPreviewUrl] = useState(value || '');
+    const [previewUrl, setPreviewUrl] = React.useState('');
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -20,6 +20,12 @@ export default function ImageUploader({ value, onFileSelect, onDelete }) {
         setPreviewUrl('');
         if (onDelete) onDelete();
     };
+
+    React.useEffect(() => {
+        if (!previewUrl) {
+            setPreviewUrl(value);
+        }
+    }, [value]);
 
     return (
         <Box sx={{ position: 'relative', display: 'inline-block' }}>

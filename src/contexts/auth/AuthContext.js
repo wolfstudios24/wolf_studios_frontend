@@ -37,23 +37,26 @@ export const AuthProvider = (props) => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
+    console.log(userInfo, "userInfo......")
+
     useEffect(() => {
         const auth = localStorage.getItem("auth");
+        console.log(auth, "auth info inside useEffect.....")
         if (auth) {
             const data = JSON.parse(auth);
             const date1 = new Date(data.date);
             const date2 = new Date();
             const diff = (date2.getTime() - date1.getTime()) / (1000 * 60 * 60);
+            console.log(diff, "diff......")
             if (diff <= 1) {
                 setUserInfo(data);
-                api.defaults.headers.common["auth-Token"] = `${data.token}`;
+                api.defaults.headers.common["Authorization"] = `${data.token}`;
             }
         }
         setLoading(false);
     }, []);
 
     const handleLogin = async (email, password, onError) => {
-        console.log(email, password, "handleLogin");
         try {
             const res = await server_base_api.post("/auth/login", {
                 email: email,
