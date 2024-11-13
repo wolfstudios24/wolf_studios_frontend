@@ -178,7 +178,6 @@ const user = {
 function UserButton() {
   const popover = usePopover();
   const { userInfo } = useAuth();
-  console.log(userInfo, "info.....")
   return (
     <React.Fragment>
       <Box

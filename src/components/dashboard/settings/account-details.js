@@ -20,6 +20,7 @@ import * as Yup from 'yup';
 import ImageUploader from '../uploaders/ImageUploader';
 import { defaultProfile } from './_lib/types';
 import { getProfileData, updateProfileData } from './_lib/actions';
+import { Typography } from '@mui/material';
 
 
 
@@ -53,11 +54,11 @@ export function AccountDetails() {
       return errors;
     },
     onSubmit: async (values) => {
-      console.log(values, "values on submit.....")
       setLoading(true)
       await updateProfileData(values)
       setLoading(false)
       closeDialog?.();
+      setIsEditing(false);
     }
   })
   async function fetchProfileData() {
@@ -83,6 +84,11 @@ export function AccountDetails() {
           </Avatar>
         }
         title="My profile"
+        action={
+          !isEditing && (
+            <Button onClick={() => setIsEditing(true)}>Edit</Button>
+          )
+        }
       />
       <form onSubmit={handleSubmit}>
         <CardContent>
@@ -94,61 +100,86 @@ export function AccountDetails() {
             <Stack spacing={2}>
 
               <Grid container spacing={2}>
-                <Grid size={6}>
+                <Grid size={12}>
                   <FormControl fullWidth error={Boolean(errors.first_name)}>
                     <InputLabel>First Name</InputLabel>
-                    <OutlinedInput
-                      name="first_name"
-                      value={values.first_name}
-                      onChange={handleChange}
-                    />
+                    {isEditing ? (
+                      <OutlinedInput
+                        name="first_name"
+                        value={values.first_name}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      <Typography>{values.first_name || 'N/A'}</Typography>
+                    )}
                   </FormControl>
                 </Grid>
-                <Grid size={6}>
+                <Grid size={12}>
                   <FormControl fullWidth error={Boolean(errors.email)}>
                     <InputLabel>Last Name</InputLabel>
-                    <OutlinedInput
-                      type="last_name"
-                      name="last_name"
-                      value={values.last_name}
-                      onChange={handleChange}
-                    />
+                    {
+                      isEditing ? (
+                        <OutlinedInput
+                          name="last_name"
+                          value={values.last_name}
+                          onChange={handleChange}
+                        />
+                      ) : (
+                        <Typography>{values.last_name || 'N/A'}</Typography>
+                      )
+                    }
+
                   </FormControl>
                 </Grid>
 
                 <Grid size={12}>
                   <FormControl fullWidth error={Boolean(errors.email)}>
                     <InputLabel>Contact No.</InputLabel>
-                    <OutlinedInput
-                      type="contact_number"
-                      name="contact_number"
-                      value={values.contact_number}
-                      onChange={handleChange}
-                    />
+                    {
+                      isEditing ? (
+                        <OutlinedInput
+                          name="contact_no"
+                          value={values.contact_no}
+                          onChange={handleChange}
+                        />
+                      ) : (
+                        <Typography>{values.contact_no || 'N/A'}</Typography>
+                      )
+                    }
                   </FormControl>
                 </Grid>
 
                 <Grid size={12}>
                   <FormControl fullWidth error={Boolean(errors.email)}>
                     <InputLabel>Email</InputLabel>
-                    <OutlinedInput
-                      type="email"
-                      name="email"
-                      value={values.email}
-                      disabled
-                    />
+                    {
+                      isEditing ? (
+                        <OutlinedInput
+                          name="email"
+                          value={values.email}
+                          onChange={handleChange}
+                        />
+                      ) : (
+                        <Typography>{values.email || 'N/A'}</Typography>
+                      )
+                    }
                   </FormControl>
                 </Grid>
 
                 <Grid size={12}>
                   <FormControl fullWidth error={Boolean(errors.email)}>
                     <InputLabel>Role</InputLabel>
-                    <OutlinedInput
-                      type="role"
-                      name="role"
-                      value={values.role}
-                      disabled
-                    />
+                    {
+                      isEditing ? (
+                        <OutlinedInput
+                          name="role"
+                          value={values.role}
+                          onChange={handleChange}
+                        />
+                      ) : (
+                        <Typography>{values.role || 'N/A'}</Typography>
+                      )
+                    }
                   </FormControl>
                 </Grid>
 
@@ -156,10 +187,14 @@ export function AccountDetails() {
             </Stack>
           </Stack>
         </CardContent>
-        <CardActions >
-          <Button color="secondary">Cancel</Button>
-          <Button variant="contained">Update</Button>
-        </CardActions>
+        {
+          isEditing && (
+            <CardActions >
+              <Button color="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button variant="contained">Update</Button>
+            </CardActions>
+          )
+        }
       </form>
     </Card>
   );

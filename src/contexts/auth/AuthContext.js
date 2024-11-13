@@ -1,7 +1,7 @@
 "use client";
 import { api, server_base_api } from "@/utils/api";
 import { removeTokenFromCookies, setTokenInCookies } from "@/utils/axios-api.helpers";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 // import { removeTokenFromCookies, setTokenInCookies } from 'utils/axios-api.helpers';
@@ -13,6 +13,7 @@ export const INITIAL_AUTH_STATE = {
     contact_number: "",
     profile_pic: "",
     role: "USER",
+    expirationTime: "",
 };
 
 export const AuthContext = createContext({
@@ -23,6 +24,7 @@ export const AuthContext = createContext({
 });
 
 export const isValidToken = (token) => {
+    console.log(token, "token")
     try {
         const decoded = jwtDecode(token);
         const currentTime = Date.now() / 1000;
@@ -37,24 +39,23 @@ export const AuthProvider = (props) => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
-    console.log(userInfo, "userInfo......")
-
     useEffect(() => {
         const auth = localStorage.getItem("auth");
-        console.log(auth, "auth info inside useEffect.....")
         if (auth) {
             const data = JSON.parse(auth);
-            const date1 = new Date(data.date);
-            const date2 = new Date();
-            const diff = (date2.getTime() - date1.getTime()) / (1000 * 60 * 60);
-            console.log(diff, "diff......")
-            if (diff <= 1) {
+            const currentTime = Date.now() / 1000;
+
+            const isValidToken = data.expirationTime > currentTime;
+
+            if (isValidToken) {
                 setUserInfo(data);
                 api.defaults.headers.common["Authorization"] = `${data.token}`;
+            } else {
+                localStorage.removeItem("auth");
             }
         }
-        setLoading(false);
     }, []);
+
 
     const handleLogin = async (email, password, onError) => {
         try {
@@ -63,6 +64,11 @@ export const AuthProvider = (props) => {
                 password: password,
             });
 
+            const decodedToken = jwtDecode(res.data.data.token);
+            console.log(decodedToken, "decodedToken")
+            const expirationTime = decodedToken.exp * 1000;
+
+
             const userData = {
                 token: res.data.data.token,
                 name: res.data.data.name,
@@ -70,11 +76,12 @@ export const AuthProvider = (props) => {
                 contact_number: res.data.data.contact_number,
                 profile_pic: res.data.data.profile_pic,
                 role: res.data.data.role,
+                expirationTime
             };
 
             localStorage.setItem(
                 "auth",
-                JSON.stringify({ ...userData, date: new Date() })
+                JSON.stringify({ ...userData })
             );
 
             setTokenInCookies(userData.token);
