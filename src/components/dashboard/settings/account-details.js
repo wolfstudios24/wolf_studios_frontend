@@ -1,7 +1,6 @@
 'use client';
 
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,18 +10,16 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { Camera as CameraIcon } from '@phosphor-icons/react/dist/ssr/Camera';
 import { User as UserIcon } from '@phosphor-icons/react/dist/ssr/User';
 import * as React from 'react';
 
-import { getProfileData } from '@/app/dashboard/profile-view/actions';
-import { defaultProfile } from '@/app/dashboard/profile-view/types';
 import { useFormik } from 'formik';
 
 import Grid from '@mui/material/Grid2';
 import * as Yup from 'yup';
 import ImageUploader from '../uploaders/ImageUploader';
+import { defaultProfile } from './_lib/types';
+import { getProfileData, updateProfileData } from './_lib/actions';
 
 
 
@@ -36,6 +33,7 @@ export function AccountDetails() {
 
   const [loading, setLoading] = React.useState(false);
 
+
   const {
     values,
     errors,
@@ -48,10 +46,15 @@ export function AccountDetails() {
     resetForm,
   } = useFormik({
     initialValues: defaultProfile,
-    validationSchema,
+    validate: (values) => {
+      const errors = {};
+     
+      return errors;
+    }, 
     onSubmit: async (values) => {
+      console.log(values, "values on submit.....")
       setLoading(true)
-
+      await updateProfileData(values)
       setLoading(false)
       closeDialog?.();
     }
@@ -68,6 +71,9 @@ export function AccountDetails() {
   React.useEffect(() => {
     fetchProfileData();
   }, [])
+
+
+  console.log(values, "values....")
   return (
     <Card>
       <CardHeader
@@ -79,13 +85,14 @@ export function AccountDetails() {
         title="My profile"
       />
       <CardContent>
-        <Stack spacing={3}>
-          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            <ImageUploader value={values.avatar} onFileSelect={(file) => console.log(file, "file....")} />
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={3}>
+            <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+              <ImageUploader value={values.avatar} onFileSelect={(file) => setFieldValue('profile_pic', file)} />
 
-          </Stack>
-          <Stack spacing={2}>
-            <form onSubmit={handleSubmit}>
+            </Stack>
+            <Stack spacing={2}>
+
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <FormControl fullWidth error={Boolean(errors.first_name)}>
@@ -151,9 +158,9 @@ export function AccountDetails() {
                 </Grid>
 
               </Grid>
-            </form>
+            </Stack>
           </Stack>
-        </Stack>
+        </form>
       </CardContent>
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button color="secondary">Cancel</Button>
