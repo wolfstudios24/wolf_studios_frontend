@@ -1,4 +1,5 @@
 import { api } from "@/utils/api";
+import { toast } from "sonner";
 
 export const getProfileData = async () => {
     try {
@@ -22,9 +23,11 @@ export const updateProfileData = async (data) => {
 
     try {
         const res = await api.patch(`/user/update-profile`, formData);
+        toast.success(res.data.message);
         return { success: true, data: res.data.data };
     } catch (error) {
         console.error("Error updating profile data:", error);
+        toast.error(error.response.data.message);
         return { success: false, error: error.response ? error.response.data : "An unknown error occurred" };
     }
 };

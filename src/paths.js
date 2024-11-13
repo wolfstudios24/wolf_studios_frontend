@@ -58,7 +58,7 @@ export const paths = {
     user_verification: '/dashboard/settings/users-verification',
 
     // admin
-    users: '/dashboard/settings/users',
+    users: '/dashboard/users',
 
 
     // can be removed later on

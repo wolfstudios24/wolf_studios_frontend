@@ -15,7 +15,7 @@ export const layoutConfig = {
       key: 'admin',
       title: 'Admin',
       items: [
-        { key: 'usrs', title: 'Users', href: paths.dashboard.crypto, icon: 'users' },
+        { key: 'usrs', title: 'Users', href: paths.dashboard.users, icon: 'users' },
       ],
     }
   ],
