@@ -1,9 +1,10 @@
 "use client";
+import { getProfileData } from "@/components/dashboard/settings/_lib/actions";
 import { api, server_base_api } from "@/utils/api";
 import { removeTokenFromCookies, setTokenInCookies } from "@/utils/axios-api.helpers";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 // import { removeTokenFromCookies, setTokenInCookies } from 'utils/axios-api.helpers';
 
 export const INITIAL_AUTH_STATE = {
@@ -13,7 +14,6 @@ export const INITIAL_AUTH_STATE = {
     contact_number: "",
     profile_pic: "",
     role: "USER",
-    expirationTime: "",
 };
 
 export const AuthContext = createContext({
@@ -39,22 +39,41 @@ export const AuthProvider = (props) => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
-    useEffect(() => {
+    async function fetchProfileData() {
+        try {
+            const response = await getProfileData();
+            console.log(response, "response...........")
+            setUserInfo({
+                name: response.first_name + " " + response.last_name,
+                email: response.email,
+                contact_number: response.contact_number,
+                profile_pic: response.profile_pic,
+                role: response.role,
+            });
+        } catch (error) {
+            console.error('Error fetching profile data:', error);
+            return null;
+        }
+    }
+    React.useEffect(() => {
         const auth = localStorage.getItem("auth");
+        console.log(auth, "auth from local storage. .....")
         if (auth) {
             const data = JSON.parse(auth);
             const currentTime = Date.now() / 1000;
 
             const isValidToken = data.expirationTime > currentTime;
-
             if (isValidToken) {
-                setUserInfo(data);
+                fetchProfileData();
                 api.defaults.headers.common["Authorization"] = `${data.token}`;
             } else {
                 localStorage.removeItem("auth");
             }
         }
-    }, []);
+
+    }, [])
+
+    console.log(userInfo.name, "userInfo.name.............")
 
 
     const handleLogin = async (email, password, onError) => {
@@ -76,7 +95,6 @@ export const AuthProvider = (props) => {
                 contact_number: res.data.data.contact_number,
                 profile_pic: res.data.data.profile_pic,
                 role: res.data.data.role,
-                expirationTime
             };
 
             localStorage.setItem(
