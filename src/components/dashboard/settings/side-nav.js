@@ -16,6 +16,7 @@ import { UsersThree as UsersThreeIcon } from '@phosphor-icons/react/dist/ssr/Use
 
 import { paths } from '@/paths';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
+import useAuth from '@/hooks/useAuth';
 
 // NOTE: First level elements are groups.
 
@@ -56,6 +57,7 @@ const icons = {
 
 export function SideNav() {
   const pathname = usePathname();
+  const { userInfo } = useAuth();
 
   return (
     <div>
@@ -88,11 +90,11 @@ export function SideNav() {
           ))}
         </Stack>
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-          <Avatar src="/assets/avatar.png">AV</Avatar>
+          <Avatar src={userInfo?.profile_pic}>AV</Avatar>
           <div>
-            <Typography variant="subtitle1">Sofia Rivers</Typography>
+            <Typography variant="subtitle1">{userInfo.name}</Typography>
             <Typography color="text.secondary" variant="caption">
-              sofia@devias.io
+              {userInfo.email}
             </Typography>
           </div>
         </Stack>
@@ -110,11 +112,11 @@ function NavItem({ disabled, external, href, icon, pathname, title }) {
       <Box
         {...(href
           ? {
-              component: external ? 'a' : RouterLink,
-              href,
-              target: external ? '_blank' : undefined,
-              rel: external ? 'noreferrer' : undefined,
-            }
+            component: external ? 'a' : RouterLink,
+            href,
+            target: external ? '_blank' : undefined,
+            rel: external ? 'noreferrer' : undefined,
+          }
           : { role: 'button' })}
         sx={{
           alignItems: 'center',

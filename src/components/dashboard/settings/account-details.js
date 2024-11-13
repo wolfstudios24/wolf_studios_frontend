@@ -158,6 +158,7 @@ export function AccountDetails() {
                           name="email"
                           value={values.email}
                           onChange={handleChange}
+                          disabled
                         />
                       ) : (
                         <Typography>{values.email || 'N/A'}</Typography>
@@ -175,6 +176,7 @@ export function AccountDetails() {
                           name="role"
                           value={values.role}
                           onChange={handleChange}
+                          disabled
                         />
                       ) : (
                         <Typography>{values.role || 'N/A'}</Typography>
@@ -191,7 +193,7 @@ export function AccountDetails() {
           isEditing && (
             <CardActions >
               <Button color="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
-              <Button variant="contained">Update</Button>
+              <Button variant="contained" type="submit">Update</Button>
             </CardActions>
           )
         }
