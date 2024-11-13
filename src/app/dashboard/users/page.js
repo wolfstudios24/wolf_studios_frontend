@@ -1,5 +1,4 @@
 "use client"
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -7,15 +6,15 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import * as React from 'react';
 
-import { config } from '@/config';
-import { dayjs } from '@/lib/dayjs';
 import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
 import { CustomersPagination } from '@/components/dashboard/customer/customers-pagination';
 import { CustomersSelectionProvider } from '@/components/dashboard/customer/customers-selection-context';
 import { CustomersTable } from '@/components/dashboard/customer/customers-table';
-import { getUsers } from './_lib/actions';
 import PageLoader from '@/components/PageLoader/PageLoader';
+import { getUsers } from './_lib/actions';
+import { ManageUserDialog } from './manage-user';
 
 
 
@@ -23,13 +22,14 @@ export default function Page({ searchParams }) {
   const { email, phone, sortDir, status } = searchParams;
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [openModal, setOpenModal] = React.useState(false);
 
   async function fetchUsersData() {
     try {
       setLoading(true)
       const response = await getUsers();
       if (response.success) {
-        setUsers(response.data.data);
+        setUsers(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +62,7 @@ export default function Page({ searchParams }) {
             <Typography variant="h4">Users</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button startIcon={<PlusIcon />} variant="contained">
+            <Button startIcon={<PlusIcon />} variant="contained" onClick={() => setOpenModal(true)}>
               Add
             </Button>
           </Box>
@@ -79,11 +79,20 @@ export default function Page({ searchParams }) {
                 <CustomersTable rows={users} />
               </Box>
               <Divider />
-              <CustomersPagination count={users.length + 100} page={0} />
+              <CustomersPagination count={users?.length + 100} page={0} />
             </Card>
           </CustomersSelectionProvider>
         </PageLoader>
       </Stack>
+      {
+        openModal && (
+          <ManageUserDialog
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+            data={null}
+          />
+        )
+      }
     </Box>
 
   );

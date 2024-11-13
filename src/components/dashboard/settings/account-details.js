@@ -15,14 +15,14 @@ import * as React from 'react';
 
 import { useFormik } from 'formik';
 
+import PageLoader from '@/components/PageLoader/PageLoader';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { IconButton, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import * as Yup from 'yup';
+import { getProfileData, updateProfileData } from '../../../app/dashboard/settings/_lib/actions';
 import ImageUploader from '../uploaders/ImageUploader';
-import { defaultProfile } from './_lib/types';
-import { getProfileData, updateProfileData } from './_lib/actions';
-import { IconButton, Typography } from '@mui/material';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import PageLoader from '@/components/PageLoader/PageLoader';
+import { defaultProfile } from '@/app/dashboard/settings/_lib/types';
 
 
 

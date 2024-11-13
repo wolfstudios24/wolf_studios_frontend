@@ -104,7 +104,7 @@ export function CustomersTable({ rows }) {
         selectable
         selected={selected}
       />
-      {!rows.length ? (
+      {!rows?.length ? (
         <Box sx={{ p: 3 }}>
           <Typography color="text.secondary" sx={{ textAlign: 'center' }} variant="body2">
             No customers found

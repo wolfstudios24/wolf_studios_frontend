@@ -1,10 +1,10 @@
 "use client";
-import { getProfileData } from "@/components/dashboard/settings/_lib/actions";
+import { getProfileData } from "@/app/dashboard/settings/_lib/actions";
 import { api, server_base_api } from "@/utils/api";
 import { removeTokenFromCookies, setTokenInCookies } from "@/utils/axios-api.helpers";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 // import { removeTokenFromCookies, setTokenInCookies } from 'utils/axios-api.helpers';
 
 export const INITIAL_AUTH_STATE = {
