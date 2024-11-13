@@ -7,6 +7,7 @@ import { defaultUser } from "./_lib/types";
 import { Button, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
 import Grid from '@mui/material/Grid2'
 import { CustomPasswordInput } from "@/components/formFields/CustomPasswordInput";
+import { createUser } from "./_lib/actions";
 
 const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First name is required'),
@@ -38,14 +39,15 @@ export const ManageUserDialog = (props) => {
         validationSchema,
         onSubmit: async (values) => {
             setLoading(true)
-            await login(values.email, values.password, (error) => {
-                setError(error)
-            })
+
+            const res = await createUser(values);
+            console.log(res, "res from form")
+            if (res.success) {
+                onClose()
+            }
             setLoading(false)
         }
     })
-
-    console.log(errors, "errors......")
 
     return (
         <Dialog
@@ -100,7 +102,7 @@ export const ManageUserDialog = (props) => {
                             <InputLabel>Contact No.</InputLabel>
 
                             <OutlinedInput
-                                name="contact_no"
+                                name="contact_number"
                                 value={values.contact_no}
                                 onChange={handleChange}
                             />
@@ -158,7 +160,9 @@ export const ManageUserDialog = (props) => {
                     <Grid size={12}>
                         <Button
                             variant="contained"
-                            type="submit">Create</Button>
+                            type="submit"
+                        // disabled={loading}
+                        >Create</Button>
                     </Grid>
                 </Grid>
             </form>

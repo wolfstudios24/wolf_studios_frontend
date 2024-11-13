@@ -39,6 +39,12 @@ export default function Page({ searchParams }) {
   }
 
 
+  const handleOpenModal = () => {
+    setOpenModal(false);
+    fetchUsersData();
+  }
+
+
   React.useEffect(() => {
     fetchUsersData();
   }, [])
@@ -88,7 +94,7 @@ export default function Page({ searchParams }) {
         openModal && (
           <ManageUserDialog
             open={openModal}
-            onClose={() => setOpenModal(false)}
+            onClose={handleOpenModal}
             data={null}
           />
         )

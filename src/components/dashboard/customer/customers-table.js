@@ -1,23 +1,18 @@
 'use client';
 
-import * as React from 'react';
-import RouterLink from 'next/link';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
-import LinearProgress from '@mui/material/LinearProgress';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { CheckCircle as CheckCircleIcon } from '@phosphor-icons/react/dist/ssr/CheckCircle';
-import { Clock as ClockIcon } from '@phosphor-icons/react/dist/ssr/Clock';
-import { Minus as MinusIcon } from '@phosphor-icons/react/dist/ssr/Minus';
 import { PencilSimple as PencilSimpleIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
+import RouterLink from 'next/link';
+import * as React from 'react';
 
-import { paths } from '@/paths';
-import { dayjs } from '@/lib/dayjs';
 import { DataTable } from '@/components/core/data-table';
+import { dayjs } from '@/lib/dayjs';
+import { paths } from '@/paths';
 
 import { useCustomersSelection } from './customers-selection-context';
 
@@ -35,7 +30,6 @@ const columns = [
   {
     formatter: (row) => (
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-        <Avatar src={row.profile_pic} />{' '}
         <div>
           <Link
             color="inherit"
