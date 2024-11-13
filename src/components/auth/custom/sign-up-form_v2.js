@@ -1,8 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import RouterLink from 'next/link';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -17,18 +14,20 @@ import Link from '@mui/material/Link';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import RouterLink from 'next/link';
+import { useRouter } from 'next/navigation';
+import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
-import { paths } from '@/paths';
-import { authClient } from '@/lib/auth/custom/client';
-import { useUser } from '@/hooks/use-user';
 import { DynamicLogo } from '@/components/core/logo';
 import { toast } from '@/components/core/toaster';
+import { useUser } from '@/hooks/use-user';
+import { authClient } from '@/lib/auth/custom/client';
+import { paths } from '@/paths';
 
 const oAuthProviders = [
   { id: 'google', name: 'Google', logo: '/assets/logo-google.svg' },
-  { id: 'discord', name: 'Discord', logo: '/assets/logo-discord.svg' },
 ];
 
 const schema = zod.object({
@@ -199,7 +198,6 @@ export function SignUpForm() {
           </Stack>
         </form>
       </Stack>
-      <Alert color="warning">Created users are not persisted</Alert>
     </Stack>
   );
 }

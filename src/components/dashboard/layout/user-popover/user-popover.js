@@ -22,6 +22,7 @@ import { CognitoSignOut } from './cognito-sign-out';
 import { CustomSignOut } from './custom-sign-out';
 import { FirebaseSignOut } from './firebase-sign-out';
 import { SupabaseSignOut } from './supabase-sign-out';
+import useAuth from '@/hooks/useAuth';
 
 const user = {
   id: 'USR-000',
@@ -31,6 +32,7 @@ const user = {
 };
 
 export function UserPopover({ anchorEl, onClose, open }) {
+  const { userInfo } = useAuth();
   return (
     <Popover
       anchorEl={anchorEl}
@@ -41,31 +43,34 @@ export function UserPopover({ anchorEl, onClose, open }) {
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
     >
       <Box sx={{ p: 2 }}>
-        <Typography>{user.name}</Typography>
+        <Typography>{userInfo.name}</Typography>
         <Typography color="text.secondary" variant="body2">
-          {user.email}
+          {userInfo.email}
         </Typography>
       </Box>
       <Divider />
       <List sx={{ p: 1 }}>
-        <MenuItem component={RouterLink} href={paths.dashboard.settings.account} onClick={onClose}>
+        <MenuItem
+          component={RouterLink}
+          href={paths.dashboard.profile}
+          onClick={onClose}
+        >
           <ListItemIcon>
             <UserIcon />
           </ListItemIcon>
-          Account
+          Profile
         </MenuItem>
-        <MenuItem component={RouterLink} href={paths.dashboard.settings.security} onClick={onClose}>
+        <MenuItem
+          component={RouterLink}
+          href={paths.dashboard.security}
+          onClick={onClose}
+        >
           <ListItemIcon>
             <LockKeyIcon />
           </ListItemIcon>
-          Security
+          Settings
         </MenuItem>
-        <MenuItem component={RouterLink} href={paths.dashboard.settings.billing} onClick={onClose}>
-          <ListItemIcon>
-            <CreditCardIcon />
-          </ListItemIcon>
-          Billing
-        </MenuItem>
+
       </List>
       <Divider />
       <Box sx={{ p: 1 }}>

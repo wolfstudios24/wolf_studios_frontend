@@ -95,7 +95,7 @@ export function CustomersFilters({ filters = {}, sortDir = 'desc' }) {
 
   return (
     <div>
-      <Tabs onChange={handleStatusChange} sx={{ px: 3 }} value={status ?? ''} variant="scrollable">
+      {/* <Tabs onChange={handleStatusChange} sx={{ px: 3 }} value={status ?? ''} variant="scrollable">
         {tabs.map((tab) => (
           <Tab
             icon={<Chip label={tab.count} size="small" variant="soft" />}
@@ -108,7 +108,7 @@ export function CustomersFilters({ filters = {}, sortDir = 'desc' }) {
           />
         ))}
       </Tabs>
-      <Divider />
+      <Divider /> */}
       <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap', px: 3, py: 2 }}>
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: '1 1 auto', flexWrap: 'wrap' }}>
           <FilterButton
@@ -147,10 +147,10 @@ export function CustomersFilters({ filters = {}, sortDir = 'desc' }) {
             </Button>
           </Stack>
         ) : null}
-        <Select name="sort" onChange={handleSortChange} sx={{ maxWidth: '100%', width: '120px' }} value={sortDir}>
+        {/* <Select name="sort" onChange={handleSortChange} sx={{ maxWidth: '100%', width: '120px' }} value={sortDir}>
           <Option value="desc">Newest</Option>
           <Option value="asc">Oldest</Option>
-        </Select>
+        </Select> */}
       </Stack>
     </div>
   );

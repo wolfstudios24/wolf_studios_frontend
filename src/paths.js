@@ -53,12 +53,20 @@ export const paths = {
   },
   dashboard: {
     overview: '/dashboard',
+    profile: '/dashboard/settings/account',
+    security: '/dashboard/settings/security',
+    user_verification: '/dashboard/settings/users-verification',
+
+    // admin
+    users: '/dashboard/users',
+
+
+    // can be removed later on
     settings: {
       account: '/dashboard/settings/account',
       billing: '/dashboard/settings/billing',
       integrations: '/dashboard/settings/integrations',
       notifications: '/dashboard/settings/notifications',
-      security: '/dashboard/settings/security',
       team: '/dashboard/settings/team',
     },
     academy: { browse: '/dashboard/academy', details: (courseId) => `/dashboard/academy/courses/${courseId}` },

@@ -1,8 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import RouterLink from 'next/link';
-import { usePathname } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -11,16 +8,18 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { CaretDown as CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
 import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
+import RouterLink from 'next/link';
+import { usePathname } from 'next/navigation';
+import * as React from 'react';
 
-import { paths } from '@/paths';
-import { isNavItemActive } from '@/lib/is-nav-item-active';
 import { Dropdown } from '@/components/core/dropdown/dropdown';
 import { DropdownPopover } from '@/components/core/dropdown/dropdown-popover';
 import { DropdownTrigger } from '@/components/core/dropdown/dropdown-trigger';
 import { Logo } from '@/components/core/logo';
+import { isNavItemActive } from '@/lib/is-nav-item-active';
+import { paths } from '@/paths';
 
 import { MobileNav } from './mobile-nav';
-import { PagesPopover } from './pages-popover';
 
 export function MainNav() {
   const [openNav, setOpenNav] = React.useState(false);
@@ -47,7 +46,6 @@ export function MainNav() {
             </Box>
             <Box component="nav" sx={{ display: { xs: 'none', md: 'block' } }}>
               <Stack component="ul" direction="row" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-                <NavItem href={paths.components.index} pathname={pathname} title="Components" />
                 <NavItem href={paths.docs} pathname={pathname} title="Documentation" />
               </Stack>
             </Box>
@@ -57,21 +55,13 @@ export function MainNav() {
             spacing={2}
             sx={{ alignItems: 'center', flex: '1 1 auto', justifyContent: 'flex-end' }}
           >
-            <Box component="nav" sx={{ display: { xs: 'none', md: 'block' } }}>
-              <Stack component="ul" direction="row" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-                <NavItem pathname={pathname} title="Pages">
-                  <PagesPopover />
-                </NavItem>
-              </Stack>
-            </Box>
             <Button
               component="a"
-              href={paths.purchase}
+              href={paths.dashboard.overview}
               sx={{ display: { xs: 'none', md: 'flex' } }}
-              target="_blank"
               variant="contained"
             >
-              Purchase now
+              Login
             </Button>
             <IconButton
               onClick={() => {
@@ -103,21 +93,21 @@ export function NavItem({ children, disabled, external, href, matcher, pathname,
       <Box
         {...(hasPopover
           ? {
-              onClick: (event) => {
-                event.preventDefault();
-              },
-              role: 'button',
-            }
+            onClick: (event) => {
+              event.preventDefault();
+            },
+            role: 'button',
+          }
           : {
-              ...(href
-                ? {
-                    component: external ? 'a' : RouterLink,
-                    href,
-                    target: external ? '_blank' : undefined,
-                    rel: external ? 'noreferrer' : undefined,
-                  }
-                : { role: 'button' }),
-            })}
+            ...(href
+              ? {
+                component: external ? 'a' : RouterLink,
+                href,
+                target: external ? '_blank' : undefined,
+                rel: external ? 'noreferrer' : undefined,
+              }
+              : { role: 'button' }),
+          })}
         sx={{
           alignItems: 'center',
           borderRadius: 1,
