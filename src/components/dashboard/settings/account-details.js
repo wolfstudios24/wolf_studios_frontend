@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,20 +8,65 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
-import Link from '@mui/material/Link';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Camera as CameraIcon } from '@phosphor-icons/react/dist/ssr/Camera';
 import { User as UserIcon } from '@phosphor-icons/react/dist/ssr/User';
+import * as React from 'react';
 
-import { Option } from '@/components/core/option';
+import { getProfileData } from '@/app/dashboard/profile-view/actions';
+import { defaultProfile } from '@/app/dashboard/profile-view/types';
+import { useFormik } from 'formik';
+
+import Grid from '@mui/material/Grid2';
+import * as Yup from 'yup';
+
+
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
+
 
 export function AccountDetails() {
+
+  const [loading, setLoading] = React.useState(false);
+
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    handleBlur,
+    setValues,
+    setFieldValue,
+    isValid,
+    resetForm,
+  } = useFormik({
+    initialValues: defaultProfile,
+    validationSchema,
+    onSubmit: async (values) => {
+      setLoading(true)
+
+      setLoading(false)
+      closeDialog?.();
+    }
+  })
+  async function fetchProfileData() {
+    try {
+      const response = await getProfileData();
+      setValues(response);
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+      return null;
+    }
+  }
+  React.useEffect(() => {
+    fetchProfileData();
+  }, [])
   return (
     <Card>
       <CardHeader
@@ -31,7 +75,7 @@ export function AccountDetails() {
             <UserIcon fontSize="var(--Icon-fontSize)" />
           </Avatar>
         }
-        title="Basic details"
+        title="My profile"
       />
       <CardContent>
         <Stack spacing={3}>
@@ -79,53 +123,73 @@ export function AccountDetails() {
             </Button>
           </Stack>
           <Stack spacing={2}>
-            <FormControl>
-              <InputLabel>Full name</InputLabel>
-              <OutlinedInput defaultValue="Sofia Rivers" name="fullName" />
-            </FormControl>
-            <FormControl disabled>
-              <InputLabel>Email address</InputLabel>
-              <OutlinedInput name="email" type="email" value="sofia@devias.io" />
-              <FormHelperText>
-                Please <Link variant="inherit">contact us</Link> to change your email
-              </FormHelperText>
-            </FormControl>
-            <Stack direction="row" spacing={2}>
-              <FormControl sx={{ width: '160px' }}>
-                <InputLabel>Dial code</InputLabel>
-                <Select
-                  name="countryCode"
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <Box
-                        alt="Spain"
-                        component="img"
-                        src="/assets/flag-es.svg"
-                        sx={{ display: 'block', height: '20px', width: 'auto' }}
-                      />
-                    </InputAdornment>
-                  }
-                  value="+34"
-                >
-                  <Option value="+1">United States</Option>
-                  <Option value="+49">Germany</Option>
-                  <Option value="+34">Spain</Option>
-                </Select>
-              </FormControl>
-              <FormControl sx={{ flex: '1 1 auto' }}>
-                <InputLabel>Phone number</InputLabel>
-                <OutlinedInput defaultValue="965 245 7623" name="phone" />
-              </FormControl>
-            </Stack>
-            <FormControl>
-              <InputLabel>Title</InputLabel>
-              <OutlinedInput name="title" placeholder="e.g Golang Developer" />
-            </FormControl>
-            <FormControl>
-              <InputLabel>Biography (optional)</InputLabel>
-              <OutlinedInput name="bio" placeholder="Describe yourself..." />
-              <FormHelperText>0/200 characters</FormHelperText>
-            </FormControl>
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid size={6}>
+                  <FormControl fullWidth error={Boolean(errors.first_name)}>
+                    <InputLabel>First Name</InputLabel>
+                    <OutlinedInput
+                      name="first_name"
+                      value={values.first_name}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid size={6}>
+                  <FormControl fullWidth error={Boolean(errors.email)}>
+                    <InputLabel>Last Name</InputLabel>
+                    <OutlinedInput
+                      type="last_name"
+                      name="last_name"
+                      value={values.last_name}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+                </Grid>
+                
+                <Grid size={12}>
+                  <FormControl fullWidth error={Boolean(errors.email)}>
+                    <InputLabel>Contact No.</InputLabel>
+                    <OutlinedInput
+                      type="contact_number"
+                      name="contact_number"
+                      value={values.contact_number}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+                </Grid>
+
+                <Grid size={12}>
+                  <FormControl fullWidth error={Boolean(errors.email)}>
+                    <InputLabel>Email</InputLabel>
+                    <OutlinedInput
+                      type="email"
+                      name="email"
+                      value={values.email}
+                      disabled
+                    />
+                  </FormControl>
+                </Grid>
+                
+                <Grid size={12}>
+                  <FormControl fullWidth error={Boolean(errors.email)}>
+                    <InputLabel>Role</InputLabel>
+                    <OutlinedInput
+                      type="role"
+                      name="role"
+                      value={values.role}
+                      disabled
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid size={12} >
+                  <Button type="submit" variant="contained">
+                    Update
+                  </Button>
+                </Grid>
+
+              </Grid>
+            </form>
           </Stack>
         </Stack>
       </CardContent>
