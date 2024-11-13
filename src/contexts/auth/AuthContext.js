@@ -24,7 +24,6 @@ export const AuthContext = createContext({
 });
 
 export const isValidToken = (token) => {
-    console.log(token, "token")
     try {
         const decoded = jwtDecode(token);
         const currentTime = Date.now() / 1000;
@@ -42,14 +41,17 @@ export const AuthProvider = (props) => {
     async function fetchProfileData() {
         try {
             const response = await getProfileData();
-            console.log(response, "response...........")
-            setUserInfo({
-                name: response.first_name + " " + response.last_name,
-                email: response.email,
-                contact_number: response.contact_number,
-                profile_pic: response.profile_pic,
-                role: response.role,
-            });
+            if (response.success) {
+                setUserInfo({
+                    name: response.data.first_name + " " + response.data.last_name,
+                    email: response.data.email,
+                    contact_number: response.data.contact_number,
+                    profile_pic: response.data.profile_pic,
+                    role: response.data.role,
+                });
+            } else {
+                setUserInfo(INITIAL_AUTH_STATE);
+            }
         } catch (error) {
             console.error('Error fetching profile data:', error);
             return null;
@@ -57,7 +59,6 @@ export const AuthProvider = (props) => {
     }
     React.useEffect(() => {
         const auth = localStorage.getItem("auth");
-        console.log(auth, "auth from local storage. .....")
         if (auth) {
             const data = JSON.parse(auth);
             const currentTime = Date.now() / 1000;
@@ -73,8 +74,6 @@ export const AuthProvider = (props) => {
 
     }, [])
 
-    console.log(userInfo.name, "userInfo.name.............")
-
 
     const handleLogin = async (email, password, onError) => {
         try {
@@ -84,7 +83,6 @@ export const AuthProvider = (props) => {
             });
 
             const decodedToken = jwtDecode(res.data.data.token);
-            console.log(decodedToken, "decodedToken")
             const expirationTime = decodedToken.exp * 1000;
 
 
@@ -109,7 +107,6 @@ export const AuthProvider = (props) => {
                 router.push("/dashboard");
             }
         } catch (error) {
-            console.error("Login error:", error);
             onError(error.response?.data?.message || "An error occurred");
         }
     };

@@ -4,7 +4,7 @@ import { Camera as CameraIcon } from '@phosphor-icons/react';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-export default function ImageUploader({ value, onFileSelect, onDelete }) {
+export default function ImageUploader({ value, onFileSelect, onDelete, disabled = false }) {
     const [previewUrl, setPreviewUrl] = React.useState('');
 
     const handleImageChange = (event) => {
@@ -37,7 +37,7 @@ export default function ImageUploader({ value, onFileSelect, onDelete }) {
                 style={{ objectFit: 'cover', borderRadius: "10px", border: "1px solid var(--mui-palette-divider)" }}
             />
 
-            <Box
+            {disabled ? null : <Box
                 component="label"
                 sx={{
                     position: 'absolute',
@@ -61,7 +61,7 @@ export default function ImageUploader({ value, onFileSelect, onDelete }) {
                     onChange={handleImageChange}
                 />
 
-            </Box>
+            </Box>}
         </Box>
     );
 }

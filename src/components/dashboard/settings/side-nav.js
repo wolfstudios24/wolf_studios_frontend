@@ -89,15 +89,7 @@ export function SideNav() {
             </Stack>
           ))}
         </Stack>
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-          <Avatar src={userInfo?.profile_pic}>AV</Avatar>
-          <div>
-            <Typography variant="subtitle1">{userInfo.name}</Typography>
-            <Typography color="text.secondary" variant="caption">
-              {userInfo.email}
-            </Typography>
-          </div>
-        </Stack>
+        
       </Stack>
     </div>
   );

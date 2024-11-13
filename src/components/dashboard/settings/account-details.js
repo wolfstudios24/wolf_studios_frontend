@@ -20,7 +20,9 @@ import * as Yup from 'yup';
 import ImageUploader from '../uploaders/ImageUploader';
 import { defaultProfile } from './_lib/types';
 import { getProfileData, updateProfileData } from './_lib/actions';
-import { Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import PageLoader from '@/components/PageLoader/PageLoader';
 
 
 
@@ -62,142 +64,158 @@ export function AccountDetails() {
     }
   })
   async function fetchProfileData() {
+    setLoading(true);
     try {
       const response = await getProfileData();
-      setValues(response);
+
+      setValues(response.data);
     } catch (error) {
       console.error('Error fetching profile data:', error);
       return null;
+    } finally {
+      setLoading(false);
     }
   }
   React.useEffect(() => {
     fetchProfileData();
   }, [])
 
-
   return (
-    <Card>
-      <CardHeader
-        avatar={
-          <Avatar>
-            <UserIcon fontSize="var(--Icon-fontSize)" />
-          </Avatar>
-        }
-        title="My profile"
-        action={
-          !isEditing && (
-            <Button onClick={() => setIsEditing(true)}>Edit</Button>
-          )
-        }
-      />
-      <form onSubmit={handleSubmit}>
-        <CardContent>
-          <Stack spacing={3}>
-            <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-              <ImageUploader value={values.profile_pic} onFileSelect={(file) => setFieldValue('profile_pic', file)} />
+    <PageLoader
+      loading={loading}
+      error={null}
+    >
+      <Card>
+        <CardHeader
+          avatar={
+            <Avatar>
+              <UserIcon fontSize="var(--Icon-fontSize)" />
+            </Avatar>
+          }
+          title="My profile"
+          action={
+            !isEditing && (
+              <IconButton
+                title='Edit'
+                onClick={() => setIsEditing(true)}>
+                <BorderColorIcon />
+              </IconButton>
+            )
+          }
+        />
+        <form onSubmit={handleSubmit}>
+          <CardContent>
+            <Stack spacing={3}>
+              <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+                <ImageUploader
+                  disabled={!isEditing}
+                  value={values.profile_pic}
+                  onFileSelect={(file) => setFieldValue('profile_pic', file)}
+                />
 
+              </Stack>
+              <Stack spacing={2}>
+
+                <Grid container spacing={2}>
+                  <Grid size={12}>
+                    <FormControl fullWidth error={Boolean(errors.first_name)}>
+                      <InputLabel>First Name</InputLabel>
+                      {isEditing ? (
+                        <OutlinedInput
+                          name="first_name"
+                          value={values.first_name}
+                          onChange={handleChange}
+                        />
+                      ) : (
+                        <Typography>{values.first_name || 'N/A'}</Typography>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  <Grid size={12}>
+                    <FormControl fullWidth error={Boolean(errors.email)}>
+                      <InputLabel>Last Name</InputLabel>
+                      {
+                        isEditing ? (
+                          <OutlinedInput
+                            name="last_name"
+                            value={values.last_name}
+                            onChange={handleChange}
+                          />
+                        ) : (
+                          <Typography>{values.last_name || 'N/A'}</Typography>
+                        )
+                      }
+
+                    </FormControl>
+                  </Grid>
+
+                  <Grid size={12}>
+                    <FormControl fullWidth error={Boolean(errors.email)}>
+                      <InputLabel>Contact No.</InputLabel>
+                      {
+                        isEditing ? (
+                          <OutlinedInput
+                            name="contact_no"
+                            value={values.contact_no}
+                            onChange={handleChange}
+                          />
+                        ) : (
+                          <Typography>{values.contact_no || 'N/A'}</Typography>
+                        )
+                      }
+                    </FormControl>
+                  </Grid>
+
+                  <Grid size={12}>
+                    <FormControl fullWidth error={Boolean(errors.email)}>
+                      <InputLabel>Email</InputLabel>
+                      {
+                        isEditing ? (
+                          <OutlinedInput
+                            name="email"
+                            value={values.email}
+                            onChange={handleChange}
+                            disabled
+                          />
+                        ) : (
+                          <Typography>{values.email || 'N/A'}</Typography>
+                        )
+                      }
+                    </FormControl>
+                  </Grid>
+
+                  <Grid size={12}>
+                    <FormControl fullWidth error={Boolean(errors.email)}>
+                      <InputLabel>Role</InputLabel>
+                      {
+                        isEditing ? (
+                          <OutlinedInput
+                            name="role"
+                            value={values.role}
+                            onChange={handleChange}
+                            disabled
+                          />
+                        ) : (
+                          <Typography>{values.role || 'N/A'}</Typography>
+                        )
+                      }
+                    </FormControl>
+                  </Grid>
+
+                </Grid>
+              </Stack>
             </Stack>
-            <Stack spacing={2}>
-
-              <Grid container spacing={2}>
-                <Grid size={12}>
-                  <FormControl fullWidth error={Boolean(errors.first_name)}>
-                    <InputLabel>First Name</InputLabel>
-                    {isEditing ? (
-                      <OutlinedInput
-                        name="first_name"
-                        value={values.first_name}
-                        onChange={handleChange}
-                      />
-                    ) : (
-                      <Typography>{values.first_name || 'N/A'}</Typography>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid size={12}>
-                  <FormControl fullWidth error={Boolean(errors.email)}>
-                    <InputLabel>Last Name</InputLabel>
-                    {
-                      isEditing ? (
-                        <OutlinedInput
-                          name="last_name"
-                          value={values.last_name}
-                          onChange={handleChange}
-                        />
-                      ) : (
-                        <Typography>{values.last_name || 'N/A'}</Typography>
-                      )
-                    }
-
-                  </FormControl>
-                </Grid>
-
-                <Grid size={12}>
-                  <FormControl fullWidth error={Boolean(errors.email)}>
-                    <InputLabel>Contact No.</InputLabel>
-                    {
-                      isEditing ? (
-                        <OutlinedInput
-                          name="contact_no"
-                          value={values.contact_no}
-                          onChange={handleChange}
-                        />
-                      ) : (
-                        <Typography>{values.contact_no || 'N/A'}</Typography>
-                      )
-                    }
-                  </FormControl>
-                </Grid>
-
-                <Grid size={12}>
-                  <FormControl fullWidth error={Boolean(errors.email)}>
-                    <InputLabel>Email</InputLabel>
-                    {
-                      isEditing ? (
-                        <OutlinedInput
-                          name="email"
-                          value={values.email}
-                          onChange={handleChange}
-                          disabled
-                        />
-                      ) : (
-                        <Typography>{values.email || 'N/A'}</Typography>
-                      )
-                    }
-                  </FormControl>
-                </Grid>
-
-                <Grid size={12}>
-                  <FormControl fullWidth error={Boolean(errors.email)}>
-                    <InputLabel>Role</InputLabel>
-                    {
-                      isEditing ? (
-                        <OutlinedInput
-                          name="role"
-                          value={values.role}
-                          onChange={handleChange}
-                          disabled
-                        />
-                      ) : (
-                        <Typography>{values.role || 'N/A'}</Typography>
-                      )
-                    }
-                  </FormControl>
-                </Grid>
-
-              </Grid>
-            </Stack>
-          </Stack>
-        </CardContent>
-        {
-          isEditing && (
-            <CardActions >
-              <Button color="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
-              <Button variant="contained" type="submit">Update</Button>
-            </CardActions>
-          )
-        }
-      </form>
-    </Card>
+          </CardContent>
+          {
+            isEditing && (
+              <CardActions >
+                <Button color="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
+                <Button variant="contained" type="submit">Update</Button>
+              </CardActions>
+            )
+          }
+        </form>
+      </Card>
+    </PageLoader>
   );
 }
