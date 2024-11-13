@@ -27,7 +27,7 @@ const navItems = [
     items: [
       { key: 'account', title: 'Account', href: paths.dashboard.settings.account, icon: 'user-circle' },
       { key: 'notifications', title: 'Notifications', href: paths.dashboard.settings.notifications, icon: 'bell' },
-      { key: 'security', title: 'Security', href: paths.dashboard.settings.security, icon: 'lock-key' },
+      { key: 'security', title: 'Security', href: paths.dashboard.security, icon: 'lock-key' },
     ],
   },
   {

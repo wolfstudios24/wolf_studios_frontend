@@ -65,31 +65,21 @@ export function Hero() {
         <Stack spacing={4}>
           <Stack spacing={2}>
             <Typography sx={{ fontSize: '3.5rem', fontWeight: 600, lineHeight: 1.2, textAlign: 'center' }}>
-              Focus on development, leave{' '}
+              Focus on business, leave{' '}
               <Typography color="primary.main" component="span" variant="inherit">
-                User Experience
+                Social Media Management
               </Typography>{' '}
               to us.
             </Typography>
             <Typography color="neutral.300" sx={{ fontWeight: 400, textAlign: 'center' }} variant="h5">
-              Premium template designed to accelerate app development with a stunning design and powerful pre-built
-              Material UI components.
+              We provide a complete solution for your social media needs. We&apos;re here to help you grow your
             </Typography>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ justifyContent: 'center' }}>
             <Button component={RouterLink} href={paths.dashboard.overview} variant="contained">
-              Dashboard
+              Join Now 
             </Button>
-            <Button
-              component={RouterLink}
-              href={paths.components.index}
-              sx={{
-                color: 'var(--mui-palette-common-white)',
-                '&:hover': { bgcolor: 'var(--mui-palette-action-hover)' },
-              }}
-            >
-              Components
-            </Button>
+            
           </Stack>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'center ' }}>
             <AvatarGroup sx={{ '& .MuiAvatar-root': { border: '2px solid var(--mui-palette-neutral-950)' } }}>

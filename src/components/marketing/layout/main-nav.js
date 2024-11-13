@@ -46,7 +46,6 @@ export function MainNav() {
             </Box>
             <Box component="nav" sx={{ display: { xs: 'none', md: 'block' } }}>
               <Stack component="ul" direction="row" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-                <NavItem href={paths.components.index} pathname={pathname} title="Components" />
                 <NavItem href={paths.docs} pathname={pathname} title="Documentation" />
               </Stack>
             </Box>

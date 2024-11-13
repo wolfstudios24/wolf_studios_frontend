@@ -62,7 +62,7 @@ export function UserPopover({ anchorEl, onClose, open }) {
         </MenuItem>
         <MenuItem
           component={RouterLink}
-          href={paths.dashboard.settings.security}
+          href={paths.dashboard.security}
           onClick={onClose}
         >
           <ListItemIcon>
