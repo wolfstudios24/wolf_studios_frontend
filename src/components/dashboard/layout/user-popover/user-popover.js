@@ -74,7 +74,7 @@ export function UserPopover({ anchorEl, onClose, open }) {
       </List>
       <Divider />
       <Box sx={{ p: 1 }}>
-        {config.auth.strategy === AuthStrategy.CUSTOM ? <CustomSignOut /> : null}
+        {config.auth.strategy === AuthStrategy.CUSTOM ? <CustomSignOut onClose={onClose} /> : null}
         {config.auth.strategy === AuthStrategy.AUTH0 ? <Auth0SignOut /> : null}
         {config.auth.strategy === AuthStrategy.COGNITO ? <CognitoSignOut /> : null}
         {config.auth.strategy === AuthStrategy.FIREBASE ? <FirebaseSignOut /> : null}
