@@ -14,6 +14,7 @@ import { SettingsProvider } from '@/contexts/settings';
 import { applyDefaultSettings } from '@/lib/settings/apply-default-settings';
 import { getSettings as getPersistedSettings } from '@/lib/settings/get-settings';
 import { AuthProvider } from '@/contexts/auth/AuthContext';
+import { Progressbar } from '@/components/utils/Progressbar';
 
 export const metadata = { title: config.site.name };
 
@@ -38,6 +39,7 @@ export default async function Layout({ children }) {
                 <SettingsProvider settings={settings}>
                   <I18nProvider lng={settings.language}>
                     <ThemeProvider>
+                      <Progressbar />
                       {children}
                       <SettingsButton />
                       <Toaster position="bottom-right" />

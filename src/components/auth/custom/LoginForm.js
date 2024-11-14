@@ -5,6 +5,7 @@ import useAuth from '@/hooks/useAuth';
 import { paths } from '@/paths';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -136,8 +137,12 @@ export function LoginForm() {
                 {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
               </FormControl>
               {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-              <Button disabled={loading} type="submit" variant="contained">
-                Sign in
+              <Button 
+              type={loading ? 'button' : 'submit'}
+              variant="contained"
+              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+              >
+                {loading ? 'Signing in...' : "Sign in"}
               </Button>
             </Stack>
           </form>

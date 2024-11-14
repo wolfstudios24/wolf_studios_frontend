@@ -61,13 +61,16 @@ export const AuthProvider = (props) => {
         const auth = localStorage.getItem("auth");
         if (auth) {
             const data = JSON.parse(auth);
+            const token = data.token;
+            const expirationTime = jwtDecode(token).exp * 1000;
             const currentTime = Date.now() / 1000;
 
-            const isValidToken = data.expirationTime > currentTime;
+            const isValidToken = expirationTime > currentTime;
             if (isValidToken) {
                 fetchProfileData();
                 api.defaults.headers.common["Authorization"] = `${data.token}`;
             } else {
+                console.log("token expired from else")
                 localStorage.removeItem("auth");
             }
         }
