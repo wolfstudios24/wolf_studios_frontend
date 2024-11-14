@@ -47,6 +47,9 @@ export function UserPopover({ anchorEl, onClose, open }) {
         <Typography color="text.secondary" variant="body2">
           {userInfo.email}
         </Typography>
+        <Typography color="text.secondary" variant="body2">
+          {userInfo.role}
+        </Typography>
       </Box>
       <Divider />
       <List sx={{ p: 1 }}>
