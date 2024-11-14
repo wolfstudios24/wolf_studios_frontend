@@ -35,7 +35,6 @@ server_base_api.interceptors.request.use((config) => {
 });
 
 server_base_api.interceptors.response.use((response) => response, (error) => {
-  console.log("server_base_api.interceptors.response ===> called")
   if (error.response && error.response.status === 401) {
     clearUserSessionFromLocalStore();
     window.alert(

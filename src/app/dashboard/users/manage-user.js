@@ -41,7 +41,6 @@ export const ManageUserDialog = (props) => {
             setLoading(true)
 
             const res = await createUser(values);
-            console.log(res, "res from form")
             if (res.success) {
                 onClose()
             }
