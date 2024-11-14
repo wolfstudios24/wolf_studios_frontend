@@ -2,12 +2,8 @@
 
 import { createUser } from '@/app/dashboard/users/_lib/actions';
 import { defaultUser } from '@/app/dashboard/users/_lib/types';
-import { DynamicLogo } from '@/components/core/logo';
 import { CustomPasswordInput } from '@/components/formFields/CustomPasswordInput';
-import useAuth from '@/hooks/useAuth';
 import { paths } from '@/paths';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -30,6 +26,7 @@ const oAuthProviders = [
 ];
 const defaultValues = { email: '', password: '' };
 const validationSchema = Yup.object().shape({
+  first_name: Yup.string().required('First name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required'),
 });
@@ -57,7 +54,6 @@ export function SignupForm() {
       const res = await createUser(values, true, (error) => {
         setError(error)
       })
-      console.log(res, "res,.....")
 
       if (res.success) {
         router.push(paths.auth.custom.signIn)
@@ -65,8 +61,6 @@ export function SignupForm() {
       setLoading(false)
     }
   })
-
-  console.log(values, "values,.....")
 
   return (
     <Stack spacing={4}>
@@ -109,7 +103,6 @@ export function SignupForm() {
                   value={values.first_name}
                   onChange={handleChange}
                 />
-                {errors.first_name ? <FormHelperText>{errors.email}</FormHelperText> : null}
               </FormControl>
               <FormControl error={Boolean(errors.last_name)}>
                 <InputLabel>Last Name</InputLabel>
@@ -119,7 +112,6 @@ export function SignupForm() {
                   value={values.last_name}
                   onChange={handleChange}
                 />
-                {errors.first_name ? <FormHelperText>{errors.email}</FormHelperText> : null}
               </FormControl>
               <FormControl error={Boolean(errors.email)}>
                 <InputLabel>Email address</InputLabel>
