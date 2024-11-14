@@ -13,8 +13,7 @@ export async function middleware(req) {
       '/dashboard',
     ];
   const path = req.nextUrl.pathname
-  console.log(path, "Path===========>")
-  console.log(token, "Token===========>")
+
 
   const isCurrentPathProtected = protectedRoutes.some((route) => path.startsWith(route));
   // If the user does not exist and the URL contains /vendor, redirect them to the home page
@@ -24,7 +23,7 @@ export async function middleware(req) {
 
   // If the user exists and tries to access the login page, redirect them to the home page
   if (token && req.nextUrl.pathname.startsWith('/auth')) {
-    return NextResponse.redirect(new URL('/dashboard/overview', req.url));
+    return NextResponse.redirect(new URL('/dashboard', req.url));
   }
   let res;
 

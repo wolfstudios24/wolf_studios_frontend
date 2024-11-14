@@ -1,13 +1,13 @@
 import { Dialog } from "@/components/dialog/Dialog";
+import { CustomPasswordInput } from "@/components/formFields/CustomPasswordInput";
+import { Button, CircularProgress, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select, Stack } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
 import React from "react";
 import * as Yup from 'yup';
-import { defaultUser } from "./_lib/types";
-import { Button, FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
-import Grid from '@mui/material/Grid2'
-import { CustomPasswordInput } from "@/components/formFields/CustomPasswordInput";
 import { createUser } from "./_lib/actions";
+import { defaultUser } from "./_lib/types";
 
 const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First name is required'),
@@ -157,13 +157,15 @@ export const ManageUserDialog = (props) => {
                     </Grid>
 
 
-                    <Grid size={12}>
+                    <Stack direction={"row"} justifyContent={"flex-end"} width={"100%"}>
                         <Button
                             variant="contained"
-                            type="submit"
-                        // disabled={loading}
-                        >Create</Button>
-                    </Grid>
+                            type={loading ? "button" : "submit"}
+                            startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+                        >
+                            Create
+                        </Button>
+                    </Stack>
                 </Grid>
             </form>
         </Dialog>
