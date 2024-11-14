@@ -2,7 +2,7 @@
 import { Box } from '@mui/material';
 import { Camera as CameraIcon } from '@phosphor-icons/react';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function ImageUploader({ value, onFileSelect, onDelete, disabled = false }) {
     const [previewUrl, setPreviewUrl] = React.useState('');
@@ -16,14 +16,14 @@ export default function ImageUploader({ value, onFileSelect, onDelete, disabled 
         }
     };
 
-    const handleRemoveImage = () => {
-        setPreviewUrl('');
-        if (onDelete) onDelete();
-    };
-
     React.useEffect(() => {
         if (!previewUrl) {
-            setPreviewUrl(value);
+            if (typeof value === "string") {
+                setPreviewUrl(value);
+            } else if (value instanceof File) {
+                const imageUrl = URL.createObjectURL(value);
+                setPreviewUrl(imageUrl);
+            }
         }
     }, [value]);
 

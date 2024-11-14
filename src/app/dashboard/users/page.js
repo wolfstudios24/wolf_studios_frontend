@@ -14,7 +14,7 @@ import { CustomersSelectionProvider } from '@/components/dashboard/customer/cust
 import { CustomersTable } from '@/components/dashboard/customer/customers-table';
 import PageLoader from '@/components/PageLoader/PageLoader';
 import { getUsers } from './_lib/actions';
-import { ManageUserDialog } from './manage-user';
+import { ManageUserDialog } from './create-user-dialog';
 
 
 

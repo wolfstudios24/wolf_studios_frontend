@@ -50,7 +50,7 @@ export const ManageUserDialog = (props) => {
 
     return (
         <Dialog
-            title="User Details"
+            title="Create User"
             onClose={onClose}
             open={open}
 
