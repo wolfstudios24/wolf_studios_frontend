@@ -70,7 +70,6 @@ export const AuthProvider = (props) => {
                 fetchProfileData();
                 api.defaults.headers.common["Authorization"] = `${data.token}`;
             } else {
-                console.log("token expired from else")
                 localStorage.removeItem("auth");
             }
         }

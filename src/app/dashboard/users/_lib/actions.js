@@ -13,10 +13,8 @@ export const getUsers = async () => {
 
 export const createUser = async (data) => {
     try {
-        console.log(data, "payload from action")
         const { confirm_password, ...rest } = data
         const res = await api.post(`/auth/create-user`, rest);
-        console.log(res , "res from action")
         if (!res.data.success) return
         toast.success(res.data.message);
         return { success: true, data: res.data.data };
