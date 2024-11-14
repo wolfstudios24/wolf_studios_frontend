@@ -19,6 +19,11 @@ api.interceptors.request.use(config => {
   }
 );
 
+// axios instance without token (public routes)
+
+export const publicApi = axios.create({
+  baseURL: `${apiBaseurl}`,
+})
 
 
 //################################ server_base_api ##########################################

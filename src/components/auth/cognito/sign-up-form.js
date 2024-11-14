@@ -80,13 +80,8 @@ export function SignUpForm() {
 
   return (
     <Stack spacing={4}>
-      <div>
-        <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-block', fontSize: 0 }}>
-          <DynamicLogo colorDark="light" colorLight="dark" height={32} width={122} />
-        </Box>
-      </div>
       <Stack spacing={1}>
-        <Typography variant="h5">Sign up</Typography>
+        <Typography variant="h5">Sign ups</Typography>
         <Typography color="text.secondary" variant="body2">
           Already have an account?{' '}
           <Link component={RouterLink} href={paths.auth.cognito.signIn} variant="subtitle2">

@@ -42,7 +42,7 @@ export default async function Layout({ children }) {
                       <Progressbar />
                       {children}
                       <SettingsButton />
-                      <Toaster position="bottom-right" />
+                      <Toaster position="top-right" />
                     </ThemeProvider>
                   </I18nProvider>
                 </SettingsProvider>
