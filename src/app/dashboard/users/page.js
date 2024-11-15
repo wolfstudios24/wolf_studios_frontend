@@ -19,11 +19,12 @@ import IconButton from '@mui/material/IconButton';
 import { DataTable } from '@/components/core/data-table';
 import { dayjs } from '@/lib/dayjs';
 import { paths } from '@/paths';
+import Chip from '@mui/material/Chip';
 import Link from '@mui/material/Link';
 import { PencilSimple as PencilSimpleIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 import { getUsers } from './_lib/actions';
 import { ManageUserDialog } from './manage-user-dialog';
-import Chip from '@mui/material/Chip';
+import { defaultUser } from './_lib/types';
 
 
 
@@ -65,14 +66,16 @@ export default function Page({ searchParams }) {
   }
 
 
+
+
   React.useEffect(() => {
     fetchUsersData();
   }, [])
 
   const columns = [
     {
-      formatter: () => (
-        <IconButton onClick={() => setOpenModal(true)}>
+      formatter: (row) => (
+        <IconButton onClick={() => handleOpenModal(row)}>
           <PencilSimpleIcon />
         </IconButton>
       ),
@@ -151,7 +154,7 @@ export default function Page({ searchParams }) {
             <Typography variant="h4">Users</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button startIcon={<PlusIcon />} variant="contained" onClick={() => setOpenModal(true)}>
+            <Button startIcon={<PlusIcon />} variant="contained" onClick={() => handleOpenModal(defaultUser)}>
               Add
             </Button>
           </Box>
@@ -201,7 +204,7 @@ export default function Page({ searchParams }) {
             open={openModal}
             onClose={() => setOpenModal(false)}
             onConfirm={handleConfirm}
-            data={users}
+            data={modalData}
           />
         )
       }
