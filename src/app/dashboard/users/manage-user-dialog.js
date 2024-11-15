@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export const ManageUserDialog = (props) => {
-    const { open, onClose, data } = props
+    const { open, onClose, onConfirm, data } = props
 
     const [loading, setLoading] = React.useState(false);
 
@@ -35,14 +35,14 @@ export const ManageUserDialog = (props) => {
         isValid,
         resetForm,
     } = useFormik({
-        initialValues: defaultUser,
+        initialValues: data,
         validationSchema,
         onSubmit: async (values) => {
             setLoading(true)
 
             const res = await createUser(values);
             if (res.success) {
-                onClose()
+                onConfirm()
             }
             setLoading(false)
         }
@@ -53,9 +53,6 @@ export const ManageUserDialog = (props) => {
             title="Create User"
             onClose={onClose}
             open={open}
-
-
-            data={"hi"}
         >
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
@@ -169,10 +166,4 @@ export const ManageUserDialog = (props) => {
             </form>
         </Dialog>
     )
-}
-
-ManageUserDialog.prototype = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired,
 }
