@@ -11,7 +11,7 @@ const getValidationSchema = (isUpdated) => {
     console.log(isUpdated, "isUpdated.....")
 
     console.log(isUpdated, "isUpdated.....")
-    Yup.object().shape({
+    return Yup.object().shape({
         first_name: Yup.string().required('First name is required'),
         email: Yup.string().email('Invalid email').required('Email is required'),
         role: Yup.string().required('Role is required'),
