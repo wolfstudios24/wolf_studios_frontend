@@ -25,8 +25,7 @@ import { PencilSimple as PencilSimpleIcon } from '@phosphor-icons/react/dist/ssr
 import { getUsers } from './_lib/actions';
 import { ManageUserDialog } from './manage-user-dialog';
 import { defaultUser } from './_lib/types';
-
-
+import { CustomPagination } from '@/components/core/custom-pagination';
 
 
 
@@ -37,6 +36,8 @@ export default function Page({ searchParams }) {
   const [loading, setLoading] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
+  const [pagination, setPagination] = React.useState({ pageNo: 2, limit: 10 });
+
 
 
   async function fetchUsersData() {
@@ -64,8 +65,6 @@ export default function Page({ searchParams }) {
     setOpenModal(false);
     fetchUsersData();
   }
-
-
 
 
   React.useEffect(() => {
@@ -170,6 +169,8 @@ export default function Page({ searchParams }) {
               <Box sx={{ overflowX: 'auto' }}>
                 <React.Fragment>
                   <DataTable
+                    totalRecords={users?.length}
+                    rowsPerPageOptions={pagination.limit}
                     columns={columns}
                     onDeselectAll={deselectAll}
                     onDeselectOne={(_, row) => {
@@ -182,6 +183,8 @@ export default function Page({ searchParams }) {
                     rows={users}
                     selectable
                     selected={selected}
+                    onRowsPerPageChange={(pageNumber, rowsPerPage) => setPagination({ pageNo: pageNumber, limit: rowsPerPage })}
+                    onPageChange={(newPageNumber) => setPagination({ ...pagination, pageNo: newPageNumber })}
                   />
                   {!users?.length ? (
                     <Box sx={{ p: 3 }}>
@@ -193,7 +196,8 @@ export default function Page({ searchParams }) {
                 </React.Fragment>
               </Box>
               <Divider />
-              <CustomersPagination count={users?.length + 100} page={0} />
+              {/* <CustomersPagination count={users?.length + 100} page={0} /> */}
+
             </Card>
           </CustomersSelectionProvider>
         </PageLoader>

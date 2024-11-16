@@ -1,12 +1,13 @@
 'use client';
 
-import * as React from 'react';
+import { TableFooter } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { CustomPagination } from './custom-pagination';
 
 export function DataTable({
   columns,
@@ -21,6 +22,14 @@ export function DataTable({
   selectable,
   selected,
   uniqueRowId,
+
+  totalRecords,
+  rowsPerPage,
+  onRowsPerPageChange,
+  onPageChange,
+  paginationList = [5, 10, 25, 50, 100, 200],
+  rowsPerPageOptions = 5,
+
   ...props
 }) {
   const selectedSome = (selected?.size ?? 0) > 0 && (selected?.size ?? 0) < rows.length;
@@ -105,6 +114,15 @@ export function DataTable({
           );
         })}
       </TableBody>
+      <TableFooter>
+        <CustomPagination
+        rowsPerPageOptions={rowsPerPageOptions}
+          paginationList={paginationList} 
+          totalRecords={totalRecords}
+          onRowsPerPageChange={onRowsPerPageChange}
+          onPageChange={onPageChange}
+        />
+      </TableFooter>
     </Table>
   );
 }
