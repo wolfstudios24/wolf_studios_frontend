@@ -173,7 +173,7 @@ export default function Page({ searchParams }) {
                     isPagination={true}
                     totalRecords={totalRecords}
                     rowsPerPageOptions={pagination.limit}
-                    pageNo = {pagination.pageNo}
+                    pageNo={pagination.pageNo}
                     columns={columns}
                     onDeselectAll={deselectAll}
                     onDeselectOne={(_, row) => {
@@ -186,6 +186,8 @@ export default function Page({ searchParams }) {
                     rows={users}
                     selectable
                     selected={selected}
+                    uniqueRowId="id"
+
                     onRowsPerPageChange={(pageNumber, rowsPerPage) => setPagination({ pageNo: pageNumber, limit: rowsPerPage })}
                     onPageChange={(newPageNumber) => setPagination({ ...pagination, pageNo: newPageNumber })}
                   />
