@@ -1,10 +1,11 @@
 import { api, publicApi } from "@/utils/api";
 import { toast } from "sonner";
 
-export const getUsers = async () => {
+export const getUsers = async (data) => {
+    console.log(data, "data.....")
     try {
-        const res = await api.get(`/user`);
-        return { success: true, data: res.data.data };
+        const res = await api.get(`/user?page=${data.page}&limit=${data.rowsPerPage}`);
+        return { success: true, data: res.data.data, totalRecords: res.data.meta.total };
     } catch (error) {
         toast.error(error.message)
         return { success: false, error: error.response ? error.response.data : "An unknown error occurred" };

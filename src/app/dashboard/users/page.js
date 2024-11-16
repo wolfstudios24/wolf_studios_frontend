@@ -11,7 +11,6 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import * as React from 'react';
 
 import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
-import { CustomersPagination } from '@/components/dashboard/customer/customers-pagination';
 import { CustomersSelectionProvider, useCustomersSelection } from '@/components/dashboard/customer/customers-selection-context';
 import PageLoader from '@/components/PageLoader/PageLoader';
 import IconButton from '@mui/material/IconButton';
@@ -23,9 +22,8 @@ import Chip from '@mui/material/Chip';
 import Link from '@mui/material/Link';
 import { PencilSimple as PencilSimpleIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 import { getUsers } from './_lib/actions';
-import { ManageUserDialog } from './manage-user-dialog';
 import { defaultUser } from './_lib/types';
-import { CustomPagination } from '@/components/core/custom-pagination';
+import { ManageUserDialog } from './manage-user-dialog';
 
 
 
@@ -36,16 +34,19 @@ export default function Page({ searchParams }) {
   const [loading, setLoading] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
-  const [pagination, setPagination] = React.useState({ pageNo: 2, limit: 10 });
+  const [pagination, setPagination] = React.useState({ pageNo: 1, limit: 10 });
+  const [totalRecords, setTotalRecords] = React.useState(0);
 
-
-
-  async function fetchUsersData() {
+  async function fetchList() {
     try {
       setLoading(true)
-      const response = await getUsers();
+      const response = await getUsers({
+        page: pagination.pageNo,
+        rowsPerPage: pagination.limit
+      });
       if (response.success) {
         setUsers(response.data);
+        setTotalRecords(response.totalRecords)
       }
     } catch (error) {
       console.log(error);
@@ -68,8 +69,8 @@ export default function Page({ searchParams }) {
 
 
   React.useEffect(() => {
-    fetchUsersData();
-  }, [])
+    fetchList();
+  }, [pagination])
 
   const columns = [
     {
@@ -169,7 +170,8 @@ export default function Page({ searchParams }) {
               <Box sx={{ overflowX: 'auto' }}>
                 <React.Fragment>
                   <DataTable
-                    totalRecords={users?.length}
+                    isPagination={true}
+                    totalRecords={totalRecords}
                     rowsPerPageOptions={pagination.limit}
                     columns={columns}
                     onDeselectAll={deselectAll}
@@ -195,9 +197,6 @@ export default function Page({ searchParams }) {
                   ) : null}
                 </React.Fragment>
               </Box>
-              <Divider />
-              {/* <CustomersPagination count={users?.length + 100} page={0} /> */}
-
             </Card>
           </CustomersSelectionProvider>
         </PageLoader>
