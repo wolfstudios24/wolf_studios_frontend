@@ -173,6 +173,7 @@ export default function Page({ searchParams }) {
                     isPagination={true}
                     totalRecords={totalRecords}
                     rowsPerPageOptions={pagination.limit}
+                    pageNo = {pagination.pageNo}
                     columns={columns}
                     onDeselectAll={deselectAll}
                     onDeselectOne={(_, row) => {

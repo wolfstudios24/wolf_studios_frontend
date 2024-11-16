@@ -4,17 +4,9 @@ import * as React from 'react';
 import TablePagination from '@mui/material/TablePagination';
 import PropTypes from "prop-types";
 
-function noop() {
-  return undefined;
-}
-
-export function CustomPagination({ rowsPerPageOptions,  paginationList, totalRecords, onRowsPerPageChange, onPageChange }) {
-  const [page, setPage] = React.useState(0);
+export function CustomPagination({ pageNo, rowsPerPageOptions,  paginationList, totalRecords, onRowsPerPageChange, onPageChange }) {
+  const [page, setPage] = React.useState(pageNo - 1);
   const [rowsPerPage, setRowsPerPage] = React.useState(rowsPerPageOptions);
-  // const currentPageItems =
-  //   !totalRecords && rowsPerPage > 0
-  //     ? items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-  //     : items;
 
 
   const handlePageChange = (

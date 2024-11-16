@@ -24,6 +24,7 @@ export function DataTable({
   uniqueRowId,
 
   isPagination,
+  pageNo,
   totalRecords,
   rowsPerPage,
   onRowsPerPageChange,
@@ -121,6 +122,7 @@ export function DataTable({
       {isPagination && (
         <CustomPagination
           rowsPerPageOptions={rowsPerPageOptions}
+          pageNo={pageNo}
           paginationList={paginationList}
           totalRecords={totalRecords}
           onRowsPerPageChange={onRowsPerPageChange}
