@@ -45,9 +45,3 @@ export function CustomPagination({ pageNo, rowsPerPageOptions,  paginationList, 
     />
   );
 }
-
-
-CustomPagination.prototype = {
-  pageNo: PropTypes.number,
-  limit: PropTypes.number,
-};

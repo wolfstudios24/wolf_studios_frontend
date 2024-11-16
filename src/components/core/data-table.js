@@ -14,59 +14,66 @@ export function DataTable({
   hideHead,
   hover,
   onClick,
-  onDeselectAll,
-  onDeselectOne,
-  onSelectOne,
-  onSelectAll,
   rows,
   selectable,
   selected,
   uniqueRowId,
+  selectionMode,
 
   isPagination,
   pageNo,
   totalRecords,
   rowsPerPage,
-  onRowsPerPageChange,
-  onPageChange,
   paginationList = [5, 10, 25, 50, 100, 200],
   rowsPerPageOptions = 5,
+  onRowsPerPageChange,
+  onPageChange,
+  onSelection,
 
   ...props
 }) {
-  const selectedSome = (selected?.size ?? 0) > 0 && (selected?.size ?? 0) < rows.length;
-  const selectedAll = rows.length > 0 && selected?.size === rows.length;
+
+  const handleRowSelection = (rowId, row, isSelected) => {
+    if (selectionMode === "single") {
+      const newSelected = isSelected ? new Set() : new Set([rowId]);
+      onSelection?.(Array.from(newSelected).map((id) => rows.find((r) => r.id === id)));
+    } else if (selectionMode === "multiple") {
+      const newSelected = new Set(selected);
+      if (isSelected) {
+        newSelected.delete(rowId);
+      } else {
+        newSelected.add(rowId);
+      }
+      onSelection?.(Array.from(newSelected).map((id) => rows.find((r) => r.id === id)));
+    }
+  };
+
+  const handleSelectAll = (event) => {
+    const newSelected = event.target.checked ? new Set(rows.map((row) => row.id)) : new Set();
+    onSelection?.(Array.from(newSelected).map((id) => rows.find((r) => r.id === id)));
+  };
+
+  const selectedSome = selected.size > 0 && selected.size < rows.length;
+  const selectedAll = rows.length > 0 && selected.size === rows.length;
 
   return (
     <TableContainer>
       <Table {...props}>
         <TableHead sx={{ ...(hideHead && { visibility: 'collapse', '--TableCell-borderWidth': 0 }) }}>
           <TableRow>
-            {selectable ? (
-              <TableCell padding="checkbox" sx={{ width: '40px', minWidth: '40px', maxWidth: '40px' }}>
-                <Checkbox
-                  checked={selectedAll}
-                  indeterminate={selectedSome}
-                  onChange={(event) => {
-                    if (selectedAll) {
-                      onDeselectAll?.(event);
-                    } else {
-                      onSelectAll?.(event);
-                    }
-                  }}
-                />
+            {selectionMode !== "none" && (
+              <TableCell padding="checkbox" sx={{ width: "40px" }}>
+                {selectionMode === "multiple" && (
+                  <Checkbox
+                    checked={selectedAll}
+                    indeterminate={selectedSome}
+                    onChange={handleSelectAll}
+                  />
+                )}
               </TableCell>
-            ) : null}
+            )}
             {columns.map((column) => (
-              <TableCell
-                key={column.name}
-                sx={{
-                  width: column.width,
-                  minWidth: column.width,
-                  maxWidth: column.width,
-                  ...(column.align && { textAlign: column.align }),
-                }}
-              >
+              <TableCell key={column.name} sx={{ width: column.width, textAlign: column.align }}>
                 {column.hideName ? null : column.name}
               </TableCell>
             ))}
@@ -75,42 +82,31 @@ export function DataTable({
         <TableBody>
           {rows.map((row, index) => {
             const rowId = row.id ? row.id : uniqueRowId?.(row);
-            const rowSelected = rowId ? selected?.has(rowId) : false;
+            const isSelected = selected.has(rowId);
 
             return (
               <TableRow
-                hover={hover}
                 key={rowId ?? index}
-                selected={rowSelected}
-                {...(onClick && {
-                  onClick: (event) => {
-                    onClick(event, row);
-                  },
-                })}
-                sx={{ ...(onClick && { cursor: 'pointer' }) }}
+                hover={hover}
+                selected={isSelected}
+                onClick={
+                  onClick
+                    ? (event) => onClick(event, row)
+                    : undefined
+                }
+                sx={{ cursor: onClick ? "pointer" : "default" }}
               >
-                {selectable ? (
+                {selectionMode !== "none" && (
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={rowId ? rowSelected : false}
-                      onChange={(event) => {
-                        if (rowSelected) {
-                          onDeselectOne?.(event, row);
-                        } else {
-                          onSelectOne?.(event, row);
-                        }
-                      }}
-                      onClick={(event) => {
-                        if (onClick) {
-                          event.stopPropagation();
-                        }
-                      }}
+                      checked={isSelected}
+                      onChange={() => handleRowSelection(rowId, row, isSelected)}
                     />
                   </TableCell>
-                ) : null}
+                )}
                 {columns.map((column) => (
-                  <TableCell key={column.name} sx={{ ...(column.align && { textAlign: column.align }) }}>
-                    {column.formatter ? column.formatter(row, index) : column.field ? row[column.field] : null}
+                  <TableCell key={column.name}>
+                    {column.formatter ? column.formatter(row, index) : row[column.field]}
                   </TableCell>
                 ))}
               </TableRow>

@@ -28,7 +28,7 @@ import { ManageUserDialog } from './manage-user-dialog';
 
 
 export default function Page({ searchParams }) {
-  const { deselectAll, deselectOne, selectAll, selectOne, selected } = useCustomersSelection();
+  const { deselectAll, deselectOne, selectAll,  selected } = useCustomersSelection();
   const { email, phone, sortDir, status } = searchParams;
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -175,21 +175,16 @@ export default function Page({ searchParams }) {
                     rowsPerPageOptions={pagination.limit}
                     pageNo={pagination.pageNo}
                     columns={columns}
-                    onDeselectAll={deselectAll}
-                    onDeselectOne={(_, row) => {
-                      deselectOne(row.id);
-                    }}
-                    onSelectAll={selectAll}
-                    onSelectOne={(_, row) => {
-                      selectOne(row.id);
-                    }}
                     rows={users}
                     selectable
                     selected={selected}
                     uniqueRowId="id"
+                    selectionMode="multiple" //none | single | multiple
+
 
                     onRowsPerPageChange={(pageNumber, rowsPerPage) => setPagination({ pageNo: pageNumber, limit: rowsPerPage })}
                     onPageChange={(newPageNumber) => setPagination({ ...pagination, pageNo: newPageNumber })}
+                    onSelection={(selectedRows) => console.log("Selected Rows:", selectedRows)}
                   />
                   {!users?.length ? (
                     <Box sx={{ p: 3 }}>
