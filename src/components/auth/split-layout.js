@@ -2,20 +2,30 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { DynamicLogo } from '../core/logo';
+import RouterLink from 'next/link';
+
 
 export function SplitLayout({ children }) {
   return (
     <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 800px' }, minHeight: '100%' }}>
+      
       <Box
         sx={{
-          alignItems: 'center',
+          alignItems: 'start',
           justifyContent: 'center',
           bgcolor: 'var(--mui-palette-background-level1)',
           display: { xs: 'none', lg: 'flex' },
           flexDirection: 'column',
           p: 3,
+          gap: 3,
         }}
       >
+        <div>
+          <Box component={RouterLink} href={"/"} sx={{ display: 'inline-block', fontSize: 0 }}>
+            <DynamicLogo colorDark="light" colorLight="dark" height={32} width={122} />
+          </Box>
+        </div>
         <Stack spacing={4} sx={{ maxWidth: '700px' }}>
           <Stack spacing={1}>
             <Typography variant="h4">Welcome to The Wolf Studios LA</Typography>

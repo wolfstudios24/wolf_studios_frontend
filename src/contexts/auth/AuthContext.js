@@ -70,6 +70,7 @@ export const AuthProvider = (props) => {
                 fetchProfileData();
                 api.defaults.headers.common["Authorization"] = `${data.token}`;
             } else {
+
                 localStorage.removeItem("auth");
             }
         }
@@ -105,9 +106,11 @@ export const AuthProvider = (props) => {
             setTokenInCookies(userData.token);
             setUserInfo(userData);
 
-            if (userData.role === "ADMIN") {
-                router.push("/dashboard");
-            }
+            // if (userData.role === "ADMIN") {
+            //     router.push("/dashboard");
+            // }
+            router.push("/dashboard");
+
         } catch (error) {
             onError(error.response?.data?.message || "An error occurred");
         }

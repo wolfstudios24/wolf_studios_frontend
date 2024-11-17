@@ -191,7 +191,7 @@ function EmailFilterPopover() {
   );
 }
 
-function PhoneFilterPopover() {
+export function PhoneFilterPopover() {
   const { anchorEl, onApply, onClose, open, value: initialValue } = useFilterContext();
   const [value, setValue] = React.useState('');
 

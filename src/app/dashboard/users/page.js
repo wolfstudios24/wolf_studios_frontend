@@ -2,34 +2,52 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
+import RouterLink from 'next/link';
+
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import * as React from 'react';
 
-import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
-import { CustomersPagination } from '@/components/dashboard/customer/customers-pagination';
-import { CustomersSelectionProvider } from '@/components/dashboard/customer/customers-selection-context';
-import { CustomersTable } from '@/components/dashboard/customer/customers-table';
 import PageLoader from '@/components/PageLoader/PageLoader';
+import IconButton from '@mui/material/IconButton';
+
+import { DataTable } from '@/components/core/data-table';
+import { FilterButton } from '@/components/core/filter-button';
+import { StatusFilterPopover } from '@/components/core/filters/StatusFilterPopover';
+import { RefreshPlugin } from '@/components/core/plugins/RefreshPlugin';
+import { dayjs } from '@/lib/dayjs';
+import { paths } from '@/paths';
+import Chip from '@mui/material/Chip';
+import Link from '@mui/material/Link';
+import { PencilSimple as PencilSimpleIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 import { getUsers } from './_lib/actions';
-import { ManageUserDialog } from './manage-user';
+import { defaultUser } from './_lib/types';
+import { ManageUserDialog } from './manage-user-dialog';
 
 
 
 export default function Page({ searchParams }) {
-  const { email, phone, sortDir, status } = searchParams;
+  const { email, phone, sortDir } = searchParams;
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
-
-  async function fetchUsersData() {
+  const [modalData, setModalData] = React.useState(null);
+  const [pagination, setPagination] = React.useState({ pageNo: 1, limit: 10 });
+  const [totalRecords, setTotalRecords] = React.useState(0);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [status, setStatus] = React.useState("");
+  async function fetchList() {
     try {
       setLoading(true)
-      const response = await getUsers();
+      const response = await getUsers({
+        page: pagination.pageNo,
+        rowsPerPage: pagination.limit,
+        status: status
+      });
       if (response.success) {
         setUsers(response.data);
+        setTotalRecords(response.totalRecords)
       }
     } catch (error) {
       console.log(error);
@@ -39,18 +57,85 @@ export default function Page({ searchParams }) {
   }
 
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (data) => {
+    setOpenModal(true);
+    setModalData(data);
+  }
+
+
+  const handleConfirm = () => {
     setOpenModal(false);
     fetchUsersData();
   }
 
 
   React.useEffect(() => {
-    fetchUsersData();
-  }, [])
+    fetchList();
+  }, [pagination, status])
 
-  // const sortedUsers = applySort(users, sortDir);
-  // const filteredUsers = applyFilters(sortedUsers, { email, phone, status });
+  const columns = [
+    {
+      formatter: (row) => (
+        <IconButton onClick={() => handleOpenModal(row)}>
+          <PencilSimpleIcon />
+        </IconButton>
+      ),
+      name: 'Actions',
+      // hideName: true,
+      // align: 'right',
+    },
+    {
+      formatter: (row) => (
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <div>
+            <Link
+              color="inherit"
+              component={RouterLink}
+              href={paths.dashboard.customers.details('1')}
+              sx={{ whiteSpace: 'nowrap' }}
+              variant="subtitle2"
+            >
+              {row.first_name} {row.last_name}
+            </Link>
+            <Typography color="text.secondary" variant="body2">
+              {row.email}
+            </Typography>
+          </div>
+        </Stack>
+      ),
+      name: 'Name',
+    },
+    {
+      formatter: (row) => (
+        <Typography color="text.secondary" variant="body2">
+          {row.contact_number}
+        </Typography>
+      ),
+      name: 'Phone',
+    },
+    {
+      formatter: (row) => (
+        <Typography color="text.secondary" variant="body2">
+          {row.role}
+        </Typography>
+      ),
+      name: 'Phone',
+    },
+    {
+      formatter(row) {
+        return dayjs(row.createdAt).format('MMM D, YYYY h:mm A');
+      },
+      name: 'Created at',
+    },
+    {
+      formatter: (row) => {
+        return <Chip label={row.status} size="small" variant="outlined" />
+      },
+      name: 'Status',
+    },
+
+  ];
+
 
   return (
 
@@ -68,7 +153,7 @@ export default function Page({ searchParams }) {
             <Typography variant="h4">Users</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button startIcon={<PlusIcon />} variant="contained" onClick={() => setOpenModal(true)}>
+            <Button startIcon={<PlusIcon />} variant="contained" onClick={() => handleOpenModal(defaultUser)}>
               Add
             </Button>
           </Box>
@@ -77,65 +162,64 @@ export default function Page({ searchParams }) {
           loading={loading}
           error={null}
         >
-          <CustomersSelectionProvider customers={users}>
-            <Card>
-              <CustomersFilters filters={{ email, phone, status }} sortDir={sortDir} />
-              <Divider />
-              <Box sx={{ overflowX: 'auto' }}>
-                <CustomersTable rows={users} />
-              </Box>
-              <Divider />
-              <CustomersPagination count={users?.length + 100} page={0} />
-            </Card>
-          </CustomersSelectionProvider>
+          <Card>
+            <Box sx={{ overflowX: 'auto' }}>
+              <React.Fragment>
+                <DataTable
+                  isPagination={true}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={pagination.limit}
+                  pageNo={pagination.pageNo}
+                  columns={columns}
+                  rows={users}
+                  uniqueRowId="id"
+                  selectionMode="multiple"
+
+                  leftItems={<>
+                    <FilterButton
+                      displayValue={status}
+                      label="Status"
+                      onFilterApply={(value) => {
+                        setStatus(value)
+                      }}
+                      onFilterDelete={() => {
+                        handlePhoneChange();
+                      }}
+                      popover={<StatusFilterPopover />}
+                      value={status}
+                    />
+                    <RefreshPlugin onClick={fetchList} />
+                  </>}
+
+                  rightItems={<></>}
+
+                  onRowsPerPageChange={(pageNumber, rowsPerPage) => setPagination({ pageNo: pageNumber, limit: rowsPerPage })}
+                  onPageChange={(newPageNumber) => setPagination({ ...pagination, pageNo: newPageNumber })}
+                  onSelection={(selectedRows) => setSelectedRows?.(selectedRows)}
+                />
+                {!users?.length ? (
+                  <Box sx={{ p: 3 }}>
+                    <Typography color="text.secondary" sx={{ textAlign: 'center' }} variant="body2">
+                      No customers found
+                    </Typography>
+                  </Box>
+                ) : null}
+              </React.Fragment>
+            </Box>
+          </Card>
         </PageLoader>
       </Stack>
       {
         openModal && (
           <ManageUserDialog
             open={openModal}
-            onClose={handleOpenModal}
-            data={null}
+            onClose={() => setOpenModal(false)}
+            onConfirm={handleConfirm}
+            data={modalData}
           />
         )
       }
     </Box>
 
   );
-}
-
-// Sorting and filtering has to be done on the server.
-
-function applySort(row, sortDir) {
-  return row.sort((a, b) => {
-    if (sortDir === 'asc') {
-      return a.createdAt.getTime() - b.createdAt.getTime();
-    }
-
-    return b.createdAt.getTime() - a.createdAt.getTime();
-  });
-}
-
-function applyFilters(row, { email, phone, status }) {
-  return row.filter((item) => {
-    if (email) {
-      if (!item.email?.toLowerCase().includes(email.toLowerCase())) {
-        return false;
-      }
-    }
-
-    if (phone) {
-      if (!item.phone?.toLowerCase().includes(phone.toLowerCase())) {
-        return false;
-      }
-    }
-
-    if (status) {
-      if (item.status !== status) {
-        return false;
-      }
-    }
-
-    return true;
-  });
 }

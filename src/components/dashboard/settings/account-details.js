@@ -59,7 +59,6 @@ export function AccountDetails() {
       setLoading(true)
       await updateProfileData(values)
       setLoading(false)
-      closeDialog?.();
       setIsEditing(false);
     }
   })
@@ -112,7 +111,6 @@ export function AccountDetails() {
                   value={values.profile_pic}
                   onFileSelect={(file) => setFieldValue('profile_pic', file)}
                 />
-
               </Stack>
               <Stack spacing={2}>
 
@@ -127,7 +125,7 @@ export function AccountDetails() {
                           onChange={handleChange}
                         />
                       ) : (
-                        <Typography>{values.first_name || 'N/A'}</Typography>
+                        <Typography color='text.secondary'>{values.first_name || 'N/A'}</Typography>
                       )}
                     </FormControl>
                   </Grid>
@@ -142,7 +140,7 @@ export function AccountDetails() {
                             onChange={handleChange}
                           />
                         ) : (
-                          <Typography>{values.last_name || 'N/A'}</Typography>
+                          <Typography color='text.secondary'>{values.last_name || 'N/A'}</Typography>
                         )
                       }
 
@@ -160,7 +158,7 @@ export function AccountDetails() {
                             onChange={handleChange}
                           />
                         ) : (
-                          <Typography>{values.contact_no || 'N/A'}</Typography>
+                          <Typography color='text.secondary'>{values.contact_no || 'N/A'}</Typography>
                         )
                       }
                     </FormControl>
@@ -178,7 +176,7 @@ export function AccountDetails() {
                             disabled
                           />
                         ) : (
-                          <Typography>{values.email || 'N/A'}</Typography>
+                          <Typography color='text.secondary'>{values.email || 'N/A'}</Typography>
                         )
                       }
                     </FormControl>
@@ -196,7 +194,7 @@ export function AccountDetails() {
                             disabled
                           />
                         ) : (
-                          <Typography>{values.role || 'N/A'}</Typography>
+                          <Typography color='text.secondary'>{values.role || 'N/A'}</Typography>
                         )
                       }
                     </FormControl>
