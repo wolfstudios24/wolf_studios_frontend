@@ -2,7 +2,6 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import RouterLink from 'next/link';
 
@@ -10,12 +9,13 @@ import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import * as React from 'react';
 
-import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
-import { CustomersSelectionProvider } from '@/components/dashboard/customer/customers-selection-context';
 import PageLoader from '@/components/PageLoader/PageLoader';
 import IconButton from '@mui/material/IconButton';
 
 import { DataTable } from '@/components/core/data-table';
+import { FilterButton } from '@/components/core/filter-button';
+import { StatusFilterPopover } from '@/components/core/filters/StatusFilterPopover';
+import { RefreshPlugin } from '@/components/core/plugins/RefreshPlugin';
 import { dayjs } from '@/lib/dayjs';
 import { paths } from '@/paths';
 import Chip from '@mui/material/Chip';
@@ -28,7 +28,7 @@ import { ManageUserDialog } from './manage-user-dialog';
 
 
 export default function Page({ searchParams }) {
-  const { email, phone, sortDir, status } = searchParams;
+  const { email, phone, sortDir } = searchParams;
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
@@ -36,14 +36,14 @@ export default function Page({ searchParams }) {
   const [pagination, setPagination] = React.useState({ pageNo: 1, limit: 10 });
   const [totalRecords, setTotalRecords] = React.useState(0);
   const [selectedRows, setSelectedRows] = React.useState([]);
-  console.log(selectedRows, " selected rows");
-
+  const [status, setStatus] = React.useState("");
   async function fetchList() {
     try {
       setLoading(true)
       const response = await getUsers({
         page: pagination.pageNo,
-        rowsPerPage: pagination.limit
+        rowsPerPage: pagination.limit,
+        status: status
       });
       if (response.success) {
         setUsers(response.data);
@@ -71,7 +71,7 @@ export default function Page({ searchParams }) {
 
   React.useEffect(() => {
     fetchList();
-  }, [pagination])
+  }, [pagination, status])
 
   const columns = [
     {
@@ -136,8 +136,6 @@ export default function Page({ searchParams }) {
 
   ];
 
-  // const sortedUsers = applySort(users, sortDir);
-  // const filteredUsers = applyFilters(sortedUsers, { email, phone, status });
 
   return (
 
@@ -164,37 +162,51 @@ export default function Page({ searchParams }) {
           loading={loading}
           error={null}
         >
-          <CustomersSelectionProvider customers={users}>
-            <Card>
-              <CustomersFilters filters={{ email, phone, status }} sortDir={sortDir} />
-              <Divider />
-              <Box sx={{ overflowX: 'auto' }}>
-                <React.Fragment>
-                  <DataTable
-                    isPagination={true}
-                    totalRecords={totalRecords}
-                    rowsPerPageOptions={pagination.limit}
-                    pageNo={pagination.pageNo}
-                    columns={columns}
-                    rows={users}
-                    uniqueRowId="id"
-                    selectionMode="multiple"
+          <Card>
+            <Box sx={{ overflowX: 'auto' }}>
+              <React.Fragment>
+                <DataTable
+                  isPagination={true}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={pagination.limit}
+                  pageNo={pagination.pageNo}
+                  columns={columns}
+                  rows={users}
+                  uniqueRowId="id"
+                  selectionMode="multiple"
 
-                    onRowsPerPageChange={(pageNumber, rowsPerPage) => setPagination({ pageNo: pageNumber, limit: rowsPerPage })}
-                    onPageChange={(newPageNumber) => setPagination({ ...pagination, pageNo: newPageNumber })}
-                    onSelection={(selectedRows) => setSelectedRows?.(selectedRows)}
-                  />
-                  {!users?.length ? (
-                    <Box sx={{ p: 3 }}>
-                      <Typography color="text.secondary" sx={{ textAlign: 'center' }} variant="body2">
-                        No customers found
-                      </Typography>
-                    </Box>
-                  ) : null}
-                </React.Fragment>
-              </Box>
-            </Card>
-          </CustomersSelectionProvider>
+                  leftItems={<>
+                    <FilterButton
+                      displayValue={status}
+                      label="Status"
+                      onFilterApply={(value) => {
+                        setStatus(value)
+                      }}
+                      onFilterDelete={() => {
+                        handlePhoneChange();
+                      }}
+                      popover={<StatusFilterPopover />}
+                      value={status}
+                    />
+                    <RefreshPlugin onClick={fetchList} />
+                  </>}
+
+                  rightItems={<></>}
+
+                  onRowsPerPageChange={(pageNumber, rowsPerPage) => setPagination({ pageNo: pageNumber, limit: rowsPerPage })}
+                  onPageChange={(newPageNumber) => setPagination({ ...pagination, pageNo: newPageNumber })}
+                  onSelection={(selectedRows) => setSelectedRows?.(selectedRows)}
+                />
+                {!users?.length ? (
+                  <Box sx={{ p: 3 }}>
+                    <Typography color="text.secondary" sx={{ textAlign: 'center' }} variant="body2">
+                      No customers found
+                    </Typography>
+                  </Box>
+                ) : null}
+              </React.Fragment>
+            </Box>
+          </Card>
         </PageLoader>
       </Stack>
       {
@@ -210,40 +222,4 @@ export default function Page({ searchParams }) {
     </Box>
 
   );
-}
-
-// Sorting and filtering has to be done on the server.
-
-function applySort(row, sortDir) {
-  return row.sort((a, b) => {
-    if (sortDir === 'asc') {
-      return a.createdAt.getTime() - b.createdAt.getTime();
-    }
-
-    return b.createdAt.getTime() - a.createdAt.getTime();
-  });
-}
-
-function applyFilters(row, { email, phone, status }) {
-  return row.filter((item) => {
-    if (email) {
-      if (!item.email?.toLowerCase().includes(email.toLowerCase())) {
-        return false;
-      }
-    }
-
-    if (phone) {
-      if (!item.phone?.toLowerCase().includes(phone.toLowerCase())) {
-        return false;
-      }
-    }
-
-    if (status) {
-      if (item.status !== status) {
-        return false;
-      }
-    }
-
-    return true;
-  });
 }

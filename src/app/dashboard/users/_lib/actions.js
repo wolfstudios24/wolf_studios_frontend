@@ -1,9 +1,12 @@
+import { getSearchQuery } from "@/helper/common";
 import { api, publicApi } from "@/utils/api";
 import { toast } from "sonner";
 
-export const getUsers = async (data) => {
+export const getUsers = async (queryParams) => {
+
     try {
-        const res = await api.get(`/user?page=${data.page}&limit=${data.rowsPerPage}`);
+        const searchQuery = getSearchQuery(queryParams);
+        const res = await api.get(`/user${searchQuery}`);
         return { success: true, data: res.data.data, totalRecords: res.data.meta.total };
     } catch (error) {
         toast.error(error.message)

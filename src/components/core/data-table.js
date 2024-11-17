@@ -1,6 +1,6 @@
 'use client';
 
-import { Divider, TableContainer } from '@mui/material';
+import { Box, Divider, TableContainer } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,6 +18,9 @@ export function DataTable({
   rows,
   uniqueRowId,
   selectionMode, //none | single | multiple
+
+  leftItems,
+  rightItems,
 
   isPagination,
   pageNo,
@@ -67,6 +70,11 @@ export function DataTable({
 
   return (
     <TableContainer>
+      <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
+        <Box>{leftItems}</Box>
+        <Box>{rightItems}</Box>
+      </Box>
+      <Divider />
       <Table {...props}>
         <TableHead sx={{ ...(hideHead && { visibility: 'collapse', '--TableCell-borderWidth': 0 }) }}>
           <TableRow>
