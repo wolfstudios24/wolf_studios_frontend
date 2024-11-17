@@ -7,6 +7,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import React from 'react';
 import { CustomPagination } from './custom-pagination';
 
 export function DataTable({
@@ -15,10 +16,8 @@ export function DataTable({
   hover,
   onClick,
   rows,
-  selectable,
-  selected,
   uniqueRowId,
-  selectionMode,
+  selectionMode, //none | single | multiple
 
   isPagination,
   pageNo,
@@ -33,28 +32,38 @@ export function DataTable({
   ...props
 }) {
 
+  const [selectedRows, setSelectedRows] = React.useState([]);
+
+  // handle single/multiple row selection
   const handleRowSelection = (rowId, row, isSelected) => {
     if (selectionMode === "single") {
-      const newSelected = isSelected ? new Set() : new Set([rowId]);
-      onSelection?.(Array.from(newSelected).map((id) => rows.find((r) => r.id === id)));
+      setSelectedRows(isSelected ? [] : [row]);
+      onSelection?.(isSelected ? [] : [row]);
     } else if (selectionMode === "multiple") {
-      const newSelected = new Set(selected);
-      if (isSelected) {
-        newSelected.delete(rowId);
-      } else {
-        newSelected.add(rowId);
-      }
-      onSelection?.(Array.from(newSelected).map((id) => rows.find((r) => r.id === id)));
+      setSelectedRows((prevSelected) => {
+        const newSelected = isSelected
+          ? prevSelected.filter((selectedRow) => selectedRow.id !== rowId)
+          : [...prevSelected, row];
+        onSelection?.(newSelected);
+        return newSelected;
+      });
     }
   };
 
+  // Handle Select all
   const handleSelectAll = (event) => {
-    const newSelected = event.target.checked ? new Set(rows.map((row) => row.id)) : new Set();
-    onSelection?.(Array.from(newSelected).map((id) => rows.find((r) => r.id === id)));
+    if (event.target.checked) {
+      setSelectedRows(rows);
+      onSelection?.(rows);
+    } else {
+      setSelectedRows([]);
+      onSelection?.([]);
+    }
   };
 
-  const selectedSome = selected.size > 0 && selected.size < rows.length;
-  const selectedAll = rows.length > 0 && selected.size === rows.length;
+  const isRowSelected = (rowId) => selectedRows.some((row) => row.id === rowId);
+  const selectedSome = selectedRows.length > 0 && selectedRows.length < rows.length;
+  const selectedAll = rows.length > 0 && selectedRows.length === rows.length;
 
   return (
     <TableContainer>
@@ -81,8 +90,8 @@ export function DataTable({
         </TableHead>
         <TableBody>
           {rows.map((row, index) => {
-            const rowId = row.id ? row.id : uniqueRowId?.(row);
-            const isSelected = selected.has(rowId);
+            const rowId = row.id || uniqueRowId?.(row);
+            const isSelected = isRowSelected(rowId);
 
             return (
               <TableRow

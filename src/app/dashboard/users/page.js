@@ -11,7 +11,7 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import * as React from 'react';
 
 import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
-import { CustomersSelectionProvider, useCustomersSelection } from '@/components/dashboard/customer/customers-selection-context';
+import { CustomersSelectionProvider } from '@/components/dashboard/customer/customers-selection-context';
 import PageLoader from '@/components/PageLoader/PageLoader';
 import IconButton from '@mui/material/IconButton';
 
@@ -28,7 +28,6 @@ import { ManageUserDialog } from './manage-user-dialog';
 
 
 export default function Page({ searchParams }) {
-  const { deselectAll, deselectOne, selectAll,  selected } = useCustomersSelection();
   const { email, phone, sortDir, status } = searchParams;
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -36,6 +35,8 @@ export default function Page({ searchParams }) {
   const [modalData, setModalData] = React.useState(null);
   const [pagination, setPagination] = React.useState({ pageNo: 1, limit: 10 });
   const [totalRecords, setTotalRecords] = React.useState(0);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+  console.log(selectedRows, " selected rows");
 
   async function fetchList() {
     try {
@@ -176,15 +177,12 @@ export default function Page({ searchParams }) {
                     pageNo={pagination.pageNo}
                     columns={columns}
                     rows={users}
-                    selectable
-                    selected={selected}
                     uniqueRowId="id"
-                    selectionMode="multiple" //none | single | multiple
-
+                    selectionMode="multiple"
 
                     onRowsPerPageChange={(pageNumber, rowsPerPage) => setPagination({ pageNo: pageNumber, limit: rowsPerPage })}
                     onPageChange={(newPageNumber) => setPagination({ ...pagination, pageNo: newPageNumber })}
-                    onSelection={(selectedRows) => console.log("Selected Rows:", selectedRows)}
+                    onSelection={(selectedRows) => setSelectedRows?.(selectedRows)}
                   />
                   {!users?.length ? (
                     <Box sx={{ p: 3 }}>

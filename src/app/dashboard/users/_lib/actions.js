@@ -2,7 +2,6 @@ import { api, publicApi } from "@/utils/api";
 import { toast } from "sonner";
 
 export const getUsers = async (data) => {
-    console.log(data, "data.....")
     try {
         const res = await api.get(`/user?page=${data.page}&limit=${data.rowsPerPage}`);
         return { success: true, data: res.data.data, totalRecords: res.data.meta.total };
@@ -16,7 +15,6 @@ export const createUser = async (data, isPublicRegistration = false) => {
     try {
         const { confirm_password, status, ...rest } = data
         let res = ""
-        console.log(isPublicRegistration, "isPublic registration.....")
         if (isPublicRegistration) {
             res = await publicApi.post(`/auth/create-user`, rest);
         } else {

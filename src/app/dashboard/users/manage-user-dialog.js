@@ -8,9 +8,7 @@ import * as Yup from 'yup';
 import { createUser, updateUserData } from "./_lib/actions";
 
 const getValidationSchema = (isUpdated) => {
-    console.log(isUpdated, "isUpdated.....")
 
-    console.log(isUpdated, "isUpdated.....")
     return Yup.object().shape({
         first_name: Yup.string().required('First name is required'),
         email: Yup.string().email('Invalid email').required('Email is required'),
