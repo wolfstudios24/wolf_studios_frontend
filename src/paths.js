@@ -53,9 +53,11 @@ export const paths = {
   },
   dashboard: {
     overview: '/dashboard',
+    records: '/dashboard/records',
+
+    // settings
     profile: '/dashboard/settings/account',
     security: '/dashboard/settings/security',
-    user_verification: '/dashboard/settings/users-verification',
 
     // admin
     users: '/dashboard/users',
