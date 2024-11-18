@@ -7,6 +7,7 @@ import { dayjs } from '@/lib/dayjs';
 import { LoginHistory } from '@/components/dashboard/settings/login-history';
 import { MultiFactor } from '@/components/dashboard/settings/multi-factor';
 import { PasswordForm } from '@/components/dashboard/settings/password-form';
+import { ResetPasswordForm } from '../_components/ResetPasswordForm';
 
 export const metadata = { title: `Security | Settings | Dashboard | ${config.site.name}` };
 
@@ -17,8 +18,8 @@ export default function Page() {
         <Typography variant="h4">Security</Typography>
       </div>
       <Stack spacing={4}>
-        <PasswordForm />
-        <MultiFactor />
+        <ResetPasswordForm />
+        {/* <MultiFactor /> */}
         <LoginHistory
           events={[
             {
