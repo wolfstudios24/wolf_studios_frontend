@@ -9,3 +9,9 @@ export const defaultProfile = {
     role: "",
     status: "ACTIVE",
 }
+
+export const defaultResetPassword = {
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+}

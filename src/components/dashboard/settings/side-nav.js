@@ -26,8 +26,8 @@ const navItems = [
     title: 'Personal',
     items: [
       { key: 'account', title: 'Account', href: paths.dashboard.settings.account, icon: 'user-circle' },
-      { key: 'notifications', title: 'Notifications', href: paths.dashboard.settings.notifications, icon: 'bell' },
       { key: 'security', title: 'Security', href: paths.dashboard.security, icon: 'lock-key' },
+      // { key: 'notifications', title: 'Notifications', href: paths.dashboard.settings.notifications, icon: 'bell' },
     ],
   },
   {
