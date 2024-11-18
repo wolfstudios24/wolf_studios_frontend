@@ -121,7 +121,7 @@ export const AuthProvider = (props) => {
         setUserInfo(INITIAL_AUTH_STATE);
         delete api.defaults.headers.common["Authorization"];
         removeTokenFromCookies();
-        router.push("/auth/custom/sign-in");
+        router.push("/auth/sign-in");
     };
 
     return (

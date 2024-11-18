@@ -1,6 +1,7 @@
 'use client';
 
 import { DynamicLogo } from '@/components/core/logo';
+import { CustomPasswordInput } from '@/components/formFields/CustomPasswordInput';
 import useAuth from '@/hooks/useAuth';
 import { paths } from '@/paths';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -70,7 +71,7 @@ export function LoginForm() {
         <Typography variant="h5">Sign in</Typography>
         <Typography color="text.secondary" variant="body2">
           Don&apos;t have an account?{' '}
-          <Link component={RouterLink} href={paths.auth.custom.signUp} variant="subtitle2">
+          <Link component={RouterLink} href={paths.auth.default.signUp} variant="subtitle2">
             Sign up
           </Link>
         </Typography>
@@ -109,51 +110,31 @@ export function LoginForm() {
               </FormControl>
               <FormControl error={Boolean(errors.password)}>
                 <InputLabel>Password</InputLabel>
-                <OutlinedInput
-                  type={showPassword ? 'text' : 'password'}
+                <CustomPasswordInput
                   name="password"
                   value={values.password}
                   onChange={handleChange}
-                  endAdornment={
-                    showPassword ? (
-                      <VisibilityIcon
-                        cursor="pointer"
-                        fontSize="var(--icon-fontSize-md)"
-                        onClick={() => {
-                          setShowPassword(false);
-                        }}
-                      />
-                    ) : (
-                      <VisibilityOffIcon
-                        cursor="pointer"
-                        fontSize="var(--icon-fontSize-md)"
-                        onClick={() => {
-                          setShowPassword(true);
-                        }}
-                      />
-                    )
-                  }
                 />
                 {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
               </FormControl>
               {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-              <Button 
-              type={loading ? 'button' : 'submit'}
-              variant="contained"
-              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+              <Button
+                type={loading ? 'button' : 'submit'}
+                variant="contained"
+                startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
               >
                 {loading ? 'Signing in...' : "Sign in"}
               </Button>
             </Stack>
           </form>
           <div>
-            <Link component={RouterLink} href={paths.auth.custom.resetPassword} variant="subtitle2">
+            <Link component={RouterLink} href={paths.auth.default.forgotPassword} variant="subtitle2">
               Forgot password?
             </Link>
           </div>
         </Stack>
       </Stack>
-      
+
     </Stack>
   );
 }
