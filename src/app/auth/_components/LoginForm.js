@@ -1,6 +1,7 @@
 'use client';
 
 import { DynamicLogo } from '@/components/core/logo';
+import { CustomPasswordInput } from '@/components/formFields/CustomPasswordInput';
 import useAuth from '@/hooks/useAuth';
 import { paths } from '@/paths';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -109,38 +110,18 @@ export function LoginForm() {
               </FormControl>
               <FormControl error={Boolean(errors.password)}>
                 <InputLabel>Password</InputLabel>
-                <OutlinedInput
-                  type={showPassword ? 'text' : 'password'}
+                <CustomPasswordInput
                   name="password"
                   value={values.password}
                   onChange={handleChange}
-                  endAdornment={
-                    showPassword ? (
-                      <VisibilityIcon
-                        cursor="pointer"
-                        fontSize="var(--icon-fontSize-md)"
-                        onClick={() => {
-                          setShowPassword(false);
-                        }}
-                      />
-                    ) : (
-                      <VisibilityOffIcon
-                        cursor="pointer"
-                        fontSize="var(--icon-fontSize-md)"
-                        onClick={() => {
-                          setShowPassword(true);
-                        }}
-                      />
-                    )
-                  }
                 />
                 {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
               </FormControl>
               {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-              <Button 
-              type={loading ? 'button' : 'submit'}
-              variant="contained"
-              startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+              <Button
+                type={loading ? 'button' : 'submit'}
+                variant="contained"
+                startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
               >
                 {loading ? 'Signing in...' : "Sign in"}
               </Button>
@@ -153,7 +134,7 @@ export function LoginForm() {
           </div>
         </Stack>
       </Stack>
-      
+
     </Stack>
   );
 }

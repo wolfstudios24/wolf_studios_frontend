@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import { useColorScheme } from '@mui/material/styles';
 
 import { NoSsr } from '@/components/core/no-ssr';
+import { Typography } from '@mui/material';
 
 const HEIGHT = 60;
 const WIDTH = 60;
@@ -27,7 +28,8 @@ export function DynamicLogo({ colorDark = 'light', colorLight = 'dark', height =
 
   return (
     <NoSsr fallback={<Box sx={{ height: `${height}px`, width: `${width}px` }} />}>
-      <Logo color={color} height={height} width={width} {...props} />
+      {/* <Logo color={color} height={height} width={width} {...props} /> */}
+      <Typography variant="h5" sx={{ color: 'var(--mui-palette-common-white)' }}>The Wolf Studios LA</Typography>
     </NoSsr>
   );
 }
