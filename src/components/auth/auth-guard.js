@@ -30,7 +30,7 @@ export function AuthGuard({ children }) {
 
       switch (config.auth.strategy) {
         case AuthStrategy.CUSTOM: {
-          router.replace(paths.auth.custom.signIn);
+          router.replace(paths.auth.default.signIn);
           return;
         }
         case AuthStrategy.AUTH0: {

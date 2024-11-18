@@ -4,10 +4,11 @@ export const paths = {
   contact: '/contact',
   pricing: '/pricing',
   auth: {
-    custom: {
-      signIn: '/auth/custom/sign-in',
-      signUp: '/auth/custom/sign-up',
-      resetPassword: '/auth/custom/reset-password',
+    default: {
+      signIn: '/auth/sign-in',
+      signUp: '/auth/sign-up',
+      resetPassword: '/auth/reset-password',
+      forgotPassword: '/auth/forgot-password',
     },
     auth0: {
       callback: '/auth/auth0/callback',

@@ -23,7 +23,7 @@ const schema = zod.object({ email: zod.string().min(1, { message: 'Email is requ
 
 const defaultValues = { email: '' };
 
-export function ResetPasswordForm() {
+export function ForgotPasswordForm() {
   const [isPending, setIsPending] = React.useState(false);
 
   const {

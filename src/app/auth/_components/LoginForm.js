@@ -70,7 +70,7 @@ export function LoginForm() {
         <Typography variant="h5">Sign in</Typography>
         <Typography color="text.secondary" variant="body2">
           Don&apos;t have an account?{' '}
-          <Link component={RouterLink} href={paths.auth.custom.signUp} variant="subtitle2">
+          <Link component={RouterLink} href={paths.auth.default.signUp} variant="subtitle2">
             Sign up
           </Link>
         </Typography>
@@ -147,7 +147,7 @@ export function LoginForm() {
             </Stack>
           </form>
           <div>
-            <Link component={RouterLink} href={paths.auth.custom.resetPassword} variant="subtitle2">
+            <Link component={RouterLink} href={paths.auth.default.forgotPassword} variant="subtitle2">
               Forgot password?
             </Link>
           </div>
