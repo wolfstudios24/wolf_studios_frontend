@@ -18,9 +18,9 @@ export default function Page() {
       </div>
       <Stack spacing={4}>
         <AccountDetails />
-        <ThemeSwitch />
-        <Privacy />
-        <DeleteAccount />
+        {/* <ThemeSwitch /> */}
+        {/* <Privacy /> */}
+        {/* <DeleteAccount /> */}
       </Stack>
     </Stack>
   );

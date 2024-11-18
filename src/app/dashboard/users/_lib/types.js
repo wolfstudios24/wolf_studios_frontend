@@ -6,7 +6,6 @@ export const defaultUser = {
     contact_number: "",
     role: "USER",
     password: "",
-    // optional
     confirm_password: "", 
     status: "ACTIVE",
 }

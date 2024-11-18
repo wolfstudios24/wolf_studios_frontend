@@ -4,7 +4,7 @@ import { LogLevel } from '@/lib/logger';
 
 export const config = {
   site: {
-    name: 'Devias Kit Pro',
+    name: 'The Wolf Studios LA',
     description: '',
     language: 'en',
     themeColor: '#090a0b',
