@@ -55,7 +55,7 @@ const icons = {
   bell: BellIcon,
 };
 
-export function SideNav() {
+export function   SideNav() {
   const pathname = usePathname();
   const { userInfo } = useAuth();
 

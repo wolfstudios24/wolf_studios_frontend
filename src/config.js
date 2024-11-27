@@ -1,6 +1,7 @@
 import { AuthStrategy } from '@/lib/auth/strategy';
 import { getSiteURL } from '@/lib/get-site-url';
 import { LogLevel } from '@/lib/logger';
+import { paths } from './paths';
 
 export const config = {
   site: {
@@ -12,6 +13,37 @@ export const config = {
     url: getSiteURL(),
     version: process.env.NEXT_PUBLIC_SITE_VERSION || '0.0.0',
   },
+  menuItems: [
+    {
+      key: 'general',
+      title: 'General',
+      items: [
+        { key: 'overview', title: 'Overview', href: paths.dashboard.overview, icon: 'house' },
+        { key: 'analytics', title: 'Analytics', href: paths.dashboard.analytics, icon: 'chart-pie' },
+        { key: 'records', title: 'Records', href: paths.dashboard.records, icon: 'address-book' },
+      ],
+    },
+    {
+      key: 'admin',
+      title: 'Admin',
+      items: [
+        { key: 'usrs', title: 'Users', href: paths.dashboard.users, icon: 'users' },
+        { key: 'needs_offer_approval', title: 'Needs offer/ approval', href: paths.dashboard.needs_offer_approval, icon: 'users' },
+      ],
+    }
+  ],
+
+
+
+
+
+
+
+
+
+
+
+  // will be removed
   logLevel: process.env.NEXT_PUBLIC_LOG_LEVEL || LogLevel.ALL,
   auth: { strategy: process.env.NEXT_PUBLIC_AUTH_STRATEGY || AuthStrategy.CUSTOM },
   auth0: {

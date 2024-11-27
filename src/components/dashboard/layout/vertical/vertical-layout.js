@@ -9,6 +9,7 @@ import { useSettings } from '@/hooks/use-settings';
 import { layoutConfig } from '../config';
 import { MainNav } from './main-nav';
 import { SideNav } from './side-nav';
+import { config } from '@/config';
 
 export function VerticalLayout({ children }) {
   const { settings } = useSettings();
@@ -36,9 +37,9 @@ export function VerticalLayout({ children }) {
           minHeight: '100%',
         }}
       >
-        <SideNav color={settings.navColor} items={layoutConfig.navItems} />
+        <SideNav color={settings.navColor} items={config.menuItems} />
         <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column', pl: { lg: 'var(--SideNav-width)' } }}>
-          <MainNav items={layoutConfig.navItems} />
+          <MainNav items={config.menuItems} />
           <Box
             component="main"
             sx={{
