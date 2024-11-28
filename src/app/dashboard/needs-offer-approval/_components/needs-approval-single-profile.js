@@ -1,213 +1,121 @@
 'use client';
 
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
-import { User as UserIcon } from '@phosphor-icons/react/dist/ssr/User';
-import * as React from 'react';
 
-import { useFormik } from 'formik';
 
-import { defaultProfile } from '@/app/dashboard/settings/_lib/types';
+import { WrapedText } from '@/components/formFields/wraped-text';
 import PageLoader from '@/components/PageLoader/PageLoader';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { IconButton, Typography } from '@mui/material';
+import { Chip, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import * as Yup from 'yup';
-// import { getProfileData, updateProfileData } from '../_lib/actions';
-import ImageUploader from '@/components/dashboard/uploaders/ImageUploader';
-import { getProfileData, updateProfileData } from '../../settings/_lib/actions';
+import { getModifiedStatus } from '@/helper/common';
+import { ReadonlyStatus } from '@/components/formFields/readonly-status';
 
 
-
-const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    password: Yup.string().required('Password is required'),
-});
-
-
-export function NeedsApprovalSingleProfile() {
-
-    const [loading, setLoading] = React.useState(false);
-    const [isEditing, setIsEditing] = React.useState(false);
-
-
-    const {
-        values,
-        errors,
-        handleChange,
-        handleSubmit,
-        handleBlur,
-        setValues,
-        setFieldValue,
-        isValid,
-        resetForm,
-    } = useFormik({
-        initialValues: defaultProfile,
-        validate: (values) => {
-            const errors = {};
-
-            return errors;
-        },
-        onSubmit: async (values) => {
-            setLoading(true)
-            await updateProfileData(values)
-            setLoading(false)
-            setIsEditing(false);
-        }
-    })
-    async function fetchProfileData() {
-        setLoading(true);
-        try {
-            const response = await getProfileData();
-
-            setValues(response.data);
-        } catch (error) {
-            console.error('Error fetching profile data:', error);
-            return null;
-        } finally {
-            setLoading(false);
-        }
-    }
-    React.useEffect(() => {
-        fetchProfileData();
-    }, [])
+export function NeedsApprovalSingleProfile({ selectedItem }) {
 
     return (
         <PageLoader
-            loading={loading}
+            loading={false}
             error={null}
         >
             <Card>
                 <CardHeader
-                    avatar={
-                        <Avatar>
-                            <UserIcon fontSize="var(--Icon-fontSize)" />
-                        </Avatar>
-                    }
-                    title="My profile"
-                    action={
-                        !isEditing && (
-                            <IconButton
-                                title='Edit'
-                                onClick={() => setIsEditing(true)}>
-                                <BorderColorIcon />
-                            </IconButton>
-                        )
-                    }
+
+                    title={selectedItem?.name}
                 />
-                <form onSubmit={handleSubmit}>
-                    <CardContent>
-                        <Stack spacing={3}>
+                <CardContent>
+                    <Stack spacing={3}>
 
-                            <Stack spacing={2}>
+                        <Stack spacing={2}>
 
-                                <Grid container spacing={2}>
-                                    <Grid size={12}>
-                                        <FormControl fullWidth error={Boolean(errors.first_name)}>
-                                            <InputLabel>First Name</InputLabel>
-                                            {isEditing ? (
-                                                <OutlinedInput
-                                                    name="first_name"
-                                                    value={values.first_name}
-                                                    onChange={handleChange}
-                                                />
-                                            ) : (
-                                                <Typography color='text.secondary'>{values.first_name || 'N/A'}</Typography>
-                                            )}
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid size={12}>
-                                        <FormControl fullWidth error={Boolean(errors.email)}>
-                                            <InputLabel>Last Name</InputLabel>
-                                            {
-                                                isEditing ? (
-                                                    <OutlinedInput
-                                                        name="last_name"
-                                                        value={values.last_name}
-                                                        onChange={handleChange}
-                                                    />
-                                                ) : (
-                                                    <Typography color='text.secondary'>{values.last_name || 'N/A'}</Typography>
-                                                )
-                                            }
+                            <Grid container spacing={2}>
+                                <Grid size={{ xs: 12, md: 6 }}>
 
-                                        </FormControl>
-                                    </Grid>
-
-                                    <Grid size={12}>
-                                        <FormControl fullWidth error={Boolean(errors.email)}>
-                                            <InputLabel>Contact No.</InputLabel>
-                                            {
-                                                isEditing ? (
-                                                    <OutlinedInput
-                                                        name="contact_no"
-                                                        value={values.contact_no}
-                                                        onChange={handleChange}
-                                                    />
-                                                ) : (
-                                                    <Typography color='text.secondary'>{values.contact_no || 'N/A'}</Typography>
-                                                )
-                                            }
-                                        </FormControl>
-                                    </Grid>
-
-                                    <Grid size={12}>
-                                        <FormControl fullWidth error={Boolean(errors.email)}>
-                                            <InputLabel>Email</InputLabel>
-                                            {
-                                                isEditing ? (
-                                                    <OutlinedInput
-                                                        name="email"
-                                                        value={values.email}
-                                                        onChange={handleChange}
-                                                        disabled
-                                                    />
-                                                ) : (
-                                                    <Typography color='text.secondary'>{values.email || 'N/A'}</Typography>
-                                                )
-                                            }
-                                        </FormControl>
-                                    </Grid>
-
-                                    <Grid size={12}>
-                                        <FormControl fullWidth error={Boolean(errors.email)}>
-                                            <InputLabel>Role</InputLabel>
-                                            {
-                                                isEditing ? (
-                                                    <OutlinedInput
-                                                        name="role"
-                                                        value={values.role}
-                                                        onChange={handleChange}
-                                                        disabled
-                                                    />
-                                                ) : (
-                                                    <Typography color='text.secondary'>{values.role || 'N/A'}</Typography>
-                                                )
-                                            }
-                                        </FormControl>
-                                    </Grid>
-
+                                    <InputLabel>Revo Status</InputLabel>
+                                    <ReadonlyStatus value={selectedItem?.revo_status} />
                                 </Grid>
-                            </Stack>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Affiliate Platform</InputLabel>
+                                    <Typography color="text.secondary">{selectedItem?.affiliate_platform || 'N/A'}</Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Instagram</InputLabel>
+                                    <Typography color="text.secondary">
+                                        <a href={selectedItem?.instagram || '#'} target="_blank" rel="noopener noreferrer">
+                                            {selectedItem?.instagram || 'N/A'}
+                                        </a>
+                                    </Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Instagram Following</InputLabel>
+                                    <Typography color="text.secondary">{selectedItem?.instagram_follwing || 'N/A'}</Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>TikTok</InputLabel>
+                                    <Typography color="text.secondary">
+                                        <a href={selectedItem?.tiktok || '#'} target="_blank" rel="noopener noreferrer">
+                                            {selectedItem?.tiktok || 'N/A'}
+                                        </a>
+                                    </Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>TikTok Following</InputLabel>
+                                    <Typography color="text.secondary">{selectedItem?.tiktok_follwing || 'N/A'}</Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Partner Rate</InputLabel>
+                                    <Typography color="text.secondary">{selectedItem?.partner_rate || 'N/A'}</Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Partner TikTok Rate</InputLabel>
+                                    <Typography color="text.secondary">{selectedItem?.partner_tt_rate || 'N/A'}</Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Partner YouTube Rate</InputLabel>
+                                    <Typography color="text.secondary">{selectedItem?.partner_yt_rate || 'N/A'}</Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Partner Instagram Rate</InputLabel>
+                                    <Typography color="text.secondary">{selectedItem?.partner_ig_rate || 'N/A'}</Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Notes</InputLabel>
+                                    <Typography color="text.secondary">{selectedItem?.notes || 'N/A'}</Typography>
+                                </Grid>
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+
+                                    <InputLabel>Revo Offer</InputLabel>
+                                    <WrapedText value={selectedItem?.revo_offer || 'N/A'} />
+                                </Grid>
+                            </Grid>
                         </Stack>
-                    </CardContent>
-                    {
-                        isEditing && (
-                            <CardActions >
-                                <Button color="secondary" onClick={() => setIsEditing(false)}>Cancel</Button>
-                                <Button variant="contained" type="submit">Update</Button>
-                            </CardActions>
-                        )
-                    }
-                </form>
+                    </Stack>
+                </CardContent>
             </Card>
         </PageLoader>
     );
