@@ -8,6 +8,7 @@ export const paths = {
     overview: '/dashboard',
     records: '/dashboard/records',
     needs_offer_approval: '/dashboard/needs-offer-approval',
+    partners_by_campaign: '/dashboard/partners-by-campaign',
 
     // settings
     profile: '/dashboard/settings/account',

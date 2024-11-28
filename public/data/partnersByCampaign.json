@@ -1,0 +1,104 @@
+{
+    "data": [
+        {
+            "id": "3f4b7c8e-6e6c-4b6a-b101-65f5f689334f",
+            "name": "REVO Walking Pad",
+            "campaign_status": "active",
+            "stakeholders": [
+                "Tevin",
+                "Combina",
+                "Angelica",
+                "Francis",
+                "Jamica",
+                "Arnie",
+                "Arianne",
+                "Bizzy"
+            ],
+            "start_date": "7/15/2023",
+            "end_date": "",
+            "total_content_engagement": "416616",
+            "total_expense": "0",
+            "image_guidelines": [],
+            "video_guidelines": [],
+            "guidelines": "",
+            "budget": "",
+            "full_description": "",
+            "contributing_partners": [
+                {
+                    "id": "3f4b7c8e-6e6c-4b6a-b101-65f5f689334f",
+                    "name": "Onleilove Chika Alston",
+                    "avatar": "https://avatar.iran.liara.run/public/1",
+                    "instagram": "https://www.instagram.com/chika_alston",
+                    "instagram_following": "150"
+                },
+                {
+                    "id": "3f4b7c8e-6e6c-4b6a-b101-8455f689334f",
+                    "name": "Olive Hamster",
+                    "avatar": "https://avatar.iran.liara.run/public/2",
+                    "instagram": "https://www.instagram.com/chika_alston",
+                    "instagram_following": "150"
+                }
+            ],
+            "content_hq": [
+                {
+                    "id": "3f4b7c8e-6e6c-4b6a-b101-65f5f689334f",
+                    "name": "Janette The Pill Pad ",
+                    "avatar": "https://avatar.iran.liara.run/public/1",
+                    "revo_pinterest": "https://www.pinterest.com/p/3f4b7c8e-6e6c",
+                    "pin_account": "@revomadic"
+                },
+                {
+                    "id": "3f4b7c8e-6e6c-4b6a-b101-65f5f686534f",
+                    "name": "Janette The Got dum",
+                    "avatar": "https://avatar.iran.liara.run/public/1",
+                    "revo_pinterest": "https://www.pinterest.com/p/3f4b7c8e-6e6c",
+                    "pin_account": "@revomadic"
+                }
+            ],
+            "retail_partners": []
+        },
+        {
+            "id": "3f4b7c8e-6e6c-4b6a-b101-65f5f689334f",
+            "name": "REVO Cupper (Cellulite)",
+            "campaign_status": "active",
+            "stakeholders": [
+                "Tevin",
+                "Combina",
+                "Angelica",
+                "Francis",
+                "Jamica",
+                "Arnie",
+                "Arianne",
+                "Bizzy"
+            ],
+            "start_date": "7/15/2023",
+            "end_date": "",
+            "total_content_engagement": "416616",
+            "total_expense": "0",
+            "image_guidelines": [],
+            "video_guidelines": [],
+            "guidelines": "",
+            "budget": "",
+            "full_description": "",
+            "contributing_partners": [
+                {
+                    "id": "3f4b7c8e-6e6c-4b6a-b101-65f5f689334f",
+                    "name": "Onleilove Chika Alston",
+                    "avatar": "https://avatar.iran.liara.run/public/1",
+                    "instagram": "https://www.instagram.com/chika_alston/",
+                    "instagram_following": "150"
+                }
+            ],
+            "content_hq": [
+                {
+                    "id": "3f4b7c8e-6e6c-4b6a-b101-65f5f689334f",
+                    "name": "Janette The Pill Pad Ad (Pro) Photo 2",
+                    "avatar": "https://avatar.iran.liara.run/public/1",
+                    "revo_pinterest": "https://www.pinterest.com/p/3f4b7c8e-6e6c-4b6a-b101-65f5f689334f",
+                    "pin_account": "@revomadic"
+                }
+            ],
+            "retail_partners": []
+        }
+    ]
+}

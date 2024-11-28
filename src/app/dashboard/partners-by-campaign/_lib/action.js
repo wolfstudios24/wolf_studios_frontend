@@ -1,9 +1,9 @@
 import { toast } from "sonner";
 
-export const getNeedsApprovalNavItemsAsync = async () => {
+export const getPartnersByCampaignAsync = async () => {
 
     try {
-        const res = await fetch('/data/needsApprovalNav.json');
+        const res = await fetch('/data/partnersByCampaign.json');
         const data = await res.json();
         return { success: true, data: data?.data };
     } catch (error) {
