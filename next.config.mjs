@@ -2,10 +2,10 @@
 const config = {
   experimental: {
     esmExternals: 'loose',
-   
+
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ['res.cloudinary.com', "gravatar.com", "avatar.iran.liara.run"],
   },
 };
 

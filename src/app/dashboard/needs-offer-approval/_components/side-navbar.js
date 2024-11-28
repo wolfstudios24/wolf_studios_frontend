@@ -45,7 +45,7 @@ export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
             position: { md: 'sticky' },
             top: '64px',
             width: { xs: '100%', md: '240px' },
-            height: 'calc(80vh)',
+            height: { xs: '100%', md: '750px' },
             overflowY: 'auto',
             '&::-webkit-scrollbar': {
                 width: '8px',

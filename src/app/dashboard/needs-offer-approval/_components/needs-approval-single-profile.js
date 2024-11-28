@@ -13,6 +13,7 @@ import { Chip, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { getModifiedStatus } from '@/helper/common';
 import { ReadonlyStatus } from '@/components/formFields/readonly-status';
+import Image from 'next/image';
 
 
 export function NeedsApprovalSingleProfile({ selectedItem }) {
@@ -22,101 +23,108 @@ export function NeedsApprovalSingleProfile({ selectedItem }) {
             loading={false}
             error={null}
         >
-            <Card>
+            <Card sx={{ minHeight: { xs: '100%', md: '750px' } }}>
+                <Image
+                    src={selectedItem?.avatar || "/assets/default_avatar.png"}
+                    alt="Uploaded Image"
+                    width={200}
+                    height={200}
+                    style={{ objectFit: 'cover', borderRadius: "10px", border: "1px solid var(--mui-palette-divider)", margin: "1rem 0 0 1rem" }}
+                />
                 <CardHeader
 
                     title={selectedItem?.name}
                 />
+
                 <CardContent>
-                    <Stack spacing={3}>
 
-                        <Stack spacing={2}>
 
-                            <Grid container spacing={2}>
-                                <Grid size={{ xs: 12, md: 6 }}>
+                    <Stack spacing={2}>
 
-                                    <InputLabel>Revo Status</InputLabel>
-                                    <ReadonlyStatus value={selectedItem?.revo_status} />
-                                </Grid>
+                        <Grid container spacing={2}>
+                            <Grid size={{ xs: 12, md: 6 }}>
 
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Affiliate Platform</InputLabel>
-                                    <Typography color="text.secondary">{selectedItem?.affiliate_platform || 'N/A'}</Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Instagram</InputLabel>
-                                    <Typography color="text.secondary">
-                                        <a href={selectedItem?.instagram || '#'} target="_blank" rel="noopener noreferrer">
-                                            {selectedItem?.instagram || 'N/A'}
-                                        </a>
-                                    </Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Instagram Following</InputLabel>
-                                    <Typography color="text.secondary">{selectedItem?.instagram_follwing || 'N/A'}</Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>TikTok</InputLabel>
-                                    <Typography color="text.secondary">
-                                        <a href={selectedItem?.tiktok || '#'} target="_blank" rel="noopener noreferrer">
-                                            {selectedItem?.tiktok || 'N/A'}
-                                        </a>
-                                    </Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>TikTok Following</InputLabel>
-                                    <Typography color="text.secondary">{selectedItem?.tiktok_follwing || 'N/A'}</Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Partner Rate</InputLabel>
-                                    <Typography color="text.secondary">{selectedItem?.partner_rate || 'N/A'}</Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Partner TikTok Rate</InputLabel>
-                                    <Typography color="text.secondary">{selectedItem?.partner_tt_rate || 'N/A'}</Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Partner YouTube Rate</InputLabel>
-                                    <Typography color="text.secondary">{selectedItem?.partner_yt_rate || 'N/A'}</Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Partner Instagram Rate</InputLabel>
-                                    <Typography color="text.secondary">{selectedItem?.partner_ig_rate || 'N/A'}</Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Notes</InputLabel>
-                                    <Typography color="text.secondary">{selectedItem?.notes || 'N/A'}</Typography>
-                                </Grid>
-
-                                <Grid size={{ xs: 12, md: 6 }}>
-
-                                    <InputLabel>Revo Offer</InputLabel>
-                                    <WrapedText value={selectedItem?.revo_offer || 'N/A'} />
-                                </Grid>
+                                <InputLabel>Revo Status</InputLabel>
+                                <ReadonlyStatus value={selectedItem?.revo_status} />
                             </Grid>
-                        </Stack>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Affiliate Platform</InputLabel>
+                                <Typography color="text.secondary">{selectedItem?.affiliate_platform || 'N/A'}</Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Instagram</InputLabel>
+                                <Typography color="text.secondary">
+                                    <a href={selectedItem?.instagram || '#'} target="_blank" rel="noopener noreferrer">
+                                        {selectedItem?.instagram || 'N/A'}
+                                    </a>
+                                </Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Instagram Following</InputLabel>
+                                <Typography color="text.secondary">{selectedItem?.instagram_follwing || 'N/A'}</Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>TikTok</InputLabel>
+                                <Typography color="text.secondary">
+                                    <a href={selectedItem?.tiktok || '#'} target="_blank" rel="noopener noreferrer">
+                                        {selectedItem?.tiktok || 'N/A'}
+                                    </a>
+                                </Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>TikTok Following</InputLabel>
+                                <Typography color="text.secondary">{selectedItem?.tiktok_follwing || 'N/A'}</Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Partner Rate</InputLabel>
+                                <Typography color="text.secondary">{selectedItem?.partner_rate || 'N/A'}</Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Partner TikTok Rate</InputLabel>
+                                <Typography color="text.secondary">{selectedItem?.partner_tt_rate || 'N/A'}</Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Partner YouTube Rate</InputLabel>
+                                <Typography color="text.secondary">{selectedItem?.partner_yt_rate || 'N/A'}</Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Partner Instagram Rate</InputLabel>
+                                <Typography color="text.secondary">{selectedItem?.partner_ig_rate || 'N/A'}</Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Notes</InputLabel>
+                                <Typography color="text.secondary">{selectedItem?.notes || 'N/A'}</Typography>
+                            </Grid>
+
+                            <Grid size={{ xs: 12, md: 6 }}>
+
+                                <InputLabel>Revo Offer</InputLabel>
+                                <WrapedText value={selectedItem?.revo_offer || 'N/A'} />
+                            </Grid>
+                        </Grid>
                     </Stack>
                 </CardContent>
             </Card>
-        </PageLoader>
+        </PageLoader >
     );
 }
