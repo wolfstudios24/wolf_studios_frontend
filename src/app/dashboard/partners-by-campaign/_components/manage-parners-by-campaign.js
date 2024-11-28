@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 
 import { Box } from '@mui/material';
 import React from 'react';
-import { PartnersByCampaignProfile } from './partners-by-profile-profile';
+import { PartnersByCampaignProfile } from './partners-by-campaign-profile';
 import { PartnersByCampaignSideNav } from './side-navbar';
 
 export default function ManagePartnerByCampaign() {

@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 
 export const CustomLinkViewer = ({ domain, value }) => {
-    const textWithoutDomainName = value.replace(domain, '');
+    const textWithoutDomainName =  value ?  value.replace(domain, '') : "";
 
     return (
         <Typography color="text.secondary">

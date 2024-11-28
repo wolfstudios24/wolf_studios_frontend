@@ -22,12 +22,12 @@ export const ContributingPartners = ({ data }) => {
                     <Typography color="text.secondary">{data?.name}</Typography>
                     <Grid container spacing={2} mt={1}>
                         <Grid item size={{ xs: 12, md: 6 }}>
-                            <InputLabel>REVO Pinterest</InputLabel>
-                            <CustomLinkViewer domain="https://www.instagram.com/" value={data?.revo_pinterest} />
+                            <InputLabel>Instagram</InputLabel>
+                            <CustomLinkViewer domain="https://www.instagram.com/" value={data?.instagram} />
                         </Grid>
                         <Grid item size={{ xs: 12, md: 6 }}>
                             <InputLabel>Instagram Following</InputLabel>
-                            <ReadonlyStatusChip value={data?.pin_account} />
+                            <Typography color="text.secondary">{data?.instagram_following || '-'}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
