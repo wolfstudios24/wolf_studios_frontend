@@ -1,11 +1,16 @@
 import { CustomLinkViewer } from "@/components/formFields/CustomLinkViewer";
 import { Box, InputLabel, Paper, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
+import { SingleContributingPartnerRightPanel } from "./single-contributing-partner";
+import React from "react";
 
 export const ContributingPartners = ({ data }) => {
+     const [openRightPanel, setOpenRightPanel] = React.useState(false);
     return (
         <Paper elevation={3} sx={{ mt: 2 }}>
-            <Grid container>
+            <Grid 
+            onClick={()=> setOpenRightPanel(true)}
+            container>
                 <Grid item size={{ xs: 12, md: 3 }}>
                     <Box
                         sx={{ height: '100px', width: '100px' }}
@@ -32,6 +37,12 @@ export const ContributingPartners = ({ data }) => {
                     </Grid>
                 </Grid>
             </Grid>
+
+            {
+                openRightPanel && (
+                    <SingleContributingPartnerRightPanel open={openRightPanel} onClose={() => setOpenRightPanel(false)} />
+                )
+            }
         </Paper>
     );
 };
