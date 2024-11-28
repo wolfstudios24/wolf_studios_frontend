@@ -7,12 +7,11 @@ import InputLabel from '@mui/material/InputLabel';
 import Stack from '@mui/material/Stack';
 
 
+import { ReadonlyStatus, ReadonlyStatusChip } from '@/components/formFields/readonly-status';
 import { WrapedText } from '@/components/formFields/wraped-text';
 import PageLoader from '@/components/PageLoader/PageLoader';
-import { Chip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { getModifiedStatus } from '@/helper/common';
-import { ReadonlyStatus } from '@/components/formFields/readonly-status';
 import Image from 'next/image';
 
 
@@ -45,13 +44,13 @@ export function NeedsApprovalSingleProfile({ selectedItem }) {
                             <Grid size={{ xs: 12, md: 6 }}>
 
                                 <InputLabel>Revo Status</InputLabel>
-                                <ReadonlyStatus value={selectedItem?.revo_status} />
+                                <ReadonlyStatusChip value={selectedItem?.revo_status} />
                             </Grid>
 
                             <Grid size={{ xs: 12, md: 6 }}>
 
                                 <InputLabel>Affiliate Platform</InputLabel>
-                                <Typography color="text.secondary">{selectedItem?.affiliate_platform || 'N/A'}</Typography>
+                                <ReadonlyStatusChip value={selectedItem?.affiliate_platform} />
                             </Grid>
 
                             <Grid size={{ xs: 12, md: 6 }}>

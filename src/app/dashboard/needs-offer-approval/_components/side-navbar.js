@@ -1,16 +1,17 @@
 'use client';
 
-import { getSpeficiLengthString } from '@/helper/common';
+import { debounceFunc, getSpeficiLengthString } from '@/helper/common';
+import { Card, debounce, Divider, InputBase, Paper } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import { getNeedsApprovalNavItemsAsync } from '../_lib/action';
-import { Card } from '@mui/material';
 
 
 export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
-    const [navItems, setNavItems] = React.useState([]);
+    const [navItems, setNavItems] = React.useState([]); // Unfiltered items
+    const [filteredNavItems, setFilteredNavItems] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
 
     async function getNeedsApprovalNavitems() {
@@ -18,8 +19,8 @@ export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
             setLoading(true)
             const response = await getNeedsApprovalNavItemsAsync();
             if (response.success) {
-                console.log(response.data)
                 setNavItems(response.data);
+                setFilteredNavItems(response.data);
             }
         } catch (error) {
             console.log(error);
@@ -27,6 +28,21 @@ export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
             setLoading(false)
         }
     }
+
+    const handleSearch = (searchTerm) => {
+        if (!searchTerm) {
+            setFilteredNavItems(navItems);
+        } else {
+            const filteredValue = navItems.filter((item) =>
+                item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredNavItems(filteredValue);
+        }
+    };
+
+    const handleDebouncedSearch = React.useMemo(() => {
+        return debounceFunc(handleSearch, 500)
+    }, [navItems])
 
     React.useEffect(() => {
         getNeedsApprovalNavitems();
@@ -36,6 +52,9 @@ export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
         if (navItems.length === 0) return
         handleClickNeedsOffer(navItems[0])
     }, [navItems])
+
+
+    console.log(filteredNavItems, "filteredNavItems outside.....");
 
     return (
         <Card sx={{
@@ -67,7 +86,21 @@ export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
                 spacing={1}
                 sx={{ listStyle: 'none', m: 0, p: 0 }}
             >
-                {navItems.map((item) => (
+                <Paper
+                    component="form"
+                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+                >
+                    <InputBase
+                        sx={{ ml: 1, flex: 1 }}
+                        placeholder="Search by name"
+                        inputProps={{ 'aria-label': 'Search by name' }}
+                        onChange={(e) => { handleDebouncedSearch(e.target.value) }}
+                    />
+                    <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+
+
+                </Paper>
+                {filteredNavItems.map((item) => (
                     <NavItem data={item} key={item.id} handleClickNeedsOffer={handleClickNeedsOffer} disabled={loading} />
                 ))}
             </Stack>
