@@ -20,3 +20,26 @@ export const getSearchQuery = (queryParams) => {
     query += `page=${page}&limit=${rowsPerPage}`;
     return query;
 };
+
+
+export const getSpeficiLengthString = (string, length) => {
+    if (string.length > length) {
+        return string.substring(0, length) + "...";
+    }
+    return string;
+};
+
+export const getModifiedStatus = (status) => {
+    const newStatus = status.split("_").join(" ").toUpperCase();
+    return newStatus;
+}
+
+export function debounceFunc(func, delay) {
+    let timer;
+    return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+}
