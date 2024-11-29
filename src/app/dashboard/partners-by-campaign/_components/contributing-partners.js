@@ -5,12 +5,18 @@ import { SingleContributingPartnerRightPanel } from "./single-contributing-partn
 import React from "react";
 
 export const ContributingPartners = ({ data }) => {
-     const [openRightPanel, setOpenRightPanel] = React.useState(false);
+    const [openRightPanel, setOpenRightPanel] = React.useState(false);
+    const [rightPanelData, setRightPanelData] = React.useState(null);
+
+    const handleOpenRightPanel = (data) => {
+        setOpenRightPanel(true);
+        setRightPanelData(data);
+    }
     return (
         <Paper elevation={3} sx={{ mt: 2 }}>
-            <Grid 
-            onClick={()=> setOpenRightPanel(true)}
-            container>
+            <Grid
+                onClick={() => handleOpenRightPanel(data)}
+                container>
                 <Grid item size={{ xs: 12, md: 3 }}>
                     <Box
                         sx={{ height: '100px', width: '100px' }}
@@ -40,7 +46,11 @@ export const ContributingPartners = ({ data }) => {
 
             {
                 openRightPanel && (
-                    <SingleContributingPartnerRightPanel open={openRightPanel} onClose={() => setOpenRightPanel(false)} />
+                    <SingleContributingPartnerRightPanel
+                        open={true}
+                        data={rightPanelData}
+                        onClose={() => setOpenRightPanel(false)}
+                    />
                 )
             }
         </Paper>
