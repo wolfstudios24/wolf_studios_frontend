@@ -1,7 +1,7 @@
 'use client';
 
 import { debounceFunc, getSpeficiLengthString } from '@/helper/common';
-import { Card, Divider, InputBase, Paper } from '@mui/material';
+import { Card, Divider, FormControl, InputBase, InputLabel, MenuItem, Paper, Select } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -10,9 +10,11 @@ import { getPartnersByCampaignAsync } from '../_lib/action';
 
 
 export function PartnersByCampaignSideNav({ handleSelectItem }) {
-    const [navItems, setNavItems] = React.useState([]); // Unfiltered items
+    const [navItems, setNavItems] = React.useState([]); 
     const [filteredNavItems, setFilteredNavItems] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+    const [status, setStatus] = React.useState("All");
+    const [searchTerm, setSearchTerm] = React.useState("");
 
     async function getNeedsApprovalNavitems() {
         try {
@@ -29,24 +31,25 @@ export function PartnersByCampaignSideNav({ handleSelectItem }) {
         }
     }
 
-    const handleSearch = (searchTerm) => {
-        if (!searchTerm) {
-            setFilteredNavItems(navItems);
-        } else {
-            const filteredValue = navItems.filter((item) =>
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setFilteredNavItems(filteredValue);
-        }
-    };
 
-    const handleDebouncedSearch = React.useMemo(() => {
-        return debounceFunc(handleSearch, 500)
-    }, [navItems])
+    const handleSearch = (searchText, searchStatus) => {
+        const statusFiltered = searchStatus === "all" ? navItems : navItems.filter((item) => item.campaign_status === status);
+
+        const searchFiltered = searchText === "" ? statusFiltered : statusFiltered.filter((item) => {
+            return item.name.toLowerCase().includes(searchText.toLowerCase());
+        });
+
+        setFilteredNavItems(searchFiltered);
+    };
 
     React.useEffect(() => {
         getNeedsApprovalNavitems();
     }, [])
+
+
+    React.useEffect(() => {
+        handleSearch(searchTerm, status);
+    }, [status, searchTerm]);
 
     React.useEffect(() => {
         if (navItems.length === 0) return
@@ -81,20 +84,34 @@ export function PartnersByCampaignSideNav({ handleSelectItem }) {
             <Stack
                 component="ul"
                 spacing={1}
-                sx={{ listStyle: 'none', m: 0, p: 0 }}
+                sx={{ listStyle: 'none', m: 0, p: '4px 12px', }}
             >
+                <FormControl fullWidth >
+                    <InputLabel>Search by status</InputLabel>
+                    <Select
+                        name="status"
+                        id="status"
+                        value={status}
+                        label="Status"
+                        onChange={(event) => setStatus(event.target.value)}
+                        size="small"
+                        placeholder="Search by status"
+                    >
+                        <MenuItem value={"all"}>All</MenuItem>
+                        <MenuItem value={"active"}>Active</MenuItem>
+                        <MenuItem value={"inactive"}>Inactive</MenuItem>
+                    </Select>
+                </FormControl>
                 <Paper
                     component="form"
-                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
                 >
                     <InputBase
-                        sx={{ ml: 1, flex: 1 }}
+                        sx={{ border: '1px solid var(--mui-palette-divider)' }}
                         placeholder="Search by name"
                         inputProps={{ 'aria-label': 'Search by name' }}
-                        onChange={(e) => { handleDebouncedSearch(e.target.value) }}
+                        onChange={(e) => { setSearchTerm(e.target.value) }}
                     />
-                    <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-
 
                 </Paper>
                 {filteredNavItems.map((item) => (
@@ -120,7 +137,7 @@ function NavItem({ data, handleSelectItem, disabled }) {
                     display: 'flex',
                     flex: '0 0 auto',
                     gap: 1,
-                    p: '6px 16px',
+                    p: '6px 6px',
                     textDecoration: 'none',
                     whiteSpace: 'nowrap',
                     ...(disabled && { color: 'var(--mui-palette-text-disabled)', cursor: 'not-allowed' }),

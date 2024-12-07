@@ -1,7 +1,7 @@
 'use client';
 
-import { debounceFunc, getSpeficiLengthString } from '@/helper/common';
-import { Card, debounce, Divider, InputBase, Paper } from '@mui/material';
+import { getSpeficiLengthString } from '@/helper/common';
+import { Card, FormControl, InputBase, InputLabel, MenuItem, Paper, Select } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -13,6 +13,8 @@ export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
     const [navItems, setNavItems] = React.useState([]); // Unfiltered items
     const [filteredNavItems, setFilteredNavItems] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+    const [status, setStatus] = React.useState("All");
+    const [searchTerm, setSearchTerm] = React.useState("");
 
     async function getNeedsApprovalNavitems() {
         try {
@@ -29,32 +31,31 @@ export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
         }
     }
 
-    const handleSearch = (searchTerm) => {
-        if (!searchTerm) {
-            setFilteredNavItems(navItems);
-        } else {
-            const filteredValue = navItems.filter((item) =>
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setFilteredNavItems(filteredValue);
-        }
+    const handleSearch = (searchText, searchStatus) => {
+        const statusFiltered = searchStatus === "all" ? navItems : navItems.filter((item) => item.revo_status === status);
+
+        const searchFiltered = searchText === "" ? statusFiltered : statusFiltered.filter((item) => {
+            return item.name.toLowerCase().includes(searchText.toLowerCase());
+        });
+
+        setFilteredNavItems(searchFiltered);
     };
 
-    const handleDebouncedSearch = React.useMemo(() => {
-        return debounceFunc(handleSearch, 500)
-    }, [navItems])
 
     React.useEffect(() => {
         getNeedsApprovalNavitems();
-    }, [])
+    }, []);
+
+
+    React.useEffect(() => {
+        handleSearch(searchTerm, status);
+    }, [status, searchTerm]);
 
     React.useEffect(() => {
         if (navItems.length === 0) return
         handleClickNeedsOffer(navItems[0])
     }, [navItems])
 
-
-    console.log(filteredNavItems, "filteredNavItems outside.....");
 
     return (
         <Card sx={{
@@ -84,21 +85,35 @@ export function NeedOfferApprovalSideNav({ handleClickNeedsOffer }) {
             <Stack
                 component="ul"
                 spacing={1}
-                sx={{ listStyle: 'none', m: 0, p: 0 }}
+                sx={{ listStyle: 'none', m: 0, p: '4px 12px', }}
             >
+                <FormControl fullWidth >
+                    <InputLabel>Search by status</InputLabel>
+                    <Select
+                        name="status"
+                        id="status"
+                        value={status}
+                        label="Status"
+                        onChange={(event) => setStatus(event.target.value)}
+                        size="small"
+                        placeholder="Search by status"
+                    >
+                        <MenuItem value={"all"}>All</MenuItem>
+                        <MenuItem value={"needs_approval"}>Needs Approval</MenuItem>
+                        <MenuItem value={"do_not_contact"}>Do Not Contact</MenuItem>
+                        <MenuItem value={"needs_offer"}>Needs Offer</MenuItem>
+                    </Select>
+                </FormControl>
                 <Paper
                     component="form"
-                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+                    sx={{ display: 'flex', alignItems: 'center' }}
                 >
                     <InputBase
-                        sx={{ ml: 1, flex: 1 }}
+                        sx={{ border: '1px solid var(--mui-palette-divider)' }}
                         placeholder="Search by name"
                         inputProps={{ 'aria-label': 'Search by name' }}
-                        onChange={(e) => { handleDebouncedSearch(e.target.value) }}
+                        onChange={(e) => { setSearchTerm(e.target.value) }}
                     />
-                    <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-
-
                 </Paper>
                 {filteredNavItems.map((item) => (
                     <NavItem data={item} key={item.id} handleClickNeedsOffer={handleClickNeedsOffer} disabled={loading} />
