@@ -11,6 +11,8 @@ import { paths } from '@/paths';
 
 export const metadata = { title: `Internal server error | Errors | ${config.site.name}` };
 
+
+
 export default function Page() {
   return (
     <Box
