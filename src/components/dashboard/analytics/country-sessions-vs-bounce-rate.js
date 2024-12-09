@@ -17,18 +17,6 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 
 import { NoSsr } from '@/components/core/no-ssr';
 
-const countries = {
-  ca: { name: 'Canada', flag: '/assets/flag-ca.svg' },
-  de: { name: 'Germany', flag: '/assets/flag-de.svg' },
-  ru: { name: 'Russia', flag: '/assets/flag-ru.svg' },
-  uk: { name: 'United Kingdom', flag: '/assets/flag-uk.svg' },
-  us: { name: 'United States', flag: '/assets/flag-us.svg' },
-};
-
-const bars = [
-  { name: 'Sessions', dataKey: 'v1', color: 'var(--mui-palette-primary-main)' },
-  { name: 'Bounce rate', dataKey: 'v2', color: 'var(--mui-palette-primary-100)' },
-];
 
 export function CountrySessionsVsBounce({ data }) {
   const chartHeight = 300;
@@ -46,32 +34,39 @@ export function CountrySessionsVsBounce({ data }) {
             <ChartPieIcon fontSize="var(--Icon-fontSize)" />
           </Avatar>
         }
-        title="Sessions vs bounce rate by country"
+        title="Total Contributed Engagement by Post Over 20K"
       />
       <CardContent>
-        <Stack divider={<Divider />} spacing={3}>
+        <Stack divider={<Divider />} >
           <NoSsr fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
             <ResponsiveContainer height={chartHeight}>
               <BarChart barGap={10} data={data} layout="vertical" margin={{ top: 0, right: 0, bottom: 0, left: 100 }}>
                 <CartesianGrid horizontal={false} strokeDasharray="2 4" syncWithTicks />
                 <XAxis axisLine={false} tickLine={false} type="number" />
                 <YAxis axisLine={false} dataKey="name" tick={<Tick />} tickLine={false} type="category" />
-                {bars.map((bar) => (
-                  <Bar
-                    animationDuration={300}
-                    barSize={12}
-                    dataKey={bar.dataKey}
-                    fill={bar.color}
-                    key={bar.name}
-                    name={bar.name}
-                    radius={[5, 5, 5, 5]}
-                  />
-                ))}
+
+                <Bar
+                  dataKey="total"
+                  barSize={10} shape={(props) => {
+                    const { x, y, width, height, payload } = props;
+                    return (
+                      <rect
+                        x={x}
+                        y={y}
+                        width={width}
+                        height={height}
+                        fill={payload.color}
+                      />
+                    );
+                  }}
+                  label={renderCustomBarLabel}
+                />
+
                 <Tooltip animationDuration={50} content={<TooltipContent />} cursor={false} />
               </BarChart>
             </ResponsiveContainer>
           </NoSsr>
-          <Legend />
+          {/* <Legend /> */}
         </Stack>
       </CardContent>
     </Card>
@@ -79,15 +74,13 @@ export function CountrySessionsVsBounce({ data }) {
 }
 
 function Tick({ height, payload, width, x, y }) {
-  const { name, flag } = countries[payload?.value] ?? { name: 'Unknown', flag: '' };
+  const name = payload?.value ?? "Unknown";
 
   return (
-    <foreignObject height={width} width={height} x={(x ?? 0) - 150} y={(y ?? 0) - 16}>
+    <foreignObject height={width} width={150}  x={(x ?? 0) - 150} y={(y  - 10)}>
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-        <Box sx={{ height: '1rem', width: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Box alt={name} component="img" src={flag} sx={{ height: 'auto', width: '100%' }} />
-        </Box>
-        <Typography noWrap variant="body2">
+
+        <Typography noWrap color="text.secondary" variant="inherit" sx={{fontSize: "12px"}}>
           {name}
         </Typography>
       </Stack>
@@ -119,13 +112,19 @@ function TooltipContent({ active, payload }) {
     <Paper sx={{ border: '1px solid var(--mui-palette-divider)', boxShadow: 'var(--mui-shadows-16)', p: 1 }}>
       <Stack spacing={2}>
         {payload?.map((entry) => (
-          <Stack direction="row" key={entry.name} spacing={3} sx={{ alignItems: 'center' }}>
+          <Stack direction="column" key={entry.name} spacing={1} >
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
-              <Box sx={{ bgcolor: entry.fill, borderRadius: '2px', height: '8px', width: '8px' }} />
-              <Typography sx={{ whiteSpace: 'nowrap' }}>{entry.name}</Typography>
+              <Box sx={{ bgcolor: entry.payload.color, borderRadius: '2px', height: '8px', width: '8px' }} />
+              <Typography color="text.secondary" variant="h6">{entry.payload.name}</Typography>
             </Stack>
             <Typography color="text.secondary" variant="body2">
-              {new Intl.NumberFormat('en-US').format(entry.value)}
+              Campaign: {entry.payload.campaign}
+            </Typography>
+            <Typography color="text.secondary" variant="body2">
+              Sum: {entry.payload.sum}
+            </Typography>
+            <Typography color="text.secondary" variant="body2">
+              Total: {entry.payload.total}
             </Typography>
           </Stack>
         ))}
@@ -133,3 +132,18 @@ function TooltipContent({ active, payload }) {
     </Paper>
   );
 }
+
+
+const renderCustomBarLabel = ({ payload, x, y, width, height, value }) => {
+  return <text
+    x={x + width + 5} // Position the label at the end of the bar with a small offset
+    y={y + 15} // Center the text vertically within the bar
+    fill="#666"
+    textAnchor="start" // Align text to the start of the position
+    dy={-4}
+    style={{ fontSize: '12px', fontWeight: 'bold' }} // Optional styling
+  >
+    {value}
+  </text>
+
+};

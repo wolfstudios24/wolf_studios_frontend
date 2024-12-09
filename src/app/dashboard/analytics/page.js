@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
@@ -6,15 +5,24 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 
-import { config } from '@/config';
 import { ChannelSessionsVsBounce } from '@/components/dashboard/analytics/channel-sessions-vs-bounce-rate';
 import { CountrySessionsVsBounce } from '@/components/dashboard/analytics/country-sessions-vs-bounce-rate';
 import { Devices } from '@/components/dashboard/analytics/devices';
 import { InboundOutbound } from '@/components/dashboard/analytics/inbound-outbound';
 import { Insight } from '@/components/dashboard/analytics/insight';
 import { Summary } from '@/components/dashboard/analytics/summary';
+import { config } from '@/config';
 
 export const metadata = { title: `Analytics | Dashboard | ${config.site.name}` };
+
+const colorPalette = [
+  "#FF5733", // Red
+  "#33FF57", // Green
+  "#3357FF", // Blue
+  "#FF33A1", // Pink
+  "#FFC300", // Yellow
+  "#DAF7A6", // Light Green
+];
 
 export default function Page() {
   return (
@@ -49,11 +57,41 @@ export default function Page() {
           >
             <CountrySessionsVsBounce
               data={[
-                { name: 'us', v1: 600, v2: 560 },
-                { name: 'uk', v1: 540, v2: 500 },
-                { name: 'ru', v1: 490, v2: 450 },
-                { name: 'ca', v1: 440, v2: 380 },
-                { name: 'de', v1: 320, v2: 280 },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "REVO massage gun",
+                  sum: 3990,
+                  total: 1609,
+                   color: colorPalette[0],
+                },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "REVO UGC ARMY",
+                  sum: 3990,
+                  total: 1609,
+                  color: colorPalette[1]
+                },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "REVO Walking Pad",
+                  sum: 3990,
+                  total: 1609,
+                  color: colorPalette[3]
+                },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "50 Review Challenge",
+                  sum: 3990,
+                  total: 1609,
+                  color: colorPalette[4]
+                },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "50 Review Challenge",
+                  sum: 3990,
+                  total: 1609,
+                  color: colorPalette[5]
+                }
               ]}
             />
           </Grid>
@@ -65,7 +103,7 @@ export default function Page() {
           >
             <ChannelSessionsVsBounce
               data={[
-                { name: 'Organic', v1: 600, v2: 560 },
+                { name: 'Organic', v1: 600, v2: 160 },
                 { name: 'Direct', v1: 540, v2: 500 },
                 { name: 'Paid Ads', v1: 490, v2: 450 },
                 { name: 'Social', v1: 440, v2: 380 },
