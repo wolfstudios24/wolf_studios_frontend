@@ -22,6 +22,11 @@ const colorPalette = [
   "#FF33A1", // Pink
   "#FFC300", // Yellow
   "#DAF7A6", // Light Green
+  "#FF4500", // Orange
+  "#4B0082", // Indigo
+  "#00FFFF", // Cyan
+  "#FF1493", // Deep Pink
+  "#A52A2A", // Brown
 ];
 
 export default function Page() {
@@ -61,37 +66,46 @@ export default function Page() {
                   name: 'Alex Siquig Outdoor Workout 6',
                   campaign: "REVO massage gun",
                   sum: 3990,
-                  total: 1609,
-                   color: colorPalette[0],
+                  total: 112609,
+                  color: colorPalette[0],
                 },
                 {
                   name: 'Alex Siquig Outdoor Workout 6',
                   campaign: "REVO UGC ARMY",
                   sum: 3990,
-                  total: 1609,
+                  total: 31609,
                   color: colorPalette[1]
                 },
                 {
                   name: 'Alex Siquig Outdoor Workout 6',
                   campaign: "REVO Walking Pad",
                   sum: 3990,
-                  total: 1609,
+                  total: 21609,
                   color: colorPalette[3]
                 },
                 {
                   name: 'Alex Siquig Outdoor Workout 6',
                   campaign: "50 Review Challenge",
                   sum: 3990,
-                  total: 1609,
+                  total: 41609,
                   color: colorPalette[4]
                 },
                 {
                   name: 'Alex Siquig Outdoor Workout 6',
                   campaign: "50 Review Challenge",
                   sum: 3990,
-                  total: 1609,
+                  total: 21609,
                   color: colorPalette[5]
-                }
+                },
+
+                {
+                  name: 'Publish fazly posts',
+                  campaign: "50 Review Challenge 2",
+                  sum: 3990,
+                  total: 41609,
+                  color: colorPalette[6]
+                },
+
               ]}
             />
           </Grid>

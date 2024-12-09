@@ -21,6 +21,16 @@ import { NoSsr } from '@/components/core/no-ssr';
 export function CountrySessionsVsBounce({ data }) {
   const chartHeight = 300;
 
+  const ticks = [0, 20000, 40000, 60000, 10000];
+
+  const uniqueData = Array.from(
+    new Map(data.map(item => [item.campaign, item])).values()
+  );
+
+
+  console.log(uniqueData)
+
+
   return (
     <Card>
       <CardHeader
@@ -36,18 +46,18 @@ export function CountrySessionsVsBounce({ data }) {
         }
         title="Total Contributed Engagement by Post Over 20K"
       />
-      <CardContent>
+      <CardContent sx={{pr: 4}}>
         <Stack divider={<Divider />} >
           <NoSsr fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
             <ResponsiveContainer height={chartHeight}>
-              <BarChart barGap={10} data={data} layout="vertical" margin={{ top: 0, right: 0, bottom: 0, left: 100 }}>
+              <BarChart barGap={1} data={data} layout="vertical" margin={{ top: 0, right: 0, bottom: 0, left: 100 }}>
                 <CartesianGrid horizontal={false} strokeDasharray="2 4" syncWithTicks />
                 <XAxis axisLine={false} tickLine={false} type="number" />
                 <YAxis axisLine={false} dataKey="name" tick={<Tick />} tickLine={false} type="category" />
 
                 <Bar
                   dataKey="total"
-                  barSize={10} shape={(props) => {
+                  barSize={8} shape={(props) => {
                     const { x, y, width, height, payload } = props;
                     return (
                       <rect
@@ -66,8 +76,9 @@ export function CountrySessionsVsBounce({ data }) {
               </BarChart>
             </ResponsiveContainer>
           </NoSsr>
-          {/* <Legend /> */}
+          <Legend data={uniqueData}/>
         </Stack>
+        
       </CardContent>
     </Card>
   );
@@ -75,12 +86,13 @@ export function CountrySessionsVsBounce({ data }) {
 
 function Tick({ height, payload, width, x, y }) {
   const name = payload?.value ?? "Unknown";
+  const adjustedX = Math.max(x - 150, 0);
 
   return (
-    <foreignObject height={width} width={150}  x={(x ?? 0) - 150} y={(y  - 10)}>
+    <foreignObject height={width} width={150} x={adjustedX} y={(y - 10)}>
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
 
-        <Typography noWrap color="text.secondary" variant="inherit" sx={{fontSize: "12px"}}>
+        <Typography noWrap color="text.secondary" variant="inherit" sx={{ fontSize: "12px" }}>
           {name}
         </Typography>
       </Stack>
@@ -88,14 +100,14 @@ function Tick({ height, payload, width, x, y }) {
   );
 }
 
-function Legend() {
+function Legend({ data }) {
   return (
     <Stack direction="row" spacing={2}>
-      {bars.map((bar) => (
-        <Stack direction="row" key={bar.name} spacing={1} sx={{ alignItems: 'center' }}>
-          <Box sx={{ bgcolor: bar.color, borderRadius: '2px', height: '4px', width: '16px' }} />
+      {data.map((bar) => (
+        <Stack direction="row" key={bar.campaign} spacing={1} sx={{ alignItems: 'center' , whiteSpace: 'nowrap'}}>
+          <Box sx={{ bgcolor: bar.color, borderRadius: '2px', height: '8px', width: '16px' }} />
           <Typography color="text.secondary" variant="caption">
-            {bar.name}
+            {bar.campaign}
           </Typography>
         </Stack>
       ))}
@@ -110,7 +122,7 @@ function TooltipContent({ active, payload }) {
 
   return (
     <Paper sx={{ border: '1px solid var(--mui-palette-divider)', boxShadow: 'var(--mui-shadows-16)', p: 1 }}>
-      <Stack spacing={2}>
+      <Stack >
         {payload?.map((entry) => (
           <Stack direction="column" key={entry.name} spacing={1} >
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
@@ -136,12 +148,12 @@ function TooltipContent({ active, payload }) {
 
 const renderCustomBarLabel = ({ payload, x, y, width, height, value }) => {
   return <text
-    x={x + width + 5} // Position the label at the end of the bar with a small offset
-    y={y + 15} // Center the text vertically within the bar
+    x={x + width + 5}
+    y={y + 12}
     fill="#666"
-    textAnchor="start" // Align text to the start of the position
+    textAnchor="start"
     dy={-4}
-    style={{ fontSize: '12px', fontWeight: 'bold' }} // Optional styling
+    style={{ fontSize: '12px', fontWeight: 'bold' }}
   >
     {value}
   </text>
