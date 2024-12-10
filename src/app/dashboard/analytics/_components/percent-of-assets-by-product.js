@@ -120,10 +120,10 @@ function TooltipContent({ active, payload }) {
 }
 
 const renderCustomBarLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-  const RADIAN = Math.PI / 180; // Conversion factor for angles
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5; // Adjust placement to center within the slice
-  const x = cx + radius * Math.cos(-midAngle * RADIAN); // Calculate X position
-  const y = cy + radius * Math.sin(-midAngle * RADIAN); // Calculate Y position
+  const RADIAN = Math.PI / 180;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN); // labe X position
+  const y = cy + radius * Math.sin(-midAngle * RADIAN); // labe Y position
 
   return (
     <text

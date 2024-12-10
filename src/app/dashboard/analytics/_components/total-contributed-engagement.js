@@ -16,7 +16,7 @@ import { DotsThree as DotsThreeIcon } from '@phosphor-icons/react/dist/ssr/DotsT
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { NoSsr } from '@/components/core/no-ssr';
-import  Grid  from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid2';
 
 
 export function TotalContributedEngagement({ data }) {
@@ -54,7 +54,7 @@ export function TotalContributedEngagement({ data }) {
 
                 <Bar
                   dataKey="total"
-                  barSize={8} 
+                  barSize={8}
                   shape={(props) => {
                     const { x, y, width, height, payload } = props;
                     return (
@@ -88,7 +88,7 @@ function Tick({ height, payload, width, x, y }) {
 
   return (
     <foreignObject height={width} width={150} x={adjustedX} y={(y - 10)}>
-      <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+      <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'end' }}>
 
         <Typography noWrap color="text.secondary" variant="inherit" sx={{ fontSize: "12px" }}>
           {name}

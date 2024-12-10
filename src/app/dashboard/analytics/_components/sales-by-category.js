@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -19,13 +18,13 @@ import { NoSsr } from '@/components/core/no-ssr';
 import Grid from '@mui/material/Grid2';
 
 
-export function IgViewsByPost({ data }) {
+export function SalesByCategory({ data }) {
   const chartHeight = 300;
 
   const ticks = [0, 20000, 40000, 60000, 10000];
 
   const uniqueData = Array.from(
-    new Map(data.map(item => [item.campaign, item])).values()
+    new Map(data.map(item => [item.profiel_category, item])).values()
   );
 
   return (
@@ -41,7 +40,7 @@ export function IgViewsByPost({ data }) {
             <ChartPieIcon fontSize="var(--Icon-fontSize)" />
           </Avatar>
         }
-        title="Over 20,000 IG Views by Post"
+        title="Levanta: All Sales by Category"
       />
       <CardContent sx={{ pr: 4 }}>
         <Stack divider={<Divider />} >
@@ -50,11 +49,12 @@ export function IgViewsByPost({ data }) {
               <BarChart barGap={1} data={data} layout="vertical" margin={{ top: 0, right: 0, bottom: 0, left: 100 }}>
                 <CartesianGrid horizontal={false} strokeDasharray="2 4" syncWithTicks />
                 <XAxis axisLine={false} tickLine={false} type="number" />
-                <YAxis axisLine={false} dataKey="name" tick={<Tick />} tickLine={false} type="category" />
+                <YAxis axisLine={false} dataKey="profiel_category" tick={<Tick />} tickLine={false} type="category" />
 
                 <Bar
-                  dataKey="total"
-                  barSize={8} shape={(props) => {
+                  dataKey="sum"
+                  barSize={50}
+                  shape={(props) => {
                     const { x, y, width, height, payload } = props;
                     return (
                       <rect
@@ -73,7 +73,7 @@ export function IgViewsByPost({ data }) {
               </BarChart>
             </ResponsiveContainer>
           </NoSsr>
-          <Legend data={uniqueData} />
+          {/* <Legend data={uniqueData} /> */}
         </Stack>
 
       </CardContent>
@@ -82,6 +82,7 @@ export function IgViewsByPost({ data }) {
 }
 
 function Tick({ height, payload, width, x, y }) {
+  console.log(payload, "paload...")
   const name = payload?.value ?? "Unknown";
   const adjustedX = Math.max(x - 150, 0);
 
