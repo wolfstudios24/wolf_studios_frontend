@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { ChannelSessionsVsBounce } from '@/components/dashboard/analytics/channel-sessions-vs-bounce-rate';
+import { ChannelSessionsVsBounce, NumberOfAssestsByCampaign } from '@/components/dashboard/analytics/number-of-assests-by-campaign';
 import { Devices } from '@/components/dashboard/analytics/devices';
 import { IgViewsByPost } from '@/components/dashboard/analytics/ig-views-by-post';
 import { InboundOutbound } from '@/components/dashboard/analytics/inbound-outbound';
@@ -25,6 +25,7 @@ const colorPalette = [
   "#00FFFF", // Cyan
   "#FF1493", // Deep Pink
   "#A52A2A", // Brown
+  "#4787CD", // Brown
 ];
 
 export default function Page() {
@@ -42,17 +43,8 @@ export default function Page() {
           <Box sx={{ flex: '1 1 auto' }}>
             <Typography variant="h4">Content Performance</Typography>
           </Box>
-          {/* <div>
-            <Button startIcon={<PlusIcon />} variant="contained">
-              Add metrics
-            </Button>
-          </div> */}
         </Stack>
         <Grid container spacing={4}>
-          {/* <Grid size={12}>
-            <Summary />
-          </Grid> */}
-
           {/* Total Contributed Engagement by Post Over 20K */}
           <Grid
             size={{
@@ -128,6 +120,7 @@ export default function Page() {
               ]}
             />
           </Grid>
+
           {/* Over 20,000 IG Views by Post */}
           <Grid
             size={{
@@ -203,19 +196,25 @@ export default function Page() {
               ]}
             />
           </Grid>
+
+          {/*Number of Assets by Campaign */}
           <Grid
             size={{
               lg: 6,
               xs: 12,
             }}
           >
-            <ChannelSessionsVsBounce
+            <NumberOfAssestsByCampaign
               data={[
-                { name: 'Organic', v1: 600, v2: 160 },
-                { name: 'Direct', v1: 540, v2: 500 },
-                { name: 'Paid Ads', v1: 490, v2: 450 },
-                { name: 'Social', v1: 440, v2: 380 },
-                { name: 'Email', v1: 320, v2: 280 },
+                { campaign: '#hotgirlwalks', no_of_contents: 5, color: colorPalette[11] },
+                { campaign: '50 Review Challenge', no_of_contents: 15, color: colorPalette[11] },
+                { campaign: 'B2B', no_of_contents: 4, color: colorPalette[11] },
+                { campaign: 'Club REVO I', no_of_contents: 8, color: colorPalette[11] },
+                { campaign: 'REVO Collabs', no_of_contents: 70, color: colorPalette[11] },
+                { campaign: 'REVO Cupper', no_of_contents: 324, color: colorPalette[11] },
+                { campaign: 'REVO Massage Gun', no_of_contents: 213, color: colorPalette[11] },
+                { campaign: 'REVO UGC ARMY', no_of_contents: 629, color: colorPalette[11] },
+                { campaign: 'REVO Walking Pad', no_of_contents: 190, color: colorPalette[11] },
               ]}
             />
           </Grid>

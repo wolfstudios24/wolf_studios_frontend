@@ -22,7 +22,7 @@ const bars = [
   { name: 'Bounce rate', dataKey: 'v2', color: 'var(--mui-palette-primary-100)' },
 ];
 
-export function ChannelSessionsVsBounce({ data }) {
+export function NumberOfAssestsByCampaign({ data }) {
   const chartHeight = 300;
 
   return (
@@ -38,7 +38,7 @@ export function ChannelSessionsVsBounce({ data }) {
             <ShareNetworkIcon fontSize="var(--Icon-fontSize)" />
           </Avatar>
         }
-        title="Sessions vs bounce rate by channel"
+        title="Number of assests by campaign"
       />
       <CardContent>
         <Stack divider={<Divider />} spacing={3}>
@@ -46,19 +46,28 @@ export function ChannelSessionsVsBounce({ data }) {
             <ResponsiveContainer height={chartHeight}>
               <BarChart barGap={12} data={data} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                 <CartesianGrid strokeDasharray="2 4" vertical={false} />
-                <XAxis axisLine={false} dataKey="name" tickLine={false} type="category" />
-                <YAxis axisLine={false} hide type="number" />
-                {bars.map((bar) => (
-                  <Bar
-                    animationDuration={300}
-                    barSize={24}
-                    dataKey={bar.dataKey}
-                    fill={bar.color}
-                    key={bar.name}
-                    name={bar.name}
-                    radius={[5, 5, 0, 0]}
-                  />
-                ))}
+                <XAxis dataKey="campaign" />
+                <YAxis />
+                <Bar
+                  animationDuration={300}
+                  barSize={50}
+                  radius={[5, 5, 0, 0]}
+                  dataKey="no_of_contents"
+                  shape={(props) => {
+                    const { x, y, width, height, payload } = props;
+                    return (
+                      <rect
+                        x={x}
+                        y={y}
+                        width={width}
+                        height={height}
+                        fill={payload.color}
+                      
+                      />
+                    );
+                  }}
+                  label={{ position: 'top' }}
+                />
                 <Tooltip animationDuration={50} content={<TooltipContent />} cursor={false} />
               </BarChart>
             </ResponsiveContainer>
@@ -94,13 +103,16 @@ function TooltipContent({ active, payload }) {
     <Paper sx={{ border: '1px solid var(--mui-palette-divider)', boxShadow: 'var(--mui-shadows-16)', p: 1 }}>
       <Stack spacing={2}>
         {payload?.map((entry) => (
-          <Stack direction="row" key={entry.name} spacing={3} sx={{ alignItems: 'center' }}>
+          <Stack direction="column" key={entry.name} spacing={1} >
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
-              <Box sx={{ bgcolor: entry.fill, borderRadius: '2px', height: '8px', width: '8px' }} />
-              <Typography sx={{ whiteSpace: 'nowrap' }}>{entry.name}</Typography>
+              <Box sx={{ bgcolor: entry.payload.color, borderRadius: '2px', height: '8px', width: '8px' }} />
+              <Typography color="text.secondary" variant="body2">
+                Campaign: {entry.payload.campaign}
+              </Typography>
             </Stack>
+           
             <Typography color="text.secondary" variant="body2">
-              {new Intl.NumberFormat('en-US').format(entry.value)}
+              No of contents: {entry.payload.no_of_contents}
             </Typography>
           </Stack>
         ))}

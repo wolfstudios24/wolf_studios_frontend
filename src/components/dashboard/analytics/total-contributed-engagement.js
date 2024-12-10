@@ -54,7 +54,8 @@ export function TotalContributedEngagement({ data }) {
 
                 <Bar
                   dataKey="total"
-                  barSize={8} shape={(props) => {
+                  barSize={8} 
+                  shape={(props) => {
                     const { x, y, width, height, payload } = props;
                     return (
                       <rect
