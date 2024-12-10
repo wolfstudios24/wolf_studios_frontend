@@ -3,13 +3,13 @@ import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { ChannelSessionsVsBounce, NumberOfAssestsByCampaign } from '@/components/dashboard/analytics/number-of-assests-by-campaign';
-import { Devices } from '@/components/dashboard/analytics/devices';
 import { IgViewsByPost } from '@/components/dashboard/analytics/ig-views-by-post';
 import { InboundOutbound } from '@/components/dashboard/analytics/inbound-outbound';
 import { Insight } from '@/components/dashboard/analytics/insight';
-import { TotalContributedEngagement } from '@/components/dashboard/analytics/total-contributed-engagement';
 import { config } from '@/config';
+import { NumberOfAssestsByCampaign } from './_components/number-of-assests-by-campaign';
+import { PercentOfAssetsByProduct } from './_components/percent-of-assets-by-product';
+import { TotalContributedEngagement } from './_components/total-contributed-engagement';
 
 export const metadata = { title: `Analytics | Dashboard | ${config.site.name}` };
 
@@ -48,7 +48,7 @@ export default function Page() {
           {/* Total Contributed Engagement by Post Over 20K */}
           <Grid
             size={{
-              lg: 6,
+              md: 6,
               xs: 12,
             }}
           >
@@ -124,7 +124,7 @@ export default function Page() {
           {/* Over 20,000 IG Views by Post */}
           <Grid
             size={{
-              lg: 6,
+              md: 6,
               xs: 12,
             }}
           >
@@ -200,7 +200,7 @@ export default function Page() {
           {/*Number of Assets by Campaign */}
           <Grid
             size={{
-              lg: 6,
+              md: 6,
               xs: 12,
             }}
           >
@@ -218,25 +218,28 @@ export default function Page() {
               ]}
             />
           </Grid>
-          
+
           {/* Percent of Assets by Product */}
           <Grid
             size={{
-              lg: 4,
+              md: 6,
               xs: 12,
             }}
           >
-            <Devices
+            <PercentOfAssetsByProduct
               data={[
-                { name: 'Desktop', value: 68.2, color: 'var(--mui-palette-primary-main)' },
-                { name: 'Mobile', value: 22.8, color: 'var(--mui-palette-success-main)' },
-                { name: 'Tablet', value: 10, color: 'var(--mui-palette-warning-main)' },
+                { product: 'REVO Massage Gun', values: 258, percent: 16.93, color: colorPalette[0] },
+                { product: 'REVO Oils & Creams', values: 29, percent: 1.90, color: colorPalette[1] },
+                { product: 'REVO Smart Cupper', values: 725, percent: 47.57, color: colorPalette[2] },
+                { product: 'REVO Walking Pad Pro', values: 136, percent: 8.92, color: colorPalette[3] },
+                { product: 'REVO Walking Pad Pro Max', values: 376, percent: 24.67, color: colorPalette[4] },
+
               ]}
             />
           </Grid>
           <Grid
             size={{
-              lg: 4,
+              md: 4,
               xs: 12,
             }}
           >
@@ -265,7 +268,7 @@ export default function Page() {
           </Grid>
           <Grid
             size={{
-              lg: 4,
+              md: 4,
               xs: 12,
             }}
           >
