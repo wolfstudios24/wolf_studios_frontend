@@ -232,7 +232,7 @@ export default function Page() {
                 { product: 'REVO Oils & Creams', values: 29, percent: 1.90, color: colorPalette[1] },
                 { product: 'REVO Smart Cupper', values: 725, percent: 47.57, color: colorPalette[2] },
                 { product: 'REVO Walking Pad Pro', values: 136, percent: 8.92, color: colorPalette[3] },
-                { product: 'REVO Walking Pad Pro Max', values: 376, percent: 24.67, color: colorPalette[4] },
+                { product: 'REVO Walking Pad Max', values: 376, percent: 24.67, color: colorPalette[4] },
 
               ]}
             />

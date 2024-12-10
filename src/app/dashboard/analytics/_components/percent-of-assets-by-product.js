@@ -55,6 +55,7 @@ export function PercentOfAssetsByProduct({ data }) {
                   nameKey="percent"
                   outerRadius={chartSize / 2}
                   strokeWidth={0}
+                  label={renderCustomBarLabel}
                 >
                   {data.map((entry) => (
                     <Cell fill={entry.color} key={entry.name} />
@@ -117,3 +118,22 @@ function TooltipContent({ active, payload }) {
     </Paper>
   );
 }
+
+const renderCustomBarLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+  const RADIAN = Math.PI / 180; // Conversion factor for angles
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5; // Adjust placement to center within the slice
+  const x = cx + radius * Math.cos(-midAngle * RADIAN); // Calculate X position
+  const y = cy + radius * Math.sin(-midAngle * RADIAN); // Calculate Y position
+
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle" // Center the text horizontally
+      dominantBaseline="middle" // Center the text vertically
+      style={{ fontSize: '10px', fontWeight: 'bold', fill: '#333' }}
+    >
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
