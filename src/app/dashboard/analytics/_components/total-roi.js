@@ -18,7 +18,7 @@ import { NoSsr } from '@/components/core/no-ssr';
 import Grid from '@mui/material/Grid2';
 
 
-export function SalesByCategory({ data }) {
+export function TotalRoi({ data }) {
   const chartHeight = 300;
 
   const ticks = [0, 20000, 40000, 60000, 10000];
@@ -40,7 +40,7 @@ export function SalesByCategory({ data }) {
             <ChartPieIcon fontSize="var(--Icon-fontSize)" />
           </Avatar>
         }
-        title="Levanta: All Sales by Category"
+        title="Levanta: Total ROI by Category"
       />
       <CardContent sx={{ pr: 4 }}>
         <Stack divider={<Divider />} >
@@ -125,11 +125,18 @@ function TooltipContent({ active, payload }) {
       <Stack >
         {payload?.map((entry) => (
           <Stack direction="column" key={entry.name} spacing={1} >
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
+              <Box sx={{ bgcolor: entry.payload.color, borderRadius: '2px', height: '8px', width: '8px' }} />
+              <Typography color="text.secondary" variant="h6">{entry.payload.name}</Typography>
+            </Stack>
             <Typography color="text.secondary" variant="body2">
-              Profile Category: {entry.payload.profile_category}
+              Campaign: {entry.payload.campaign}
             </Typography>
             <Typography color="text.secondary" variant="body2">
               Sum: {entry.payload.sum}
+            </Typography>
+            <Typography color="text.secondary" variant="body2">
+              Total: {entry.payload.total}
             </Typography>
           </Stack>
         ))}

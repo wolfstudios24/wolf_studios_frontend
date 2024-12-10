@@ -1,10 +1,8 @@
-import { IgViewsByPost } from "@/components/dashboard/analytics/ig-views-by-post";
 import { Box, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { colorPalette } from "../page";
-import { NumberOfAssestsByCampaign } from "./number-of-assests-by-campaign";
-import { PercentOfAssetsByProduct } from "./percent-of-assets-by-product";
 import { SalesByCategory } from "./sales-by-category";
+import { TotalRoi } from "./total-roi";
 
 export const PartnerMatrix = () => {
     return (
@@ -25,147 +23,77 @@ export const PartnerMatrix = () => {
                     <SalesByCategory
                         data={[
                             {
-                                profiel_category: 'Affiliate Network',
-                                sum: 12609.62,
+                                profile_category: 'Affiliate Network',
+                                sum: 10609.62,
                                 color: colorPalette[11],
                             },
                             {
-                                profiel_category: 'Blog / Review',
-                                sum: 22714.52,
+                                profile_category: 'Blog / Review',
+                                sum: 14714.52,
                                 color: colorPalette[11],
                             },
                             {
-                                profiel_category: 'Creator',
-                                sum: 23109.70,
+                                profile_category: 'Creator',
+                                sum: 8109.70,
                                 color: colorPalette[11],
                             },
                             {
-                                profiel_category: 'Review Partner',
-                                sum: 149277.70,
+                                profile_category: 'Publication',
+                                sum: 1.70,
                                 color: colorPalette[11],
                             },
                             {
-                                profiel_category: 'SEO / Content Partner',
-                                sum: 124542.70,
+                                profile_category: 'Review Partner',
+                                sum: 71769.70,
+                                color: colorPalette[11],
+                            },
+                            {
+                                profile_category: 'SEO / Content Partner',
+                                sum: 73542.70,
                                 color: colorPalette[11],
                             }
                         ]}
                     />
                 </Grid>
-
-                {/* Over 20,000 IG Views by Post */}
+                {/* Levanta: Total ROI by Category */}
                 <Grid
                     size={{
                         md: 6,
                         xs: 12,
                     }}
                 >
-                    <IgViewsByPost
+                    <TotalRoi
                         data={[
                             {
-                                name: 'Alex Siquig Outdoor Workout 6',
-                                campaign: "REVO massage gun",
-                                sum: 92609,
-                                total: 92609,
-                                color: colorPalette[0],
+                                profile_category: 'Affiliate Network',
+                                sum: 12609.62,
+                                color: colorPalette[11],
                             },
                             {
-                                name: 'Alex Siquig Outdoor Workout 6',
-                                campaign: "REVO UGC ARMY",
-                                sum: 3990,
-                                total: 31609,
-                                color: colorPalette[1]
+                                profile_category: 'Blog / Review',
+                                sum: 22714.52,
+                                color: colorPalette[11],
                             },
                             {
-                                name: 'Alex Siquig Outdoor Workout 6',
-                                campaign: "REVO Walking Pad",
-                                sum: 3990,
-                                total: 21609,
-                                color: colorPalette[3]
+                                profile_category: 'Creator',
+                                sum: 23109.70,
+                                color: colorPalette[11],
                             },
                             {
-                                name: 'Alex Siquig Outdoor Workout 6',
-                                campaign: "50 Review Challenge",
-                                sum: 3990,
-                                total: 41609,
-                                color: colorPalette[4]
+                                profile_category: 'Publication',
+                                sum: 0,
+                                color: colorPalette[11],
                             },
                             {
-                                name: 'Alex Siquig Outdoor Workout 6',
-                                campaign: "50 Review Challenge",
-                                sum: 3990,
-                                total: 21609,
-                                color: colorPalette[5]
+                                profile_category: 'Review Partner',
+                                sum: 149277.70,
+                                color: colorPalette[11],
                             },
                             {
-                                name: 'Publish fazly posts',
-                                campaign: "50 Review Challenge 2",
-                                sum: 3990,
-                                total: 41609,
-                                color: colorPalette[6]
-                            },
-                            {
-                                name: 'Sarah Louise Rector Walking Pad',
-                                campaign: "REVO Cupper",
-                                sum: 13990,
-                                total: 13990,
-                                color: colorPalette[7]
-                            },
-                            {
-                                name: 'Roen Gjoka',
-                                campaign: "REVO Cupper",
-                                sum: 23990,
-                                total: 23990,
-                                color: colorPalette[8]
-                            },
-                            {
-                                name: 'Kiana Daigneault The Pill 1 - 2',
-                                campaign: "REVO Cupper",
-                                sum: 53990,
-                                total: 53990,
-                                color: colorPalette[9]
-                            },
-                        ]}
-                    />
-                </Grid>
-
-                {/*Number of Assets by Campaign */}
-                <Grid
-                    size={{
-                        md: 6,
-                        xs: 12,
-                    }}
-                >
-                    <NumberOfAssestsByCampaign
-                        data={[
-                            { campaign: '#hotgirlwalks', no_of_contents: 5, color: colorPalette[11] },
-                            { campaign: '50 Review Challenge', no_of_contents: 15, color: colorPalette[11] },
-                            { campaign: 'B2B', no_of_contents: 4, color: colorPalette[11] },
-                            { campaign: 'Club REVO I', no_of_contents: 8, color: colorPalette[11] },
-                            { campaign: 'REVO Collabs', no_of_contents: 70, color: colorPalette[11] },
-                            { campaign: 'REVO Cupper', no_of_contents: 324, color: colorPalette[11] },
-                            { campaign: 'REVO Massage Gun', no_of_contents: 213, color: colorPalette[11] },
-                            { campaign: 'REVO UGC ARMY', no_of_contents: 629, color: colorPalette[11] },
-                            { campaign: 'REVO Walking Pad', no_of_contents: 190, color: colorPalette[11] },
-                        ]}
-                    />
-                </Grid>
-
-                {/* Percent of Assets by Product */}
-                <Grid
-                    size={{
-                        md: 6,
-                        xs: 12,
-                    }}
-                >
-                    <PercentOfAssetsByProduct
-                        data={[
-                            { product: 'REVO Massage Gun', values: 258, percent: 16.93, color: colorPalette[0] },
-                            { product: 'REVO Oils & Creams', values: 29, percent: 1.90, color: colorPalette[1] },
-                            { product: 'REVO Smart Cupper', values: 725, percent: 47.57, color: colorPalette[2] },
-                            { product: 'REVO Walking Pad Pro', values: 136, percent: 8.92, color: colorPalette[3] },
-                            { product: 'REVO Walking Pad Max', values: 376, percent: 24.67, color: colorPalette[4] },
-
+                                profile_category: 'SEO / Content Partner',
+                                sum: 124542.70,
+                                color: colorPalette[11],
+                            }
                         ]}
                     />
                 </Grid>
