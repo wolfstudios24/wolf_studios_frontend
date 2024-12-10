@@ -23,7 +23,7 @@ const bars = [
 ];
 
 export function NumberOfAssestsByCampaign({ data }) {
-  const chartHeight = 300;
+  const chartHeight = 370;
 
   return (
     <Card>
@@ -44,9 +44,13 @@ export function NumberOfAssestsByCampaign({ data }) {
         <Stack divider={<Divider />} spacing={3}>
           <NoSsr fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
             <ResponsiveContainer height={chartHeight}>
-              <BarChart barGap={12} data={data} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+              <BarChart barGap={12} data={data} margin={{ top: 0, right: 0, bottom: 70, left: 0 }}>
                 <CartesianGrid strokeDasharray="2 4" vertical={false} />
-                <XAxis dataKey="campaign" />
+                <XAxis
+                  dataKey="campaign"
+                  interval={0}
+                  tick={{ angle: -45, textAnchor: 'end' }}
+                />
                 <YAxis />
                 <Bar
                   animationDuration={300}
@@ -62,7 +66,7 @@ export function NumberOfAssestsByCampaign({ data }) {
                         width={width}
                         height={height}
                         fill={payload.color}
-                      
+
                       />
                     );
                   }}
@@ -72,7 +76,7 @@ export function NumberOfAssestsByCampaign({ data }) {
               </BarChart>
             </ResponsiveContainer>
           </NoSsr>
-          <Legend />
+          {/* <Legend /> */}
         </Stack>
       </CardContent>
     </Card>
@@ -110,7 +114,7 @@ function TooltipContent({ active, payload }) {
                 Campaign: {entry.payload.campaign}
               </Typography>
             </Stack>
-           
+
             <Typography color="text.secondary" variant="body2">
               No of contents: {entry.payload.no_of_contents}
             </Typography>
