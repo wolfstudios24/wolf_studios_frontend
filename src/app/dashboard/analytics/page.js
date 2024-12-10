@@ -1,16 +1,14 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 
 import { ChannelSessionsVsBounce } from '@/components/dashboard/analytics/channel-sessions-vs-bounce-rate';
-import { CountrySessionsVsBounce } from '@/components/dashboard/analytics/country-sessions-vs-bounce-rate';
 import { Devices } from '@/components/dashboard/analytics/devices';
+import { IgViewsByPost } from '@/components/dashboard/analytics/ig-views-by-post';
 import { InboundOutbound } from '@/components/dashboard/analytics/inbound-outbound';
 import { Insight } from '@/components/dashboard/analytics/insight';
-import { Summary } from '@/components/dashboard/analytics/summary';
+import { TotalContributedEngagement } from '@/components/dashboard/analytics/total-contributed-engagement';
 import { config } from '@/config';
 
 export const metadata = { title: `Analytics | Dashboard | ${config.site.name}` };
@@ -54,19 +52,21 @@ export default function Page() {
           {/* <Grid size={12}>
             <Summary />
           </Grid> */}
+
+          {/* Total Contributed Engagement by Post Over 20K */}
           <Grid
             size={{
               lg: 6,
               xs: 12,
             }}
           >
-            <CountrySessionsVsBounce
+            <TotalContributedEngagement
               data={[
                 {
                   name: 'Alex Siquig Outdoor Workout 6',
                   campaign: "REVO massage gun",
-                  sum: 3990,
-                  total: 112609,
+                  sum: 92609,
+                  total: 92609,
                   color: colorPalette[0],
                 },
                 {
@@ -104,7 +104,102 @@ export default function Page() {
                   total: 41609,
                   color: colorPalette[6]
                 },
-
+                {
+                  name: 'Sarah Louise Rector Walking Pad',
+                  campaign: "REVO Cupper",
+                  sum: 13990,
+                  total: 13990,
+                  color: colorPalette[7]
+                },
+                {
+                  name: 'Roen Gjoka',
+                  campaign: "REVO Cupper",
+                  sum: 23990,
+                  total: 23990,
+                  color: colorPalette[8]
+                },
+                {
+                  name: 'Kiana Daigneault The Pill 1 - 2',
+                  campaign: "REVO Cupper",
+                  sum: 53990,
+                  total: 53990,
+                  color: colorPalette[9]
+                },
+              ]}
+            />
+          </Grid>
+          {/* Over 20,000 IG Views by Post */}
+          <Grid
+            size={{
+              lg: 6,
+              xs: 12,
+            }}
+          >
+            <IgViewsByPost
+              data={[
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "REVO massage gun",
+                  sum: 92609,
+                  total: 92609,
+                  color: colorPalette[0],
+                },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "REVO UGC ARMY",
+                  sum: 3990,
+                  total: 31609,
+                  color: colorPalette[1]
+                },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "REVO Walking Pad",
+                  sum: 3990,
+                  total: 21609,
+                  color: colorPalette[3]
+                },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "50 Review Challenge",
+                  sum: 3990,
+                  total: 41609,
+                  color: colorPalette[4]
+                },
+                {
+                  name: 'Alex Siquig Outdoor Workout 6',
+                  campaign: "50 Review Challenge",
+                  sum: 3990,
+                  total: 21609,
+                  color: colorPalette[5]
+                },
+                {
+                  name: 'Publish fazly posts',
+                  campaign: "50 Review Challenge 2",
+                  sum: 3990,
+                  total: 41609,
+                  color: colorPalette[6]
+                },
+                {
+                  name: 'Sarah Louise Rector Walking Pad',
+                  campaign: "REVO Cupper",
+                  sum: 13990,
+                  total: 13990,
+                  color: colorPalette[7]
+                },
+                {
+                  name: 'Roen Gjoka',
+                  campaign: "REVO Cupper",
+                  sum: 23990,
+                  total: 23990,
+                  color: colorPalette[8]
+                },
+                {
+                  name: 'Kiana Daigneault The Pill 1 - 2',
+                  campaign: "REVO Cupper",
+                  sum: 53990,
+                  total: 53990,
+                  color: colorPalette[9]
+                },
               ]}
             />
           </Grid>

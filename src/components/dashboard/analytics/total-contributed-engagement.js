@@ -19,7 +19,7 @@ import { NoSsr } from '@/components/core/no-ssr';
 import  Grid  from '@mui/material/Grid2';
 
 
-export function CountrySessionsVsBounce({ data }) {
+export function TotalContributedEngagement({ data }) {
   const chartHeight = 300;
 
   const ticks = [0, 20000, 40000, 60000, 10000];
@@ -27,10 +27,6 @@ export function CountrySessionsVsBounce({ data }) {
   const uniqueData = Array.from(
     new Map(data.map(item => [item.campaign, item])).values()
   );
-
-
-  console.log(uniqueData)
-
 
   return (
     <Card>
