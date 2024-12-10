@@ -99,10 +99,10 @@ function Tick({ height, payload, width, x, y }) {
 
 function Legend({ data }) {
   return (
-    <Grid container spacing={2} paddingTop={2}>
+    <Grid container spacing={1} paddingTop={2}>
       {data.map((bar) => (
         <Grid key={bar.campaign} item size={{ xs: 4 }}>
-          <Stack direction="row"  spacing={1} >
+          <Stack direction="row"  spacing={1} alignItems="center">
             <Box sx={{ bgcolor: bar.color, borderRadius: '2px', height: '8px', width: '16px' }} />
             <Typography color="text.secondary" variant="caption">
               {bar.campaign}
