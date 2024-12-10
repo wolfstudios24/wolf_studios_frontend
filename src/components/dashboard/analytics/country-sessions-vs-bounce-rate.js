@@ -16,6 +16,7 @@ import { DotsThree as DotsThreeIcon } from '@phosphor-icons/react/dist/ssr/DotsT
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { NoSsr } from '@/components/core/no-ssr';
+import  Grid  from '@mui/material/Grid2';
 
 
 export function CountrySessionsVsBounce({ data }) {
@@ -46,7 +47,7 @@ export function CountrySessionsVsBounce({ data }) {
         }
         title="Total Contributed Engagement by Post Over 20K"
       />
-      <CardContent sx={{pr: 4}}>
+      <CardContent sx={{ pr: 4 }}>
         <Stack divider={<Divider />} >
           <NoSsr fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
             <ResponsiveContainer height={chartHeight}>
@@ -76,9 +77,9 @@ export function CountrySessionsVsBounce({ data }) {
               </BarChart>
             </ResponsiveContainer>
           </NoSsr>
-          <Legend data={uniqueData}/>
+          <Legend data={uniqueData} />
         </Stack>
-        
+
       </CardContent>
     </Card>
   );
@@ -102,16 +103,18 @@ function Tick({ height, payload, width, x, y }) {
 
 function Legend({ data }) {
   return (
-    <Stack direction="row" spacing={2}>
+    <Grid container spacing={2} paddingTop={2}>
       {data.map((bar) => (
-        <Stack direction="row" key={bar.campaign} spacing={1} sx={{ alignItems: 'center' , whiteSpace: 'nowrap'}}>
-          <Box sx={{ bgcolor: bar.color, borderRadius: '2px', height: '8px', width: '16px' }} />
-          <Typography color="text.secondary" variant="caption">
-            {bar.campaign}
-          </Typography>
-        </Stack>
+        <Grid key={bar.campaign} item size={{ xs: 4 }}>
+          <Stack direction="row"  spacing={1} >
+            <Box sx={{ bgcolor: bar.color, borderRadius: '2px', height: '8px', width: '16px' }} />
+            <Typography color="text.secondary" variant="caption">
+              {bar.campaign}
+            </Typography>
+          </Stack>
+        </Grid>
       ))}
-    </Stack>
+    </Grid>
   );
 }
 

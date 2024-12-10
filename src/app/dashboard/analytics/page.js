@@ -42,18 +42,18 @@ export default function Page() {
       <Stack spacing={4}>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
           <Box sx={{ flex: '1 1 auto' }}>
-            <Typography variant="h4">Analytics</Typography>
+            <Typography variant="h4">Content Performance</Typography>
           </Box>
-          <div>
+          {/* <div>
             <Button startIcon={<PlusIcon />} variant="contained">
               Add metrics
             </Button>
-          </div>
+          </div> */}
         </Stack>
         <Grid container spacing={4}>
-          <Grid size={12}>
+          {/* <Grid size={12}>
             <Summary />
-          </Grid>
+          </Grid> */}
           <Grid
             size={{
               lg: 6,
@@ -97,7 +97,6 @@ export default function Page() {
                   total: 21609,
                   color: colorPalette[5]
                 },
-
                 {
                   name: 'Publish fazly posts',
                   campaign: "50 Review Challenge 2",
