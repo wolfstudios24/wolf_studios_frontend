@@ -13,6 +13,7 @@ import { TotalContributedEngagement } from './_components/total-contributed-enga
 import { ContentPerformance } from './_components/content-performance';
 import { PageContainer } from '@/components/container/PageContainer';
 import { PartnerMatrix } from './_components/partner-matrix';
+import { Facilities } from './_components/facilities';
 
 export const metadata = { title: `Analytics | Dashboard | ${config.site.name}` };
 
@@ -36,6 +37,7 @@ export default function Page() {
     <PageContainer>
       <ContentPerformance />
       <PartnerMatrix />
+      <Facilities />
     </PageContainer>
   );
 }
