@@ -1,5 +1,6 @@
 'use client';
 
+import { ErrorText } from '@/components/core/error-text';
 import { DynamicLogo } from '@/components/core/logo';
 import { CustomPasswordInput } from '@/components/formFields/CustomPasswordInput';
 import useAuth from '@/hooks/useAuth';
@@ -33,9 +34,8 @@ const validationSchema = Yup.object().shape({
 
 export function LoginForm() {
   const { login } = useAuth()
-
-  const [showPassword, setShowPassword] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   const {
     values,
@@ -98,6 +98,7 @@ export function LoginForm() {
         <Stack spacing={2}>
           <form onSubmit={handleSubmit}>
             <Stack spacing={2}>
+              <ErrorText error={error} />
               <FormControl error={Boolean(errors.email)}>
                 <InputLabel>Email address</InputLabel>
                 <OutlinedInput

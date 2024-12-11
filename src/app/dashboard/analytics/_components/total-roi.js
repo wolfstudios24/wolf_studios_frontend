@@ -82,7 +82,6 @@ export function TotalRoi({ data }) {
 }
 
 function Tick({ height, payload, width, x, y }) {
-  console.log(payload, "paload...")
   const name = payload?.value ?? "Unknown";
   const adjustedX = Math.max(x - 150, 0);
 
