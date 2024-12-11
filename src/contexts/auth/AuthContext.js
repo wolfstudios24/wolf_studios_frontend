@@ -53,7 +53,6 @@ export const AuthProvider = (props) => {
                 setUserInfo(INITIAL_AUTH_STATE);
             }
         } catch (error) {
-            console.error('Error fetching profile data:', error);
             return null;
         }
     }
