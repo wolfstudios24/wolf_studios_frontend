@@ -15,7 +15,6 @@ import { ContentHG } from './content-hg';
 
 
 export function PartnersByCampaignProfile({ selectedItem }) {
-    console.log(selectedItem, "selectedItem")
     return (
         <PageLoader
             loading={false}
