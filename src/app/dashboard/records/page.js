@@ -163,6 +163,8 @@ export default function Page() {
     { field: 'updated_at', headerName: 'Updated At', width: 180, editable: true, valueGetter: (value, row) => moment(value).format('DD-MM-YYYY HH:mm:ss') },
   ];
 
+  const visibleColumns = columns.filter((col) => col.field !== 'updated_at' && col.field !== 'REVO_instagram' && col.field !== 'title');
+
   return (
 
     <PageContainer>
@@ -186,7 +188,7 @@ export default function Page() {
                 }
               }}
               rows={records}
-              columns={columns}
+              columns={visibleColumns}
               processRowUpdate={processRowUpdate}
               onProcessRowUpdateError={handleProcessRowUpdateError}
             />
