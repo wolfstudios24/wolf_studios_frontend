@@ -65,7 +65,8 @@ export default function Page({ searchParams }) {
 
   const handleConfirm = () => {
     setOpenModal(false);
-    fetchUsersData();
+    // fetchUsersData();
+    fetchList();
   }
 
 
