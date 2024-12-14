@@ -19,7 +19,8 @@ import {
 } from '@mui/x-data-grid';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
-import { getRecordList } from './_lib/actions';
+import { createRecordAsync, getRecordList, updateRecordAsync } from './_lib/actions';
+import { defaultRecord } from './_lib/types';
 
 
 // table columns
@@ -126,7 +127,13 @@ export default function Page() {
 
   const processRowUpdate = React.useCallback(
     async (newRow) => {
-      console.log(newRow, "new row ........")
+      if(newRow.id){
+        await updateRecordAsync(newRow)
+      }else {
+        const {id, ...rest} = newRow
+        await createRecordAsync(rest)
+        fetchList()
+      }
     },
     []
   );
@@ -135,9 +142,11 @@ export default function Page() {
     console.log({ children: error.message, severity: 'error' });
   }, []);
 
-
-
   const visibleColumns = columns.filter((col) => filteredValue.includes(col.field));
+
+  const handleAddNewItem = () => {
+    setRecords([defaultRecord, ...records]); 
+  };
 
   React.useEffect(() => {
     fetchList();
@@ -150,7 +159,7 @@ export default function Page() {
       <CardTitle
         title={"Records"}
         rightItem={<>
-          <Button startIcon={<PlusIcon />} variant="contained" onClick={() => router.push(paths.dashboard.records + '/create')}>
+          <Button startIcon={<PlusIcon />} variant="contained" onClick={handleAddNewItem}>
             Add
           </Button>
         </>} />
