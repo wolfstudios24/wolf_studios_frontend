@@ -20,6 +20,8 @@ import {
 import { PencilSimple as PencilSimpleIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 import { useRouter } from 'next/navigation';
 import { getRecordList } from './_lib/actions';
+import { type } from 'os';
+import moment from 'moment';
 
 const useFakeMutation = () => {
   return React.useCallback(
@@ -40,7 +42,7 @@ const useFakeMutation = () => {
 export default function Page() {
   const router = useRouter();
   const mutateRow = useFakeMutation();
-  const [users, setUsers] = React.useState([]);
+  const [records, setRecords] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [openModal, setOpenModal] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
@@ -56,7 +58,7 @@ export default function Page() {
         rowsPerPage: pagination.limit,
       });
       if (response.success) {
-        setUsers(response.data);
+        setRecords(response.data);
         setTotalRecords(response.totalRecords)
       }
     } catch (error) {
@@ -75,9 +77,6 @@ export default function Page() {
   const processRowUpdate = React.useCallback(
     async (newRow) => {
       console.log(newRow, "new row ........")
-      // Make the HTTP request to save in the backend
-      const response = await mutateRow(newRow);
-      return response;
     },
     [mutateRow]
   );
@@ -93,80 +92,76 @@ export default function Page() {
   }, [pagination])
 
   const columns = [
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
-    {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      editable: true,
-      align: 'left',
-      headerAlign: 'left',
-    },
-    {
-      field: 'dateCreated',
-      headerName: 'Date Created',
-      type: 'text',
-      width: 180,
-      editable: true,
-    },
-    {
-      field: 'lastLogin',
-      headerName: 'Last Login',
-      type: 'text',
-      width: 220,
-      editable: true,
-    },
-    {
-      field: 'custom',
-      headerName: 'custom',
-      width: 220,
-      editable: true,
-    },
-  ];
+    { field: 'title', headerName: 'Title', width: 280, editable: true },
+    { field: 'campaign', headerName: 'Campaign', width: 150, editable: true },
+    { field: 'product', headerName: 'Product', width: 150, editable: true },
+    { field: 'stakeholder', headerName: 'Stakeholder', width: 150, editable: true },
+    { field: 'posting_quality', headerName: 'Posting Quality', width: 150, editable: true },
+    { field: 'google_drive_files', headerName: 'Google Drive Files', width: 200, editable: true },
+    { field: 'playbook_link', headerName: 'Playbook Link', width: 200, editable: true },
+    { field: 'uppromote_conversion', headerName: 'Uppromote Conversion', type: 'number', width: 150, editable: true },
+    { field: 'asset_status', headerName: 'Asset Status', width: 120, editable: true },
+    { field: 'month_uploaded', headerName: 'Month Uploaded', width: 150, editable: true },
 
-  const rows = [
-    {
-      id: 1,
-      name: "fazly",
-      age: 25,
-      dateCreated: "2024-14-12",
-      lastLogin: "2024-14-12",
-      custom: 'custom data',
-    },
-    {
-      id: 2,
-      name: "fazly",
-      age: 36,
-      dateCreated: "2024-14-12",
-      lastLogin: "2024-14-12",
-      custom: 'custom data',
-    },
-    {
-      id: 3,
-      name: "fazly",
-      age: 19,
-      dateCreated: "2024-14-12",
-      lastLogin: "2024-14-12",
-      custom: 'custom data',
-    },
-    {
-      id: 4,
-      name: "fazly",
-      age: 28,
-      dateCreated: "2024-14-12",
-      lastLogin: "2024-14-12",
-      custom: 'custom data',
-    },
-    {
-      id: 5,
-      name: "fazly",
-      age: 23,
-      dateCreated: "2024-14-12",
-      lastLogin: "2024-14-12",
-      custom: 'custom data',
-    },
-  ];
+    // Pinterest
+    { field: 'REVO_pinterest', headerName: 'Pinterest Status', width: 150, editable: true },
+    { field: 'PIN_accounts_used', headerName: 'Pinterest Accounts Used', width: 200, editable: true },
+    { field: 'pinterest_PIN_click', headerName: 'Pinterest Pin Clicks', type: 'number', width: 150, editable: true },
+    { field: 'pinterest_view', headerName: 'Pinterest Views', type: 'number', width: 150, editable: true },
 
+    // Instagram
+    { field: 'REVO_instagram', headerName: 'Instagram Status', width: 150, editable: true },
+    { field: 'IG_like', headerName: 'Instagram Likes', type: 'number', width: 150, editable: true },
+    { field: 'IG_comment', headerName: 'Instagram Comments', type: 'number', width: 150, editable: true },
+    { field: 'IG_share', headerName: 'Instagram Shares', type: 'number', width: 150, editable: true },
+    { field: 'IG_view', headerName: 'Instagram Views', type: 'number', width: 150, editable: true },
+    { field: 'IG_social_sets_used', headerName: 'Instagram Social Sets Used', width: 200, editable: true },
+    { field: 'partner_IG_link', headerName: 'Partner Instagram Link', width: 200, editable: true },
+
+    // Twitter
+    { field: 'REVO_twitter', headerName: 'Twitter Status', width: 150, editable: true },
+
+    // TikTok
+    { field: 'REVO_tiktok', headerName: 'TikTok Status', width: 150, editable: true },
+    { field: 'REVO_TT_view', headerName: 'TikTok REVO Views', type: 'number', width: 150, editable: true },
+    { field: 'tiktok_accounts_used', headerName: 'TikTok Accounts Used', width: 200, editable: true },
+    { field: 'partner_tiktok_link', headerName: 'Partner TikTok Link', width: 200, editable: true },
+    { field: 'partner_TT_like', headerName: 'Partner TikTok Likes', type: 'number', width: 150, editable: true },
+    { field: 'partner_TT_comment', headerName: 'Partner TikTok Comments', type: 'number', width: 150, editable: true },
+    { field: 'partner_TT_share', headerName: 'Partner TikTok Shares', type: 'number', width: 150, editable: true },
+    { field: 'partner_TT_view', headerName: 'Partner TikTok Views', type: 'number', width: 150, editable: true },
+    { field: 'partner_TT_save', headerName: 'Partner TikTok Saves', type: 'number', width: 150, editable: true },
+    { field: 'TT_dummy_account_used', headerName: 'TikTok Dummy Account Used', width: 200, editable: true },
+
+    // YouTube
+    { field: 'YT_account_used', headerName: 'YouTube Account Used', width: 200, editable: true },
+    { field: 'partner_YT_link', headerName: 'Partner YouTube Link', width: 200, editable: true },
+    { field: 'partner_YT_like', headerName: 'Partner YouTube Likes', type: 'number', width: 150, editable: true },
+    { field: 'partner_YT_comment', headerName: 'Partner YouTube Comments', type: 'number', width: 150, editable: true },
+    { field: 'partner_YT_view', headerName: 'Partner YouTube Views', type: 'number', width: 150, editable: true },
+    { field: 'partner_YT_save', headerName: 'Partner YouTube Saves', type: 'number', width: 150, editable: true },
+    { field: 'REVO_clubrevo_youtube', headerName: 'Club REVO YouTube Status', width: 200, editable: true },
+    { field: 'REVO_youtube', headerName: 'YouTube REVO Status', width: 200, editable: true },
+    { field: 'YT_clubrevo_like', headerName: 'YouTube Club REVO Likes', type: 'number', width: 150, editable: true },
+    { field: 'YT_clubrevo_view', headerName: 'YouTube Club REVO Views', type: 'number', width: 150, editable: true },
+    { field: 'YT_REVOMADIC_like', headerName: 'YouTube REVOMADIC Likes', type: 'number', width: 150, editable: true },
+    { field: 'YT_REVOMADIC_comment', headerName: 'YouTube REVOMADIC Comments', type: 'number', width: 150, editable: true },
+    { field: 'YT_REVOMADIC_share', headerName: 'YouTube REVOMADIC Shares', type: 'number', width: 150, editable: true },
+    { field: 'YT_REVOMADIC_view', headerName: 'YouTube REVOMADIC Views', type: 'number', width: 150, editable: true },
+
+    // Other Fields
+    { field: 'creator_status', headerName: 'Creator Status', width: 150, editable: true },
+    { field: 'profile', headerName: 'Profile', width: 150, editable: true },
+    { field: 'posting_status', headerName: 'Posting Status', width: 150, editable: true },
+    { field: 'partner_HQ', headerName: 'Partner HQ', width: 150, editable: true },
+    { field: 'portfolio', headerName: 'Portfolio', width: 150, editable: true },
+    { field: 'contributed_engagement', headerName: 'Contributed Engagement', type: 'number', width: 150, editable: true },
+    { field: 'by_tags', headerName: 'Tags', width: 200, editable: true },
+    { field: 'by_city', headerName: 'City', width: 150, editable: true },
+    { field: 'all_internet_search', headerName: 'Internet Search', width: 200, editable: true },
+    { field: 'created_at', headerName: 'Created At', width: 180, editable: true, valueGetter: (value, row) => moment(value).format('DD-MM-YYYY HH:mm:ss'), },
+    { field: 'updated_at', headerName: 'Updated At', width: 180, editable: true, valueGetter: (value, row) => moment(value).format('DD-MM-YYYY HH:mm:ss') },
+  ];
 
   return (
 
@@ -185,16 +180,21 @@ export default function Page() {
         <Card>
           <Box sx={{ overflowX: 'auto', height: '100%', width: '100%' }}>
             <DataGrid
-              rows={rows}
+              sx={{
+                '& .MuiDataGrid-cell': {
+                  border: (theme) => `1px solid ${theme.palette.divider}`,
+                }
+              }}
+              rows={records}
               columns={columns}
               processRowUpdate={processRowUpdate}
               onProcessRowUpdateError={handleProcessRowUpdateError}
             />
           </Box>
-          {!users?.length ? (
+          {!records?.length ? (
             <Box sx={{ p: 3 }}>
               <Typography color="text.secondary" sx={{ textAlign: 'center' }} variant="body2">
-                No customers found
+                No records found
               </Typography>
             </Box>
           ) : null}
