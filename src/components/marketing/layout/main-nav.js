@@ -20,6 +20,8 @@ import { isNavItemActive } from '@/lib/is-nav-item-active';
 import { paths } from '@/paths';
 
 import { MobileNav } from './mobile-nav';
+import { navData } from '@/router';
+import { Iconify } from '@/components/iconify/iconify';
 
 export function MainNav() {
   const [openNav, setOpenNav] = React.useState(false);
@@ -46,7 +48,12 @@ export function MainNav() {
             </Box>
             <Box component="nav" sx={{ display: { xs: 'none', md: 'block' } }}>
               <Stack component="ul" direction="row" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-                <NavItem href={paths.docs} pathname={pathname} title="Documentation" />
+                {/* <NavItem href={paths.docs} pathname={pathname} title="Documentation" /> */}
+                {
+                  navData.map((item, index) => (
+                    <NavItem key={index} href={item.path} pathname={pathname} title={item.title} icon={item.icon} />
+                  ))
+                }
               </Stack>
             </Box>
           </Stack>
@@ -84,7 +91,8 @@ export function MainNav() {
   );
 }
 
-export function NavItem({ children, disabled, external, href, matcher, pathname, title }) {
+export function NavItem({ children, disabled, external, href, matcher, pathname, title, icon }) {
+  console.log(icon, "icon.........")
   const active = isNavItemActive({ disabled, external, href, matcher, pathname });
   const hasPopover = Boolean(children);
 
@@ -133,7 +141,8 @@ export function NavItem({ children, disabled, external, href, matcher, pathname,
         }}
         tabIndex={0}
       >
-        <Box component="span" sx={{ flex: '1 1 auto' }}>
+        <Box component="span" sx={{ flex: '1 1 auto', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}> 
+          <Iconify width={14} icon={icon} />
           <Typography
             component="span"
             sx={{ color: 'inherit', fontSize: '0.875rem', fontWeight: 500, lineHeight: '28px' }}
