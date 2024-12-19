@@ -7,8 +7,8 @@ import { useColorScheme } from '@mui/material/styles';
 import { NoSsr } from '@/components/core/no-ssr';
 import { Typography } from '@mui/material';
 
-const HEIGHT = 60;
-const WIDTH = 60;
+const HEIGHT = 25;
+const WIDTH = "100%";
 
 export function Logo({ color = 'dark', emblem, height = HEIGHT, width = WIDTH }) {
   let url;
@@ -16,10 +16,10 @@ export function Logo({ color = 'dark', emblem, height = HEIGHT, width = WIDTH })
   if (emblem) {
     url = color === 'light' ? '/assets/logo-emblem.svg' : '/assets/logo-emblem--dark.svg';
   } else {
-    url = color === 'light' ? '/assets/logo.svg' : '/assets/logo--dark.svg';
+    url = color === 'light' ? '/assets/logo.svg' : '/assets/wolf_studio_logo_dark.png';
   }
 
-  return <Box alt="logo" component="img" height={height} src={url} width={width} />;
+  return <Box alt="logo" component="img" src={url} height={HEIGHT} />;
 }
 
 export function DynamicLogo({ colorDark = 'light', colorLight = 'dark', height = HEIGHT, width = WIDTH, ...props }) {

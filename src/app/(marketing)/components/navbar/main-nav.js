@@ -22,8 +22,8 @@ import { paths } from '@/paths';
 import { MobileNav } from './mobile-nav';
 import { navData } from '@/router';
 import { Iconify } from '@/components/iconify/iconify';
-
-import { NavSearch } from '@/app/(marketing)/components/navbar/nav-search';
+import {  SearchOff } from '@mui/icons-material';
+import { alpha, InputBase, styled } from '@mui/material';
 
 export function MainNav() {
   const [openNav, setOpenNav] = React.useState(false);
@@ -34,8 +34,8 @@ export function MainNav() {
       <Box
         component="header"
         sx={{
-          bgcolor: 'var(--mui-palette-common-white)',
-          color: 'var( --mui-palette-neutral-950)',
+          bgcolor: 'var(--mui-palette-neutral-950)',
+          color: 'var(--mui-palette-common-white)',
           left: 0,
           position: 'sticky',
           right: 0,
@@ -43,8 +43,11 @@ export function MainNav() {
           zIndex: 'var(--MainNav-zIndex)',
         }}
       >
-        <Container maxWidth="xl" sx={{  minHeight: 'var(--MainNav-height)', py: '16px' }}>
-          <Stack direction="row" spacing={2} sx={{ display: 'flex', flex: '1 1 auto', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Container maxWidth="lg" sx={{ display: 'flex', minHeight: 'var(--MainNav-height)', py: '16px' }}>
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
+            <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
+              <Logo color="light" height={32} width={122} />
+            </Box>
             <Box component="nav" sx={{ display: { xs: 'none', md: 'block' } }}>
               <Stack component="ul" direction="row" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
                 {
@@ -54,20 +57,29 @@ export function MainNav() {
                 }
               </Stack>
             </Box>
-            <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
-              <Logo height={32} width={122} />
-            </Box>
-            <Box>
-              <NavSearch />
-              <IconButton
-                onClick={() => {
-                  setOpenNav(true);
-                }}
-                sx={{ color: 'var(--mui-palette-common-white)', display: { xs: 'flex', md: 'none' } }}
-              >
-                <ListIcon />
-              </IconButton>
-            </Box>
+          </Stack>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{ alignItems: 'center', justifyContent: 'flex-end' }}
+          >
+            <Search>
+              <SearchIconWrapper>
+                <SearchOff />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </Search>
+            <IconButton
+              onClick={() => {
+                setOpenNav(true);
+              }}
+              sx={{ color: 'var(--mui-palette-common-white)', display: { xs: 'flex', md: 'none' } }}
+            >
+              <ListIcon />
+            </IconButton>
           </Stack>
         </Container>
       </Box>
@@ -77,7 +89,6 @@ export function MainNav() {
         }}
         open={openNav}
       />
-      
     </React.Fragment>
   );
 }
@@ -124,25 +135,25 @@ export function NavItem({ children, disabled, external, href, matcher, pathname,
             color: 'var(--mui-action-disabled)',
             cursor: 'not-allowed',
           }),
-          ...(active && { color: 'var(--mui-palette-common-dark)' }),
+          ...(active && { color: 'var(--mui-palette-common-white)' }),
           '&:hover': {
             ...(!disabled &&
-              !active && { bgcolor: 'rgba(255, 255, 255, 0.04)', color: 'var(--mui-palette-common-dark)' }),
+              !active && { bgcolor: 'rgba(255, 255, 255, 0.04)', color: 'var(--mui-palette-common-white)' }),
           },
         }}
         tabIndex={0}
       >
         <Box component="span" sx={{ flex: '1 1 auto', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          {/* <Iconify width={14} icon={icon} /> */}
+          <Iconify width={14} icon={icon} />
           <Typography
             component="span"
-            sx={{ color: 'var( --mui-palette-neutral-950)', fontSize: '0.875rem', fontWeight: 500, lineHeight: '28px' }}
+            sx={{ color: 'inherit', fontSize: '0.875rem', fontWeight: 500, lineHeight: '28px' }}
           >
             {title}
           </Typography>
         </Box>
         {hasPopover ? (
-          <Box sx={{ alignItems: 'center', color: 'var( --mui-palette-neutral-950)', display: 'flex', flex: '0 0 auto' }}>
+          <Box sx={{ alignItems: 'center', color: 'inherit', display: 'flex', flex: '0 0 auto' }}>
             <CaretDownIcon fontSize="var(--icon-fontSize-sm)" />
           </Box>
         ) : null}
@@ -169,3 +180,44 @@ export function NavItem({ children, disabled, external, href, matcher, pathname,
 }
 
 
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  width: '100%',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
