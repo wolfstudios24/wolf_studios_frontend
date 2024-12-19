@@ -10,12 +10,14 @@ export default function Layout({ children }) {
       <GlobalStyles
         styles={{
           body: {
-            '--MainNav-height': '72px',
+            '--MainNav-height': '52px',
             '--MainNav-zIndex': 1000,
             '--SideNav-width': '280px',
             '--SideNav-zIndex': 1100,
             '--MobileNav-width': '320px',
             '--MobileNav-zIndex': 1100,
+            '--Text-primary': '#333333', 
+            '--Text-secondary': '#17181A9E',
           },
         }}
       />

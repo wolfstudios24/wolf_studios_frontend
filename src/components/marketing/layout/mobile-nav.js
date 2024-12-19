@@ -1,56 +1,25 @@
 'use client';
 
-import * as React from 'react';
-import RouterLink from 'next/link';
-import { usePathname } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { CaretDown as CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
-import { CaretRight as CaretRightIcon } from '@phosphor-icons/react/dist/ssr/CaretRight';
 import { X as XIcon } from '@phosphor-icons/react/dist/ssr/X';
+import RouterLink from 'next/link';
+import { usePathname } from 'next/navigation';
 
+import { Logo } from '@/components/core/logo';
 import { paths } from '@/paths';
+import { navData } from '@/router';
+import { Typography } from '@mui/material';
+import { Dropdown } from '@/components/core/dropdown/dropdown';
+import { DropdownTrigger } from '@/components/core/dropdown/dropdown-trigger';
+import { CaretDown as CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
+import { DropdownPopover } from '@/components/core/dropdown/dropdown-popover';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
-import { DynamicLogo } from '@/components/core/logo';
 
-// NOTE: First level elements are groups.
 
-const navItems = [
-  {
-    key: 'group-0',
-    items: [
-      { key: 'home', title: 'Home', href: paths.home },
-      { key: 'components', title: 'Components', href: paths.components.index },
-      {
-        key: 'dashboard',
-        title: 'Dashboard',
-        items: [
-          { key: 'overview', title: 'Overview', href: paths.dashboard.overview },
-          { key: 'analytics', title: 'Customers', href: paths.dashboard.customers.list },
-          { key: 'logistics', title: 'Logistics', href: paths.dashboard.logistics.metrics },
-          { key: 'settings', title: 'Settings', href: paths.dashboard.settings.account },
-          { key: 'file-storage', title: 'File storage', href: paths.dashboard.fileStorage },
-        ],
-      },
-      {
-        key: 'marketing',
-        title: 'Marketing',
-        items: [
-          { key: 'blog', title: 'Blog', href: paths.dashboard.blog.list },
-          { key: 'pricing', title: 'Pricing', href: paths.pricing },
-          { key: 'contact', title: 'Contact', href: paths.contact },
-          { key: 'checkout', title: 'Checkout', href: paths.checkout },
-          { key: 'error', title: 'Error', href: paths.notFound },
-        ],
-      },
-      { key: 'docs', title: 'Docs', href: paths.docs, external: true },
-    ],
-  },
-];
 
 export function MobileNav({ onClose, open = false }) {
   const pathname = usePathname();
@@ -87,16 +56,19 @@ export function MobileNav({ onClose, open = false }) {
     >
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, minHeight: 0 }}>
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
-            <DynamicLogo colorDark="light" colorLight="dark" height={32} width={122} />
-          </Box>
+          
+            <Logo height={32} width={122} />
           <IconButton onClick={onClose}>
             <XIcon />
           </IconButton>
         </Stack>
         <Box component="nav">
-          <Stack component="ul" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-            {renderNavGroups({ items: navItems, onClose, pathname })}
+          <Stack component="ul" direction="column" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
+            {
+              navData.map((item, index) => (
+                <NavItem key={index} href={item.href} pathname={pathname} title={item.title} icon={item.icon} />
+              ))
+            }
           </Stack>
         </Box>
       </DialogContent>
@@ -104,123 +76,88 @@ export function MobileNav({ onClose, open = false }) {
   );
 }
 
-function renderNavGroups({ items, onClose, pathname }) {
-  const children = items.reduce((acc, curr) => {
-    acc.push(
-      <Stack component="li" key={curr.key} spacing={1.5}>
-        {curr.title ? (
-          <div>
-            <Typography sx={{ color: 'var(--NavGroup-title-color)', fontSize: '0.875rem', fontWeight: 500 }}>
-              {curr.title}
-            </Typography>
-          </div>
-        ) : null}
-        <div>{renderNavItems({ depth: 0, items: curr.items, onClose, pathname })}</div>
-      </Stack>
-    );
 
-    return acc;
-  }, []);
-
-  return (
-    <Stack component="ul" spacing={2} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-      {children}
-    </Stack>
-  );
-}
-
-function renderNavItems({ depth = 0, items = [], onClose, pathname }) {
-  const children = items.reduce((acc, curr) => {
-    const { items: childItems, key, ...item } = curr;
-
-    const forceOpen = childItems
-      ? Boolean(childItems.find((childItem) => childItem.href && pathname.startsWith(childItem.href)))
-      : false;
-
-    acc.push(
-      <NavItem depth={depth} forceOpen={forceOpen} key={key} onClose={onClose} pathname={pathname} {...item}>
-        {childItems ? renderNavItems({ depth: depth + 1, items: childItems, onClose, pathname }) : null}
-      </NavItem>
-    );
-
-    return acc;
-  }, []);
-
-  return (
-    <Stack component="ul" data-depth={depth} spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-      {children}
-    </Stack>
-  );
-}
-
-function NavItem({ children, depth, disabled, external, forceOpen = false, href, matcher, onClose, pathname, title }) {
-  const [open, setOpen] = React.useState(forceOpen);
+ function NavItem({ children, disabled, external, href, matcher, pathname, title }) {
   const active = isNavItemActive({ disabled, external, href, matcher, pathname });
-  const ExpandIcon = open ? CaretDownIcon : CaretRightIcon;
-  const isBranch = children && !href;
-  const showChildren = Boolean(children && open);
+  const hasPopover = Boolean(children);
 
-  return (
-    <Box component="li" data-depth={depth} sx={{ userSelect: 'none' }}>
+  const element = (
+    <Box component="li" sx={{ userSelect: 'none' }}>
       <Box
-        {...(isBranch
+        {...(hasPopover
           ? {
-              onClick: () => {
-                setOpen(!open);
-              },
-              onKeyUp: (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  setOpen(!open);
-                }
-              },
-              role: 'button',
-            }
+            onClick: (event) => {
+              event.preventDefault();
+            },
+            role: 'button',
+          }
           : {
-              ...(href
-                ? {
-                    component: external ? 'a' : RouterLink,
-                    href,
-                    target: external ? '_blank' : undefined,
-                    rel: external ? 'noreferrer' : undefined,
-                    onClick: () => {
-                      onClose?.();
-                    },
-                  }
-                : { role: 'button' }),
-            })}
+            ...(href
+              ? {
+                component: external ? 'a' : RouterLink,
+                href,
+                target: external ? '_blank' : undefined,
+                rel: external ? 'noreferrer' : undefined,
+              }
+              : { role: 'button' }),
+          })}
         sx={{
           alignItems: 'center',
           borderRadius: 1,
-          color: 'var(--NavItem-color)',
+          color: 'var(--mui-palette-neutral-300)',
           cursor: 'pointer',
           display: 'flex',
-          p: '12px',
+          flex: '0 0 auto',
+          gap: 1,
+          p: '6px 16px',
+          textAlign: 'left',
           textDecoration: 'none',
+          whiteSpace: 'nowrap',
           ...(disabled && {
-            bgcolor: 'var(--NavItem-disabled-background)',
-            color: 'var(--NavItem-disabled-color)',
+            bgcolor: 'var(--mui-palette-action-disabledBackground)',
+            color: 'var(--mui-action-disabled)',
             cursor: 'not-allowed',
           }),
-          ...(active && { bgcolor: 'var(--NavItem-active-background)', color: 'var(--NavItem-active-color)' }),
-          ...(open && { color: 'var(--NavItem-open-color)' }),
+          ...(active && { color: 'var(--mui-palette-common-dark)' }),
           '&:hover': {
             ...(!disabled &&
-              !active && { bgcolor: 'var(--NavItem-hover-background)', color: 'var(--NavItem-hover-color)' }),
+              !active && { bgcolor: 'rgba(255, 255, 255, 0.04)', color: 'var(--mui-palette-common-dark)' }),
           },
         }}
         tabIndex={0}
       >
-        <Box sx={{ flex: '1 1 auto' }}>
+        <Box component="span" sx={{ flex: '1 1 auto', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+          {/* <Iconify width={14} icon={icon} /> */}
           <Typography
             component="span"
-            sx={{ color: 'inherit', fontSize: '0.875rem', fontWeight: 500, lineHeight: '28px' }}
+            sx={{ color: 'var( --Text-primary)', fontSize: '0.875rem', fontWeight: 400, lineHeight: '28px' }}
           >
             {title}
           </Typography>
         </Box>
-        {isBranch ? <ExpandIcon fontSize="var(--icon-fontSize-sm)" /> : null}
+        {hasPopover ? (
+          <Box sx={{ alignItems: 'center', color: 'var( --mui-palette-neutral-950)', display: 'flex', flex: '0 0 auto' }}>
+            <CaretDownIcon fontSize="var(--icon-fontSize-sm)" />
+          </Box>
+        ) : null}
       </Box>
-      {showChildren ? <Box sx={{ pl: '20px' }}>{children}</Box> : null}
     </Box>
   );
+
+  if (hasPopover) {
+    return (
+      <Dropdown>
+        <DropdownTrigger>{element}</DropdownTrigger>
+        <DropdownPopover
+          PaperProps={{ sx: { width: '800px', maxWidth: '100%' } }}
+          anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+          transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+        >
+          {children}
+        </DropdownPopover>
+      </Dropdown>
+    );
+  }
+
+  return element;
 }

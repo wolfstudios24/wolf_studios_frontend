@@ -6,18 +6,18 @@ import { paths } from './paths';
 
 export const navData = [
     {
+        key: 'home',
         title: 'Home',
-        path: paths.home,
-        icon: "ph:dot-fill"
+        href: paths.home,
     },
     {
+        key: 'portfolio',
         title: 'Portfolio',
-        path: paths.public.portfolio,
-        icon: "ph:dot-fill",
+        href: paths.public.portfolio,
     },
     {
+        key: 'campaign',
         title: 'Campaign',
-        path: paths.public.campaign,
-        icon: "ph:dot-fill",
+        href: paths.public.campaign,
     }
 ];

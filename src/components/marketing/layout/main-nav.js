@@ -1,7 +1,6 @@
 'use client';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -19,9 +18,8 @@ import { Logo } from '@/components/core/logo';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
 import { paths } from '@/paths';
 
-import { MobileNav } from './mobile-nav';
 import { navData } from '@/router';
-import { Iconify } from '@/components/iconify/iconify';
+import { MobileNav } from './mobile-nav';
 
 import { NavSearch } from '@/app/(marketing)/components/navbar/nav-search';
 
@@ -34,22 +32,26 @@ export function MainNav() {
       <Box
         component="header"
         sx={{
-          bgcolor: 'var(--mui-palette-common-white)',
+          bgcolor: 'rgba(240, 240, 240, 0.8)',
           color: 'var( --mui-palette-neutral-950)',
           left: 0,
           position: 'sticky',
           right: 0,
-          top: 0,
+          top: 10,
           zIndex: 'var(--MainNav-zIndex)',
+          mx: 2,
+          borderRadius: 4,
+          backdropFilter: 'blur(10px)',
+          padding: 0
         }}
       >
-        <Container maxWidth="xl" sx={{  minHeight: 'var(--MainNav-height)', py: '16px' }}>
+        <Container maxWidth="xl" sx={{ minHeight: 'var(--MainNav-height)', py: '8px', my: 2 }}>
           <Stack direction="row" spacing={2} sx={{ display: 'flex', flex: '1 1 auto', justifyContent: 'space-between', alignItems: 'center' }}>
             <Box component="nav" sx={{ display: { xs: 'none', md: 'block' } }}>
               <Stack component="ul" direction="row" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
                 {
                   navData.map((item, index) => (
-                    <NavItem key={index} href={item.path} pathname={pathname} title={item.title} icon={item.icon} />
+                    <NavItem key={index} href={item.href} pathname={pathname} title={item.title} icon={item.icon} />
                   ))
                 }
               </Stack>
@@ -63,7 +65,7 @@ export function MainNav() {
                 onClick={() => {
                   setOpenNav(true);
                 }}
-                sx={{ color: 'var(--mui-palette-common-white)', display: { xs: 'flex', md: 'none' } }}
+                sx={{ color: 'var(--mui-palette-common-dark)', display: { xs: 'flex', md: 'none' } }}
               >
                 <ListIcon />
               </IconButton>
@@ -77,13 +79,14 @@ export function MainNav() {
         }}
         open={openNav}
       />
-      
+
     </React.Fragment>
   );
 }
 
-export function NavItem({ children, disabled, external, href, matcher, pathname, title, icon }) {
-  console.log(icon, "icon.........")
+export function NavItem({ children, disabled, external, href, matcher, pathname, title }) {
+  console.log(title, "title.........")
+  console.log(href, "href.........")
   const active = isNavItemActive({ disabled, external, href, matcher, pathname });
   const hasPopover = Boolean(children);
 
@@ -136,7 +139,7 @@ export function NavItem({ children, disabled, external, href, matcher, pathname,
           {/* <Iconify width={14} icon={icon} /> */}
           <Typography
             component="span"
-            sx={{ color: 'var( --mui-palette-neutral-950)', fontSize: '0.875rem', fontWeight: 500, lineHeight: '28px' }}
+            sx={{ color: 'var( --Text-primary)', fontSize: '0.875rem', fontWeight: 400, lineHeight: '28px' }}
           >
             {title}
           </Typography>
