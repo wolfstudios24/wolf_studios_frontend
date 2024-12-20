@@ -2,7 +2,7 @@ import * as React from 'react';
 import GlobalStyles from '@mui/material/GlobalStyles';
 
 import { Footer } from '@/components/marketing/layout/footer';
-import { MainNav } from '@/components/marketing/layout/main-nav';
+import { MainNav } from '@/components/navbar/main-nav';
 
 export default function Layout({ children }) {
   return (

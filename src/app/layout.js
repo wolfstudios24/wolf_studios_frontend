@@ -26,6 +26,7 @@ export const viewport = {
 
 export default async function Layout({ children }) {
   const settings = applyDefaultSettings(await getPersistedSettings());
+  console.log(settings, "setting from layout");
 
   return (
     <html lang={settings.language} suppressHydrationWarning>
@@ -41,7 +42,7 @@ export default async function Layout({ children }) {
                     <ThemeProvider>
                       <Progressbar />
                       {children}
-                      {/* <SettingsButton /> */}
+                      <SettingsButton />
                       <Toaster position="top-right" />
                     </ThemeProvider>
                   </I18nProvider>

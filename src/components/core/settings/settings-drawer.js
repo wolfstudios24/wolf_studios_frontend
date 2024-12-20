@@ -24,7 +24,7 @@ export function SettingsDrawer({ canReset = true, onClose, onUpdate, onReset, op
   );
 
   React.useEffect(() => {
-    if (mode === "system") {
+    if (values?.mode === "system") {
       localStorage.setItem('mui-mode', "light");
     }
   }, []);
