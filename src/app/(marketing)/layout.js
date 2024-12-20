@@ -16,14 +16,14 @@ export default function Layout({ children }) {
             '--SideNav-zIndex': 1100,
             '--MobileNav-width': '320px',
             '--MobileNav-zIndex': 1100,
-            '--Text-primary': '#333333', 
+            '--Text-primary': '#333333',
             '--Text-secondary': '#17181A9E',
           },
         }}
       />
       <div>
         <MainNav />
-        <main>{children}</main>
+        <main style={{ minHeight: "calc(100vh - 360px)" }}>{children}</main>
         <Footer />
       </div>
     </React.Fragment>
