@@ -1,12 +1,12 @@
 'use client';
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid2';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
@@ -17,9 +17,13 @@ import { Cell, Pie, PieChart, Tooltip } from 'recharts';
 
 import { NoSsr } from '@/components/core/no-ssr';
 
-export function Devices({ data }) {
-  const chartSize = 200;
-  const chartTickness = 30;
+export function PercentOfAssetsByProduct({ data }) {
+  const chartSize = 240;
+  const chartTickness = 50;
+
+  const uniqueData = Array.from(
+    new Map(data.map(item => [item.product, item])).values()
+  );
 
   return (
     <Card>
@@ -34,7 +38,7 @@ export function Devices({ data }) {
             <DevicesIcon fontSize="var(--Icon-fontSize)" />
           </Avatar>
         }
-        title="Devices"
+        title="Percent of Assets by Product"
       />
       <CardContent>
         <Stack divider={<Divider />} spacing={3}>
@@ -46,11 +50,12 @@ export function Devices({ data }) {
                   cx={chartSize / 2}
                   cy={chartSize / 2}
                   data={data}
-                  dataKey="value"
+                  dataKey="percent"
                   innerRadius={chartSize / 2 - chartTickness}
-                  nameKey="name"
+                  nameKey="percent"
                   outerRadius={chartSize / 2}
                   strokeWidth={0}
+                  label={renderCustomBarLabel}
                 >
                   {data.map((entry) => (
                     <Cell fill={entry.color} key={entry.name} />
@@ -60,28 +65,27 @@ export function Devices({ data }) {
               </PieChart>
             </NoSsr>
           </Box>
-          <Legend payload={data} />
+          <Legend data={uniqueData} />
         </Stack>
       </CardContent>
     </Card>
   );
 }
 
-function Legend({ payload }) {
+function Legend({ data }) {
   return (
-    <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))' }}>
-      {payload?.map((entry) => (
-        <div key={entry.name}>
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <Box sx={{ bgcolor: entry.color, borderRadius: '2px', height: '4px', width: '16px' }} />
-            <Typography variant="body2">{entry.name}</Typography>
+    <Grid container spacing={1} paddingTop={2}>
+      {data.map((bar) => (
+        <Grid key={bar.product} item size={{ xs: 4 }}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Box sx={{ bgcolor: bar.color, borderRadius: '2px', height: '8px', width: '16px' }} />
+            <Typography color="text.secondary" variant="caption">
+              {bar.product}
+            </Typography>
           </Stack>
-          <Typography variant="h5">
-            {new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 2 }).format(entry.value / 100)}
-          </Typography>
-        </div>
+        </Grid>
       ))}
-    </Box>
+    </Grid>
   );
 }
 
@@ -94,13 +98,19 @@ function TooltipContent({ active, payload }) {
     <Paper sx={{ border: '1px solid var(--mui-palette-divider)', boxShadow: 'var(--mui-shadows-16)', p: 1 }}>
       <Stack spacing={2}>
         {payload?.map((entry) => (
-          <Stack direction="row" key={entry.name} spacing={3} sx={{ alignItems: 'center' }}>
+          <Stack direction="column" key={entry.name} spacing={1} >
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
-              <Box sx={{ bgcolor: entry.payload.fill, borderRadius: '2px', height: '8px', width: '8px' }} />
-              <Typography sx={{ whiteSpace: 'nowrap' }}>{entry.name}</Typography>
+              <Box sx={{ bgcolor: entry.payload.color, borderRadius: '2px', height: '8px', width: '8px' }} />
+              <Typography color="text.secondary" variant="body2">
+                Product: {entry.payload.product}
+              </Typography>
             </Stack>
+
             <Typography color="text.secondary" variant="body2">
-              {new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 2 }).format(entry.value / 100)}
+              Values: {entry.payload.values} records
+            </Typography>
+            <Typography color="text.secondary" variant="body2">
+              Percent: {entry.payload.percent}
             </Typography>
           </Stack>
         ))}
@@ -108,3 +118,22 @@ function TooltipContent({ active, payload }) {
     </Paper>
   );
 }
+
+const renderCustomBarLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+  const RADIAN = Math.PI / 180;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN); // labe X position
+  const y = cy + radius * Math.sin(-midAngle * RADIAN); // labe Y position
+
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle" // Center the text horizontally
+      dominantBaseline="middle" // Center the text vertically
+      style={{ fontSize: '10px', fontWeight: 'bold', fill: '#333' }}
+    >
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};

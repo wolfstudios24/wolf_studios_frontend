@@ -53,12 +53,12 @@ export const AuthProvider = (props) => {
                 setUserInfo(INITIAL_AUTH_STATE);
             }
         } catch (error) {
-            console.error('Error fetching profile data:', error);
             return null;
         }
     }
     React.useEffect(() => {
         const auth = localStorage.getItem("auth");
+        console.log("auth......", auth);
         if (auth) {
             const data = JSON.parse(auth);
             const token = data.token;

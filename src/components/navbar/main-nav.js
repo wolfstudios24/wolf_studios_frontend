@@ -1,7 +1,6 @@
 'use client';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
@@ -19,7 +18,9 @@ import { Logo } from '@/components/core/logo';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
 import { paths } from '@/paths';
 
+import { navData } from '@/router';
 import { MobileNav } from './mobile-nav';
+import { NavSearch } from './nav-search';
 
 export function MainNav() {
   const [openNav, setOpenNav] = React.useState(false);
@@ -30,47 +31,44 @@ export function MainNav() {
       <Box
         component="header"
         sx={{
-          bgcolor: 'var(--mui-palette-neutral-950)',
-          color: 'var(--mui-palette-common-white)',
+          bgcolor: 'rgba(240, 240, 240, 0.8)',
+          color: 'var( --mui-palette-neutral-950)',
           left: 0,
           position: 'sticky',
           right: 0,
-          top: 0,
+          top: 10,
           zIndex: 'var(--MainNav-zIndex)',
+          mx: 2,
+          borderRadius: 4,
+          backdropFilter: 'blur(10px)',
+          padding: 0
         }}
       >
-        <Container maxWidth="lg" sx={{ display: 'flex', minHeight: 'var(--MainNav-height)', py: '16px' }}>
-          <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
-            <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
-              <Logo color="light" height={32} width={122} />
-            </Box>
+        <Container maxWidth="xl" sx={{ minHeight: 'var(--MainNav-height)', py: '8px', my: 2 }}>
+          <Stack direction="row" spacing={2} sx={{ display: 'flex', flex: '1 1 auto', justifyContent: 'space-between', alignItems: 'center' }}>
             <Box component="nav" sx={{ display: { xs: 'none', md: 'block' } }}>
               <Stack component="ul" direction="row" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-                <NavItem href={paths.docs} pathname={pathname} title="Documentation" />
+                {
+                  navData.map((item, index) => (
+                    <NavItem key={index} href={item.href} pathname={pathname} title={item.title} icon={item.icon} />
+                  ))
+                }
               </Stack>
             </Box>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ alignItems: 'center', flex: '1 1 auto', justifyContent: 'flex-end' }}
-          >
-            <Button
-              component="a"
-              href={paths.dashboard.overview}
-              sx={{ display: { xs: 'none', md: 'flex' } }}
-              variant="contained"
-            >
-              Login
-            </Button>
-            <IconButton
-              onClick={() => {
-                setOpenNav(true);
-              }}
-              sx={{ color: 'var(--mui-palette-common-white)', display: { xs: 'flex', md: 'none' } }}
-            >
-              <ListIcon />
-            </IconButton>
+            <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
+              <Logo height={32} width={122} />
+            </Box>
+            <Box>
+              <NavSearch />
+              <IconButton
+                onClick={() => {
+                  setOpenNav(true);
+                }}
+                sx={{ color: 'var(--mui-palette-common-dark)', display: { xs: 'flex', md: 'none' } }}
+              >
+                <ListIcon />
+              </IconButton>
+            </Box>
           </Stack>
         </Container>
       </Box>
@@ -80,11 +78,14 @@ export function MainNav() {
         }}
         open={openNav}
       />
+
     </React.Fragment>
   );
 }
 
 export function NavItem({ children, disabled, external, href, matcher, pathname, title }) {
+  console.log(title, "title.........")
+  console.log(href, "href.........")
   const active = isNavItemActive({ disabled, external, href, matcher, pathname });
   const hasPopover = Boolean(children);
 
@@ -125,24 +126,25 @@ export function NavItem({ children, disabled, external, href, matcher, pathname,
             color: 'var(--mui-action-disabled)',
             cursor: 'not-allowed',
           }),
-          ...(active && { color: 'var(--mui-palette-common-white)' }),
+          ...(active && { color: 'var(--mui-palette-common-dark)' }),
           '&:hover': {
             ...(!disabled &&
-              !active && { bgcolor: 'rgba(255, 255, 255, 0.04)', color: 'var(--mui-palette-common-white)' }),
+              !active && { bgcolor: 'rgba(255, 255, 255, 0.04)', color: 'var(--mui-palette-common-dark)' }),
           },
         }}
         tabIndex={0}
       >
-        <Box component="span" sx={{ flex: '1 1 auto' }}>
+        <Box component="span" sx={{ flex: '1 1 auto', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+          {/* <Iconify width={14} icon={icon} /> */}
           <Typography
             component="span"
-            sx={{ color: 'inherit', fontSize: '0.875rem', fontWeight: 500, lineHeight: '28px' }}
+            sx={{ color: 'var( --Text-primary)', fontSize: '0.875rem', fontWeight: 400, lineHeight: '28px' }}
           >
             {title}
           </Typography>
         </Box>
         {hasPopover ? (
-          <Box sx={{ alignItems: 'center', color: 'inherit', display: 'flex', flex: '0 0 auto' }}>
+          <Box sx={{ alignItems: 'center', color: 'var( --mui-palette-neutral-950)', display: 'flex', flex: '0 0 auto' }}>
             <CaretDownIcon fontSize="var(--icon-fontSize-sm)" />
           </Box>
         ) : null}
@@ -167,3 +169,5 @@ export function NavItem({ children, disabled, external, href, matcher, pathname,
 
   return element;
 }
+
+

@@ -15,7 +15,9 @@ import { X as XIcon } from '@phosphor-icons/react/dist/ssr/X';
 
 import { paths } from '@/paths';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
-import { DynamicLogo } from '@/components/core/logo';
+import { DynamicLogo, Logo } from '@/components/core/logo';
+import { navData } from '@/router';
+import { NavSearch } from './nav-search';
 
 // NOTE: First level elements are groups.
 
@@ -88,15 +90,18 @@ export function MobileNav({ onClose, open = false }) {
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, minHeight: 0 }}>
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
-            <DynamicLogo colorDark="light" colorLight="dark" height={32} width={122} />
+            <Logo colorDark="light" colorLight="dark" height={32} width={122} />
           </Box>
           <IconButton onClick={onClose}>
             <XIcon />
           </IconButton>
         </Stack>
+        <Box>
+          <NavSearch isMobile/>
+        </Box>
         <Box component="nav">
           <Stack component="ul" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-            {renderNavGroups({ items: navItems, onClose, pathname })}
+            {renderNavGroups({ items: navData, onClose, pathname })}
           </Stack>
         </Box>
       </DialogContent>
@@ -165,29 +170,29 @@ function NavItem({ children, depth, disabled, external, forceOpen = false, href,
       <Box
         {...(isBranch
           ? {
-              onClick: () => {
+            onClick: () => {
+              setOpen(!open);
+            },
+            onKeyUp: (event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
                 setOpen(!open);
-              },
-              onKeyUp: (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  setOpen(!open);
-                }
-              },
-              role: 'button',
-            }
+              }
+            },
+            role: 'button',
+          }
           : {
-              ...(href
-                ? {
-                    component: external ? 'a' : RouterLink,
-                    href,
-                    target: external ? '_blank' : undefined,
-                    rel: external ? 'noreferrer' : undefined,
-                    onClick: () => {
-                      onClose?.();
-                    },
-                  }
-                : { role: 'button' }),
-            })}
+            ...(href
+              ? {
+                component: external ? 'a' : RouterLink,
+                href,
+                target: external ? '_blank' : undefined,
+                rel: external ? 'noreferrer' : undefined,
+                onClick: () => {
+                  onClose?.();
+                },
+              }
+              : { role: 'button' }),
+          })}
         sx={{
           alignItems: 'center',
           borderRadius: 1,

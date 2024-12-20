@@ -1,5 +1,6 @@
 export const defaultRecord = {
     // General Information
+    id: "",
     title: "",
     campaign: "",
     product: "",

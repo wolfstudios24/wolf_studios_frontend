@@ -5,7 +5,6 @@ import { FilterPopover, useFilterContext } from "../filter-button";
 export function StatusFilterPopover() {
     const { anchorEl, onApply, onClose, open, value: initialValue } = useFilterContext();
     const [value, setValue] = React.useState('');
-    console.log(value, "value from status")
 
     React.useEffect(() => {
         setValue(initialValue ?? '');

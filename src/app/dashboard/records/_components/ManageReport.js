@@ -4,10 +4,10 @@ import PageLoader from "@/components/PageLoader/PageLoader";
 import { Button, CircularProgress, FormControl, InputLabel, MenuItem, OutlinedInput, Select, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useFormik } from "formik";
-import React from "react";
-import { createRecord, getRecord, updateUserData } from "../_lib/actions";
-import { defaultRecord } from "../_lib/types";
 import { useRouter } from "next/navigation";
+import React from "react";
+import { createRecordAsync, getRecord, updateUserData } from "../_lib/actions";
+import { defaultRecord } from "../_lib/types";
 
 export const ManageReport = ({ id }) => {
     const isUpdated = Boolean(id);
@@ -36,7 +36,7 @@ export const ManageReport = ({ id }) => {
                 is_deleted: false,
                 status: values.status,
                 contact_number: values.contact_number
-            }) : await createRecord(values);
+            }) : await createRecordAsync(values);
             if (res.success) {
                 router.push("/dashboard/records");
             }
