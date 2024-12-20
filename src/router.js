@@ -1,4 +1,3 @@
-import { Iconify } from './components/iconify/iconify';
 import { paths } from './paths';
 
 

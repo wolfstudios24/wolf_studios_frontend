@@ -1,9 +1,9 @@
 
 import { Iconify } from '@/components/iconify/iconify';
 import { alpha, InputBase, styled } from '@mui/material';
-export const NavSearch = () => {
+export const NavSearch = ({ isMobile = false}) => {
     return (
-        <Search sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Search sx={{ display: isMobile ? 'block' : { xs: 'none', md: 'block' } }}>
             <SearchIconWrapper>
                 <Iconify icon="jam:search" width={20} />
             </SearchIconWrapper>
