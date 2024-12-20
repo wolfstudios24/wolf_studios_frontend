@@ -26,7 +26,6 @@ export function HideColumsPopover() {
 
     const handleSearchChange = (event) => {
         event.stopPropagation();
-        console.log(event.target.value, "search");
         setSearch(event.target.value);
     };
 
