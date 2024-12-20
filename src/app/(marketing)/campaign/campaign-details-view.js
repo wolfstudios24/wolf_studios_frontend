@@ -20,7 +20,7 @@ export const CampaignDetailsView = ({ data }) => {
     } = data;
 
     return (
-        <Box sx={{ p: 4 }}>
+        <Box sx={{ py: 4 }}>
             <Grid container spacing={4}>
                 {/* Left Panel */}
                 <Grid item size={{ xs: 12, md: 4 }}>

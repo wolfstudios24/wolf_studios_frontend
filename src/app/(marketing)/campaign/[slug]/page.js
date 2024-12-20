@@ -2,6 +2,7 @@
 import { Hero } from '@/components/marketing/home/hero';
 import { config } from '@/config';
 import { CampaignDetailsView } from '../campaign-details-view';
+import { Container } from '@mui/material';
 
 export const metadata = { title: config.site.name, description: "Campaigns list page" };
 
@@ -57,8 +58,8 @@ export default function Page({ params: { slug } }) {
     }
 
     return (
-        <div>
+        <Container maxWidth="xl">
             <CampaignDetailsView data={tempData} />
-        </div>
+        </Container>
     );
 }

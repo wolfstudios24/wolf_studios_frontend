@@ -1,6 +1,5 @@
-import { Box, Button, Card, CardContent, CardMedia, Paper, Typography } from "@mui/material";
+import { Box, Button, Card, Paper, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { BoxArrowUp } from "@phosphor-icons/react/dist/ssr";
 
 const imgUrl = "https://fastly.picsum.photos/id/534/500/300.jpg?hmac=7_nLmR2xnpUlZjy_xfL0rGWO2wDs2eIhXGjBXtpKt18"
 export const CampaignDetailsRightPanel = ({ article, images, videos, social_share }) => {

@@ -1,5 +1,5 @@
 import { Iconify } from "@/components/iconify/iconify";
-import { Avatar, Box, Divider, IconButton, Paper, Stack, styled, Typography } from "@mui/material";
+import { Avatar, Box, Divider, IconButton, Paper, Stack, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 
 export const CampaignDetailsSidebar = ({ description, details, author, campaign_title }) => {
