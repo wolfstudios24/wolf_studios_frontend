@@ -65,21 +65,21 @@ export const CampaignDetailsSidebar = ({ description, details, author, campaign_
             <Grid container spacing={2}>
                 <Grid item size={{ xs: 12, md: 4 }}>
                     <IconButton
-                        sx={{ bgcolor: 'var(--mui-palette-background-level1)', width: '100%' }}
+                        sx={{ bgcolor: 'var(--mui-palette-background-level2)', width: '100%' }}
                     >
                         <Iconify icon="tabler:message" width={28} height={28} />
                     </IconButton>
                 </Grid>
                 <Grid item size={{ xs: 12, md: 4 }}>
                     <IconButton
-                        sx={{ bgcolor: 'var(--mui-palette-background-level1)', width: '100%' }}
+                        sx={{ bgcolor: 'var(--mui-palette-background-level2)', width: '100%' }}
                     >
                         <Iconify icon="material-symbols:share" width={28} height={28} />
                     </IconButton>
                 </Grid>
                 <Grid item size={{ xs: 12, md: 4 }}>
                     <IconButton
-                        sx={{ bgcolor: 'var(--mui-palette-background-level1)', width: '100%' }}
+                        sx={{ bgcolor: 'var(--mui-palette-background-level2)', width: '100%' }}
                     >
                         <Iconify icon="ic:baseline-facebook" width={28} height={28} />
                     </IconButton>
