@@ -22,6 +22,7 @@ const slider_data = [
   {
     id: 1,
     title: 'Elegent Magazine',
+    slug: 'elegent-magazine',
     model: 'Elina',
     publication: 'Vogue',
     dp: 'Combina Key',
@@ -30,6 +31,7 @@ const slider_data = [
   {
     id: 2,
     title: 'Fashion Trends',
+    slug: 'fashion-trends',
     model: 'Alexis',
     publication: 'Elle',
     dp: 'Style Studio',
@@ -38,6 +40,7 @@ const slider_data = [
   {
     id: 3,
     title: 'Luxury Lifestyle',
+    slug: 'luxury-lifestyle',
     model: 'Jordan',
     publication: 'GQ',
     dp: 'Chic Agency',
@@ -46,6 +49,7 @@ const slider_data = [
   {
     id: 4,
     title: 'Street Style',
+    slug: 'street-style',
     model: 'Samantha',
     publication: 'Hypebae',
     dp: 'Urban Icons',
@@ -54,6 +58,7 @@ const slider_data = [
   {
     id: 5,
     title: 'Wedding Couture',
+    slug: 'wedding-couture',
     model: 'Olivia',
     publication: 'Bridal Magazine',
     dp: 'Romance Creations',
@@ -62,6 +67,7 @@ const slider_data = [
   {
     id: 6,
     title: 'Travel Diaries',
+    slug: 'travel-diaries',
     model: 'Noah',
     publication: 'National Geographic',
     dp: 'Adventure Lens',
@@ -70,6 +76,7 @@ const slider_data = [
   {
     id: 7,
     title: 'Tech Innovations',
+    slug: 'tech-innovations',
     model: 'Sophia',
     publication: 'TechCrunch',
     dp: 'InnoHub',
@@ -78,6 +85,7 @@ const slider_data = [
   {
     id: 8,
     title: 'Fitness Journey',
+    slug: 'fitness-journey',
     model: 'Ethan',
     publication: "Men's Health",
     dp: 'FitLife Studio',
@@ -86,6 +94,7 @@ const slider_data = [
   {
     id: 9,
     title: 'Foodie Tales',
+    slug: 'foodie-tales',
     model: 'Isabella',
     publication: 'Bon Appétit',
     dp: 'Flavor Fusion',
@@ -94,6 +103,7 @@ const slider_data = [
   {
     id: 10,
     title: 'Artistic Expressions',
+    slug: 'artistic-expressions',
     model: 'Liam',
     publication: 'Art Now',
     dp: 'Creative Space',

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Box, Button, Card, CardContent, CardMedia, Divider, Stack, Typography } from '@mui/material';
 
 const PortfolioSliderItem = ({ item, index, currentIndex }) => {
@@ -10,13 +11,13 @@ const PortfolioSliderItem = ({ item, index, currentIndex }) => {
         overflow: 'hidden',
         position: 'relative',
         boxShadow: 3,
-        zIndex: -10,
       }}
     >
       <CardMedia
         component="img"
         image={item.image}
         alt="Background Image"
+        draggable={false}
         sx={{ height: '100%', width: '100%', objectFit: 'cover', filter: 'brightness(100%)' }}
       />
       <CardContent
@@ -48,7 +49,11 @@ const PortfolioSliderItem = ({ item, index, currentIndex }) => {
               <Typography variant="body2">DP: {item.dp}</Typography>
             </Box>
           </Stack>
-          <Button variant="outlined">View Portfolio</Button>
+          <Link href={`/portfolio/${item.slug}`}>
+            <Button variant="outlined" sx={{ zIndex: 10, cursor: 'pointer' }}>
+              View Portfolio
+            </Button>
+          </Link>
         </Stack>
       </CardContent>
     </Card>
