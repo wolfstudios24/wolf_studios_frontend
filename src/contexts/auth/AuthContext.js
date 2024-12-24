@@ -58,7 +58,6 @@ export const AuthProvider = (props) => {
     }
     React.useEffect(() => {
         const auth = localStorage.getItem("auth");
-        console.log("auth......", auth);
         if (auth) {
             const data = JSON.parse(auth);
             const token = data.token;

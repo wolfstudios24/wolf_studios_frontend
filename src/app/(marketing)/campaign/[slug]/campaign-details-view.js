@@ -4,8 +4,10 @@ import {
     Typography
 } from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { CampaignDetailsRightPanel } from "./_components/campaign-details-right-panel";
-import { CampaignDetailsSidebar } from "./_components/campaign-details-sidebar";
+import { CampaignDetailsRightPanel } from "../_components/campaign-details-right-panel";
+import { CampaignDetailsSidebar } from "../_components/campaign-details-sidebar";
+// import { CampaignDetailsRightPanel } from "../_components/campaign-details-right-panel";
+// import { CampaignDetailsSidebar } from "../_components/campaign-details-sidebar";
 
 export const CampaignDetailsView = ({ data }) => {
     const {

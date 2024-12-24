@@ -4,11 +4,13 @@ import Grid from '@mui/material/Grid2';
 
 import { PortfolioFilter } from './components/portfolio-filter';
 import PortfolioSlider from './components/portfolio-slider';
+import Link from 'next/link';
 
 export const PortfolioView = () => {
   const portfolioData = [
     {
       title: 'Mary Ann',
+      slug: 'mary-ann',
       description: 'Session with Mary Ann, shot by Combina in February 2018',
       model: 'Mary Ann',
       dp: 'Combina Key',
@@ -17,6 +19,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Prints: Abstract',
+      slug: 'prints-abstract',
       description: 'On Session production for portraits, shot by Combina in November 2016.',
       dp: 'Combina Key',
       projectLink: 'Link to project',
@@ -24,6 +27,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Kansha: Love Bite',
+      slug: 'kansha-love-bite',
       description: 'In Studio Production for Kansha Magazine, shot by Combina Key in August 2018.',
       publication: 'Kansha',
       dp: 'Combina Key',
@@ -32,6 +36,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Pump Magazine: Sharee',
+      slug: 'pump-magazine-sharee',
       description: 'In Studio Production with Sharee Michelle for Pump Magazine, shot by Combina Key in November 2018.',
       model: 'Sharee Michelle',
       publication: 'Pump Magazine',
@@ -41,6 +46,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Elegant Magazine: Elena',
+      slug: 'elegant-magazine-elena',
       description: 'In Studio Production with Elena for Elegant Magazine, shot by Combina Key in May 2019.',
       model: 'Elena',
       publication: 'Elegant Magazine',
@@ -50,6 +56,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Imirage Mag',
+      slug: 'imirage-mag',
       description: 'In Studio Production for Imirage Magazine, shot by Combina Key in February 2019.',
       publication: 'Imirage Mag',
       dp: 'Combina Key',
@@ -58,6 +65,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Tamara Rzaeva',
+      slug: 'tamara-rzaeva',
       description: 'Session with Tamara Rzaeva, shot by Combina Key on April 2018.',
       model: 'Tamara Rzaeva',
       dp: 'Combina Key',
@@ -66,6 +74,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Street Style: Karla Marie',
+      slug: 'street-style-karla-marie',
       description: 'Street Style Session with Karla Marie, shot by Combina Key in December 2018.',
       model: 'Karla Marie',
       dp: 'Combina Key',
@@ -74,6 +83,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Shuba Magazine: Jyaira Moore',
+      slug: 'shuba-magazine-jyaira-moore',
       description: 'A session with Jyaira Moore, shot by Combina in July 2018.',
       model: 'Jyaira Moore',
       dp: 'Combina Key',
@@ -82,6 +92,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Elena Tretyakova',
+      slug: 'elena-tretyakova',
       description: 'Session with Elena Tretyakova, shot by Combina Key in March 2018.',
       model: 'Elena Tretyakova',
       dp: 'Combina Key',
@@ -90,6 +101,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Lissa DeLorenzo',
+      slug: 'lissa-delorenzo',
       description: 'Session with Lissa DeLorenzo, shot by Combina Key in July 2018.',
       model: 'Lissa DeLorenzo',
       dp: 'Combina Key',
@@ -98,6 +110,7 @@ export const PortfolioView = () => {
     },
     {
       title: 'Lydia DTLA',
+      slug: 'lydia-dtl',
       description: 'Session with Lydia, shot by Combina in DTLA in June 2024.',
       model: 'Lydia',
       dp: 'Combina Key',
@@ -153,7 +166,15 @@ const PortfolioCard = ({ portfolio }) => {
           <Typography variant="body2" color="text.secondary" fontWeight={600}>
             Model: {portfolio.model || '-'}
           </Typography>
-          <Button>View Project</Button>
+          <Link
+            href={`portfolio/${portfolio.slug}`}
+            style={{
+              fontSize: '0.9rem',
+              color: "var(--mui-palette-text-secondary)",
+            }}
+          >
+            View Project
+          </Link>
         </Box>
       </Paper>
     </Box>
