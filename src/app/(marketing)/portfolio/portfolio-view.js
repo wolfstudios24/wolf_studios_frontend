@@ -3,6 +3,7 @@ import { Box, Button, Paper, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
 import { PortfolioFilter } from './components/portfolio-filter';
+import PortfolioSlider from './components/portfolio-slider';
 
 export const PortfolioView = () => {
   const portfolioData = [
@@ -107,6 +108,7 @@ export const PortfolioView = () => {
 
   return (
     <Box sx={{ py: 4 }}>
+      <PortfolioSlider />
       <Typography
         gutterBottom
         sx={{
