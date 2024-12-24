@@ -90,6 +90,10 @@ export const paths = {
     tasks: '/dashboard/tasks',
   },
 
+  public: {
+    portfolio: "/portfolio",
+    campaign: "/campaign",
+  },
 
 
   // will be removed
@@ -142,7 +146,7 @@ export const paths = {
       verifyCode: { centered: '/auth/samples/verify-code/centered', split: '/auth/samples/verify-code/split' },
     },
   },
- 
+
   pdf: { invoice: (invoiceId) => `/pdf/invoices/${invoiceId}` },
   components: {
     index: '/components',

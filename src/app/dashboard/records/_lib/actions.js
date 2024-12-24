@@ -39,7 +39,6 @@ export const createRecordAsync = async (data) => {
 };
 
 export const updateRecordAsync = async (data) => {
-    console.log(data, "dat.....")
     try {
         const payload = { ...data }
         const res = await api.patch(`/record/update-record/${data.id}`, payload);

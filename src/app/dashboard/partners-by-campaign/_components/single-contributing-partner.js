@@ -6,7 +6,6 @@ import { Button, InputLabel, Stack, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 
 export const SingleContributingPartnerRightPanel = ({ open, data, onClose, }) => {
-    console.log(data, "data.....")
     return (
         <RightPanel
             open={open}
