@@ -65,7 +65,7 @@ export function SettingsDrawer({ canReset = true, onClose, onUpdate, onReset, op
           }}
           value={values.mode}
         />
-        <OptionsNavColor
+        {/* <OptionsNavColor
           onChange={(value) => {
             handleChange('navColor', value);
           }}
@@ -82,7 +82,7 @@ export function SettingsDrawer({ canReset = true, onClose, onUpdate, onReset, op
             handleChange('direction', value);
           }}
           value={values.direction}
-        />
+        /> */}
       </Stack>
     </Drawer>
   );
