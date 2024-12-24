@@ -84,8 +84,7 @@ export function MainNav() {
 }
 
 export function NavItem({ children, disabled, external, href, matcher, pathname, title }) {
-  console.log(title, "title.........")
-  console.log(href, "href.........")
+
   const active = isNavItemActive({ disabled, external, href, matcher, pathname });
   const hasPopover = Boolean(children);
 

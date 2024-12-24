@@ -1,20 +1,12 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
 import {
   Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Divider,
-  IconButton,
-  Paper,
-  Stack,
-  Typography,
+  IconButton
 } from '@mui/material';
-import { AnimatePresence, domAnimation, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 
 import PortfolioSliderItem from './portfolio-slider-item';
 

@@ -50,7 +50,12 @@ const PortfolioSliderItem = ({ item, index, currentIndex }) => {
             </Box>
           </Stack>
           <Link href={`/portfolio/${item.slug}`}>
-            <Button variant="outlined" sx={{ zIndex: 10, cursor: 'pointer' }}>
+            <Button
+              variant="outlined"
+              size="small"
+              color="secondary"
+              sx={{ zIndex: 10, cursor: 'pointer', color: 'common.white' }}
+            >
               View Portfolio
             </Button>
           </Link>
