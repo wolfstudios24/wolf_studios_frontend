@@ -1,5 +1,4 @@
 
-import { Hero } from '@/components/marketing/home/hero';
 import { config } from '@/config';
 import { Container } from '@mui/material';
 
