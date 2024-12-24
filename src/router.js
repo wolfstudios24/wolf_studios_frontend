@@ -18,5 +18,10 @@ export const navData = [
         key: 'campaign',
         title: 'Campaign',
         href: paths.public.campaign,
+    },
+    {
+        key: 'login',
+        title: 'Login',
+        href: paths.auth.default.signIn,
     }
 ];

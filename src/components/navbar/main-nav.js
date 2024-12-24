@@ -26,10 +26,10 @@ export function MainNav() {
   const [openNav, setOpenNav] = React.useState(false);
   const pathname = usePathname();
 
-// todo: this is a temporary solution to make the color light. 
-  React.useEffect(() => {
-    localStorage.setItem('mui-mode', "light");
-  }, []);
+// // todo: this is a temporary solution to make the color light. 
+//   React.useEffect(() => {
+//     localStorage.setItem('mui-mode', "light");
+//   }, []);
 
   return (
     <React.Fragment>
