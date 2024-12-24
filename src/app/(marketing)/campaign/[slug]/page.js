@@ -1,8 +1,7 @@
 
-import { Hero } from '@/components/marketing/home/hero';
 import { config } from '@/config';
-import { CampaignDetailsView } from '../campaign-details-view';
 import { Container } from '@mui/material';
+import { CampaignDetailsView } from './campaign-details-view';
 
 export const metadata = { title: config.site.name, description: "Campaigns list page" };
 
