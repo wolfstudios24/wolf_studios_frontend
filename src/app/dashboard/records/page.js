@@ -14,6 +14,7 @@ import { CardTitle } from '@/components/cardTitle/CardTitle';
 import { PageContainer } from '@/components/container/PageContainer';
 import { FilterButton } from '@/components/core/filter-button';
 import { HideColumsPopover } from '@/components/core/filters/HideColumsPopover';
+import { EditableDataTable } from '@/components/data-table/editable-data-table';
 import PageLoader from '@/components/PageLoader/PageLoader';
 
 import { createRecordAsync, getRecordList, updateRecordAsync } from './_lib/actions';
@@ -116,7 +117,6 @@ export default function Page() {
   const [pagination, setPagination] = React.useState({ pageNo: 1, limit: 10 });
   const [totalRecords, setTotalRecords] = React.useState(0);
   const [filteredValue, setFilteredValue] = React.useState(columns.map((col) => col.field));
-  const [cellModesModel, setCellModesModel] = React.useState({});
 
   async function fetchList() {
     try {
@@ -158,49 +158,6 @@ export default function Page() {
     setRecords([defaultRecord, ...records]);
   };
 
-  // enable cell editing by one click
-  const handleCellClick = React.useCallback((params, event) => {
-    if (!params.isEditable) {
-      return;
-    }
-
-    // Ignore portal
-    if (event.target.nodeType === 1 && !event.currentTarget.contains(event.target)) {
-      return;
-    }
-
-    setCellModesModel((prevModel) => {
-      return {
-        // Revert the mode of the other cells from other rows
-        ...Object.keys(prevModel).reduce(
-          (acc, id) => ({
-            ...acc,
-            [id]: Object.keys(prevModel[id]).reduce(
-              (acc2, field) => ({
-                ...acc2,
-                [field]: { mode: GridCellModes.View },
-              }),
-              {}
-            ),
-          }),
-          {}
-        ),
-        [params.id]: {
-          // Revert the mode of other cells in the same row
-          ...Object.keys(prevModel[params.id] || {}).reduce(
-            (acc, field) => ({ ...acc, [field]: { mode: GridCellModes.View } }),
-            {}
-          ),
-          [params.field]: { mode: GridCellModes.Edit },
-        },
-      };
-    });
-  }, []);
-
-  const handleCellModesModelChange = React.useCallback((newModel) => {
-    setCellModesModel(newModel);
-  }, []);
-
   React.useEffect(() => {
     fetchList();
   }, [pagination]);
@@ -234,7 +191,7 @@ export default function Page() {
           </Box>
           {/* <Divider /> */}
           <Box sx={{ overflowX: 'auto', height: '100%', width: '100%' }}>
-            <DataGrid
+            {/* <DataGrid
               sx={{
                 '& .MuiDataGrid-cell': {
                   border: (theme) => `1px solid ${theme.palette.divider}`,
@@ -247,6 +204,15 @@ export default function Page() {
               cellModesModel={cellModesModel}
               onCellModesModelChange={handleCellModesModelChange}
               onCellClick={handleCellClick}
+            /> */}
+            <EditableDataTable
+              columns={visibleColumns}
+              rows={records}
+              processRowUpdate={processRowUpdate}
+              onProcessRowUpdateError={handleProcessRowUpdateError}
+              loading={loading}
+              noDataMessage="No records found"
+              pageSize={pagination.limit}
             />
           </Box>
           {!records?.length ? (
