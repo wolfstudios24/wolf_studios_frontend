@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const config = {
+  trailingSlash: false,
   experimental: {
     esmExternals: 'loose',
   },
