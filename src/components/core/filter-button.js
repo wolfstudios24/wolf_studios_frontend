@@ -8,6 +8,7 @@ import { MinusCircle as MinusCircleIcon } from '@phosphor-icons/react/dist/ssr/M
 import { PlusCircle as PlusCircleIcon } from '@phosphor-icons/react/dist/ssr/PlusCircle';
 
 import { usePopover } from '@/hooks/use-popover';
+import { pxToRem } from '@/utils/utils';
 
 function noop(..._) {
   // Do nothing
@@ -103,7 +104,7 @@ export function FilterPopover({ children, title, onClose, anchorEl, open }) {
       anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       onClose={onClose}
       open={Boolean(anchorEl && open)}
-      sx={{ '& .MuiPopover-paper': { mt: '4px', width: '280px' } }}
+      sx={{ '& .MuiPopover-paper': { mt: '4px', minWidth: pxToRem(300) } }}
     >
       <Stack spacing={2} sx={{ p: 2 }}>
         <Typography variant="subtitle2">{title}</Typography>
