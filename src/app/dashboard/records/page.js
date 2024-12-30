@@ -111,14 +111,10 @@ const columns = [
 ];
 
 export default function Page() {
-  const router = useRouter();
   const [records, setRecords] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [modalData, setModalData] = React.useState(null);
   const [pagination, setPagination] = React.useState({ pageNo: 1, limit: 10 });
   const [totalRecords, setTotalRecords] = React.useState(0);
-  const [selectedRows, setSelectedRows] = React.useState([]);
   const [filteredValue, setFilteredValue] = React.useState(columns.map((col) => col.field));
   const [cellModesModel, setCellModesModel] = React.useState({});
 
@@ -164,7 +160,6 @@ export default function Page() {
 
   // enable cell editing by one click
   const handleCellClick = React.useCallback((params, event) => {
-    console.log(params, 'params......');
     if (!params.isEditable) {
       return;
     }

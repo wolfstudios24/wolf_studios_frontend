@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
 import { PencilSimple as PencilSimpleIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
 
-import { DataTable } from '@/components/core/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 import { Option } from '@/components/core/option';
 
 const customers = [
