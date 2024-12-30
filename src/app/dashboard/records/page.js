@@ -1,12 +1,12 @@
 'use client';
 
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import moment from 'moment';
-import * as React from 'react';
 
 import { CardTitle } from '@/components/cardTitle/CardTitle';
 import { PageContainer } from '@/components/container/PageContainer';
@@ -134,7 +134,7 @@ export default function Page() {
     }
   }
 
-  const processRowUpdate = React.useCallback(async (newRow, oldRow  ) => {
+  const processRowUpdate = React.useCallback(async (newRow, oldRow) => {
     if (JSON.stringify(newRow) === JSON.stringify(oldRow)) return oldRow;
     if (newRow.id) {
       await updateRecordAsync(newRow);
@@ -155,6 +155,13 @@ export default function Page() {
   const handleAddNewItem = () => {
     setRecords([defaultRecord, ...records]);
   };
+
+  React.useEffect(() => {
+    const storedHiddenColumns = localStorage.getItem('hiddenColumns');
+    if (storedHiddenColumns) {
+      setFilteredValue(JSON.parse(storedHiddenColumns));
+    }
+  }, []);
 
   React.useEffect(() => {
     fetchList();
@@ -187,9 +194,8 @@ export default function Page() {
               value={columns}
             />
           </Box>
-  
+
           <Box sx={{ overflowX: 'auto', height: '100%', width: '100%' }}>
-         
             <EditableDataTable
               columns={visibleColumns}
               rows={records}
