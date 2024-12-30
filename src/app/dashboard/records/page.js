@@ -1,14 +1,14 @@
 'use client';
 
+import * as React from 'react';
+import { useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridCellModes } from '@mui/x-data-grid';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import moment from 'moment';
-import { useRouter } from 'next/navigation';
-import * as React from 'react';
 
 import { CardTitle } from '@/components/cardTitle/CardTitle';
 import { PageContainer } from '@/components/container/PageContainer';
@@ -120,6 +120,7 @@ export default function Page() {
   const [totalRecords, setTotalRecords] = React.useState(0);
   const [selectedRows, setSelectedRows] = React.useState([]);
   const [filteredValue, setFilteredValue] = React.useState(columns.map((col) => col.field));
+  const [cellModesModel, setCellModesModel] = React.useState({});
 
   async function fetchList() {
     try {
@@ -140,7 +141,7 @@ export default function Page() {
   }
 
   const processRowUpdate = React.useCallback(async (newRow, oldRow) => {
-    if(JSON.stringify(newRow) === JSON.stringify(oldRow)) return oldRow;
+    if (JSON.stringify(newRow) === JSON.stringify(oldRow)) return oldRow;
     if (newRow.id) {
       await updateRecordAsync(newRow);
     } else {
@@ -160,6 +161,50 @@ export default function Page() {
   const handleAddNewItem = () => {
     setRecords([defaultRecord, ...records]);
   };
+
+  // enable cell editing by one click
+  const handleCellClick = React.useCallback((params, event) => {
+    console.log(params, 'params......');
+    if (!params.isEditable) {
+      return;
+    }
+
+    // Ignore portal
+    if (event.target.nodeType === 1 && !event.currentTarget.contains(event.target)) {
+      return;
+    }
+
+    setCellModesModel((prevModel) => {
+      return {
+        // Revert the mode of the other cells from other rows
+        ...Object.keys(prevModel).reduce(
+          (acc, id) => ({
+            ...acc,
+            [id]: Object.keys(prevModel[id]).reduce(
+              (acc2, field) => ({
+                ...acc2,
+                [field]: { mode: GridCellModes.View },
+              }),
+              {}
+            ),
+          }),
+          {}
+        ),
+        [params.id]: {
+          // Revert the mode of other cells in the same row
+          ...Object.keys(prevModel[params.id] || {}).reduce(
+            (acc, field) => ({ ...acc, [field]: { mode: GridCellModes.View } }),
+            {}
+          ),
+          [params.field]: { mode: GridCellModes.Edit },
+        },
+      };
+    });
+  }, []);
+
+  const handleCellModesModelChange = React.useCallback((newModel) => {
+    setCellModesModel(newModel);
+  }, []);
 
   React.useEffect(() => {
     fetchList();
@@ -204,6 +249,9 @@ export default function Page() {
               columns={visibleColumns}
               processRowUpdate={processRowUpdate}
               onProcessRowUpdateError={handleProcessRowUpdateError}
+              cellModesModel={cellModesModel}
+              onCellModesModelChange={handleCellModesModelChange}
+              onCellClick={handleCellClick}
             />
           </Box>
           {!records?.length ? (
