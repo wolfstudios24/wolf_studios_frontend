@@ -120,7 +120,7 @@ export default function Page({ searchParams }) {
           {row.role}
         </Typography>
       ),
-      name: 'Phone',
+      name: 'Role',
     },
     {
       formatter(row) {

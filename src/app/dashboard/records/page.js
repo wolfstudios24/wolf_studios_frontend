@@ -134,7 +134,7 @@ export default function Page() {
     }
   }
 
-  const processRowUpdate = React.useCallback(async (newRow, oldRow) => {
+  const processRowUpdate = React.useCallback(async (newRow, oldRow  ) => {
     if (JSON.stringify(newRow) === JSON.stringify(oldRow)) return oldRow;
     if (newRow.id) {
       await updateRecordAsync(newRow);
