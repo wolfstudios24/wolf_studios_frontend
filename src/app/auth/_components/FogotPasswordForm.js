@@ -17,9 +17,9 @@ import { paths } from '@/paths';
 import { CircularProgress } from '@mui/material';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import * as Yup from 'yup';
-import { defaultForgotPassword } from '../_lib/types';
 import { forgotPasswordAsync } from '../_lib/actions';
+import { defaultForgotPassword } from '../_lib/types';
+import { z } from "zod";
 
 const getValidationSchema = (step) => {
   return Yup.object().shape({

@@ -14,6 +14,5 @@ export const PageContainer = ({ children }) => {
                 {children}
             </Stack>
         </Box>
-
     )
 };
