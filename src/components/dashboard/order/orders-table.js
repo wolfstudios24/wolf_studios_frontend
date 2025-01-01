@@ -17,7 +17,7 @@ import { XCircle as XCircleIcon } from '@phosphor-icons/react/dist/ssr/XCircle';
 
 import { paths } from '@/paths';
 import { dayjs } from '@/lib/dayjs';
-import { DataTable } from '@/components/core/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 
 import { useOrdersSelection } from './orders-selection-context';
 

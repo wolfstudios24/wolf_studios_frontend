@@ -18,8 +18,6 @@ function CustomThemeProvider({ children }) {
     direction: settings.direction,
   });
 
-  console.log('theme.........................', theme);
-
   return (
     <EmotionCacheProvider options={{ key: 'mui' }}>
       <Rtl direction={settings.direction}>

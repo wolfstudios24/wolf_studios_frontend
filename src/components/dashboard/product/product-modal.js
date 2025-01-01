@@ -19,7 +19,7 @@ import { X as XIcon } from '@phosphor-icons/react/dist/ssr/X';
 
 import { paths } from '@/paths';
 import { dayjs } from '@/lib/dayjs';
-import { DataTable } from '@/components/core/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 import { PropertyItem } from '@/components/core/property-item';
 import { PropertyList } from '@/components/core/property-list';
 

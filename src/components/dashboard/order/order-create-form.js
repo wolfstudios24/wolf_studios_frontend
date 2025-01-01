@@ -30,7 +30,7 @@ import { z as zod } from 'zod';
 import { paths } from '@/paths';
 import { dayjs } from '@/lib/dayjs';
 import { logger } from '@/lib/default-logger';
-import { DataTable } from '@/components/core/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 import { Option } from '@/components/core/option';
 import { toast } from '@/components/core/toaster';
 

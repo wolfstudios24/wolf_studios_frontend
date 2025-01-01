@@ -16,7 +16,7 @@ import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { ShoppingCartSimple as ShoppingCartSimpleIcon } from '@phosphor-icons/react/dist/ssr/ShoppingCartSimple';
 
 import { dayjs } from '@/lib/dayjs';
-import { DataTable } from '@/components/core/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 
 const columns = [
   {

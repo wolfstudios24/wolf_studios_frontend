@@ -12,7 +12,7 @@ import * as React from 'react';
 import PageLoader from '@/components/PageLoader/PageLoader';
 import IconButton from '@mui/material/IconButton';
 
-import { DataTable } from '@/components/core/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 import { FilterButton } from '@/components/core/filter-button';
 import { StatusFilterPopover } from '@/components/core/filters/StatusFilterPopover';
 import { RefreshPlugin } from '@/components/core/plugins/RefreshPlugin';
@@ -120,7 +120,7 @@ export default function Page({ searchParams }) {
           {row.role}
         </Typography>
       ),
-      name: 'Phone',
+      name: 'Role',
     },
     {
       formatter(row) {

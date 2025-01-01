@@ -1,27 +1,22 @@
-"use client"
+'use client';
+
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-import * as React from 'react';
-
-import PageLoader from '@/components/PageLoader/PageLoader';
+import moment from 'moment';
 
 import { CardTitle } from '@/components/cardTitle/CardTitle';
 import { PageContainer } from '@/components/container/PageContainer';
 import { FilterButton } from '@/components/core/filter-button';
 import { HideColumsPopover } from '@/components/core/filters/HideColumsPopover';
-import { paths } from '@/paths';
-import {
-  DataGrid
-} from '@mui/x-data-grid';
-import moment from 'moment';
-import { useRouter } from 'next/navigation';
+import { EditableDataTable } from '@/components/data-table/editable-data-table';
+import PageLoader from '@/components/PageLoader/PageLoader';
+
 import { createRecordAsync, getRecordList, updateRecordAsync } from './_lib/actions';
 import { defaultRecord } from './_lib/types';
-
 
 // table columns
 const columns = [
@@ -78,7 +73,13 @@ const columns = [
   { field: 'YT_clubrevo_like', headerName: 'YouTube Club REVO Likes', type: 'number', width: 150, editable: true },
   { field: 'YT_clubrevo_view', headerName: 'YouTube Club REVO Views', type: 'number', width: 150, editable: true },
   { field: 'YT_REVOMADIC_like', headerName: 'YouTube REVOMADIC Likes', type: 'number', width: 150, editable: true },
-  { field: 'YT_REVOMADIC_comment', headerName: 'YouTube REVOMADIC Comments', type: 'number', width: 150, editable: true },
+  {
+    field: 'YT_REVOMADIC_comment',
+    headerName: 'YouTube REVOMADIC Comments',
+    type: 'number',
+    width: 150,
+    editable: true,
+  },
   { field: 'YT_REVOMADIC_share', headerName: 'YouTube REVOMADIC Shares', type: 'number', width: 150, editable: true },
   { field: 'YT_REVOMADIC_view', headerName: 'YouTube REVOMADIC Views', type: 'number', width: 150, editable: true },
 
@@ -92,51 +93,58 @@ const columns = [
   { field: 'by_tags', headerName: 'Tags', width: 200, editable: true },
   { field: 'by_city', headerName: 'City', width: 150, editable: true },
   { field: 'all_internet_search', headerName: 'Internet Search', width: 200, editable: true },
-  { field: 'created_at', headerName: 'Created At', width: 180, editable: true, valueGetter: (value, row) => moment(value).format('DD-MM-YYYY HH:mm:ss'), },
-  { field: 'updated_at', headerName: 'Updated At', width: 180, editable: true, valueGetter: (value, row) => moment(value).format('DD-MM-YYYY HH:mm:ss') },
+  {
+    field: 'created_at',
+    headerName: 'Created At',
+    width: 180,
+    editable: true,
+    valueGetter: (value, row) => moment(value).format('DD-MM-YYYY HH:mm:ss'),
+  },
+  {
+    field: 'updated_at',
+    headerName: 'Updated At',
+    width: 180,
+    editable: true,
+    valueGetter: (value, row) => moment(value).format('DD-MM-YYYY HH:mm:ss'),
+  },
 ];
 
 export default function Page() {
-  const router = useRouter();
   const [records, setRecords] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [modalData, setModalData] = React.useState(null);
   const [pagination, setPagination] = React.useState({ pageNo: 1, limit: 10 });
   const [totalRecords, setTotalRecords] = React.useState(0);
-  const [selectedRows, setSelectedRows] = React.useState([]);
-  const [filteredValue, setFilteredValue] = React.useState(columns.map(col => col.field));
+  const [filteredValue, setFilteredValue] = React.useState(columns.map((col) => col.field));
 
   async function fetchList() {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await getRecordList({
         page: pagination.pageNo,
         rowsPerPage: pagination.limit,
       });
       if (response.success) {
         setRecords(response.data);
-        setTotalRecords(response.totalRecords)
+        setTotalRecords(response.totalRecords);
       }
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
-  const processRowUpdate = React.useCallback(
-    async (newRow) => {
-      if(newRow.id){
-        await updateRecordAsync(newRow)
-      }else {
-        const {id, ...rest} = newRow
-        await createRecordAsync(rest)
-        fetchList()
-      }
-    },
-    []
-  );
+  const processRowUpdate = React.useCallback(async (newRow, oldRow) => {
+    if (JSON.stringify(newRow) === JSON.stringify(oldRow)) return oldRow;
+    if (newRow.id) {
+      await updateRecordAsync(newRow);
+    } else {
+      const { id, ...rest } = newRow;
+      await createRecordAsync(rest);
+      fetchList();
+    }
+    return newRow;
+  }, []);
 
   const handleProcessRowUpdateError = React.useCallback((error) => {
     console.log({ children: error.message, severity: 'error' });
@@ -145,34 +153,39 @@ export default function Page() {
   const visibleColumns = columns.filter((col) => filteredValue.includes(col.field));
 
   const handleAddNewItem = () => {
-    setRecords([defaultRecord, ...records]); 
+    setRecords([defaultRecord, ...records]);
   };
 
   React.useEffect(() => {
-    fetchList();
-  }, [pagination])
+    const storedHiddenColumns = localStorage.getItem('hiddenColumns');
+    if (storedHiddenColumns) {
+      setFilteredValue(JSON.parse(storedHiddenColumns));
+    }
+  }, []);
 
+  React.useEffect(() => {
+    fetchList();
+  }, [pagination]);
 
   return (
-
     <PageContainer>
       <CardTitle
-        title={"Records"}
-        rightItem={<>
-          <Button startIcon={<PlusIcon />} variant="contained" onClick={handleAddNewItem}>
-            Add
-          </Button>
-        </>} />
-      <PageLoader
-        loading={loading}
-        error={null}
-      >
+        title={'Records'}
+        rightItem={
+          <>
+            <Button startIcon={<PlusIcon />} variant="contained" onClick={handleAddNewItem}>
+              Add
+            </Button>
+          </>
+        }
+      />
+      <PageLoader loading={loading} error={null}>
         <Card>
           <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
             <FilterButton
               label="Columns"
               onFilterApply={(value) => {
-                setFilteredValue(value)
+                setFilteredValue(value);
               }}
               onFilterDelete={() => {
                 // handlePhoneChange();
@@ -181,18 +194,16 @@ export default function Page() {
               value={columns}
             />
           </Box>
-          {/* <Divider /> */}
+
           <Box sx={{ overflowX: 'auto', height: '100%', width: '100%' }}>
-            <DataGrid
-              sx={{
-                '& .MuiDataGrid-cell': {
-                  border: (theme) => `1px solid ${theme.palette.divider}`,
-                }
-              }}
-              rows={records}
+            <EditableDataTable
               columns={visibleColumns}
+              rows={records}
               processRowUpdate={processRowUpdate}
               onProcessRowUpdateError={handleProcessRowUpdateError}
+              loading={loading}
+              noDataMessage="No records found"
+              pageSize={pagination.limit}
             />
           </Box>
           {!records?.length ? (
@@ -205,6 +216,5 @@ export default function Page() {
         </Card>
       </PageLoader>
     </PageContainer>
-
   );
 }

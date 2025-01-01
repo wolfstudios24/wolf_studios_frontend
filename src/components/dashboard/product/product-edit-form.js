@@ -31,7 +31,7 @@ import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
 import { logger } from '@/lib/default-logger';
-import { DataTable } from '@/components/core/data-table';
+import { DataTable } from '@/components/data-table/data-table';
 import { FileDropzone } from '@/components/core/file-dropzone';
 import { Option } from '@/components/core/option';
 import { TextEditor } from '@/components/core/text-editor/text-editor';
